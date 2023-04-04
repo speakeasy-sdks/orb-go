@@ -6,4 +6,4 @@ generation:
   singleTagPerOp: false
 go:
   version: ""
-  packageName: github.com/speakeasy-sdks/orb-go
+  packageName: Orb
