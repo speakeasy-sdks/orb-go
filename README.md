@@ -39,6 +39,7 @@ func main() {
         }),
     )
 
+    ctx := context.Background()    
     req := operations.PostCustomersRequestBody{
         BillingAddress: &operations.PostCustomersRequestBodyBillingAddress{
             City: "Laruecester",
@@ -65,7 +66,6 @@ func main() {
         Timezone: "Etc/UTC",
     }
 
-    ctx := context.Background()
     res, err := s.Customer.Create(ctx, req)
     if err != nil {
         log.Fatal(err)
