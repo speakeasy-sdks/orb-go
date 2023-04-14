@@ -51,7 +51,10 @@ func newEvent(defaultClient, securityClient HTTPClient, serverURL, language, sdk
 // * The `customer_id` or the `external_customer_id` of the original event ingestion request must identify a Customer resource within Orb, even if this event was ingested during the initial integration period. We do not allow deprecating events for customers not in the Orb system.
 func (s *event) Deprecate(ctx context.Context, request operations.PutDeprecateEventsEventIDRequest) (*operations.PutDeprecateEventsEventIDResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/events/{event_id}/deprecate", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/events/{event_id}/deprecate", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	req, err := http.NewRequestWithContext(ctx, "PUT", url, nil)
 	if err != nil {
@@ -387,7 +390,10 @@ func (s *event) Search(ctx context.Context, request operations.PostEventsSearchR
 // * The event's `timestamp` must fall within the customer's current subscription's billing period, or within the grace period of the customer's current subscription's previous billing period.
 func (s *event) Update(ctx context.Context, request operations.PutEventsEventIDRequest) (*operations.PutEventsEventIDResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/events/{event_id}", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/events/{event_id}", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "RequestBody", "json")
 	if err != nil {

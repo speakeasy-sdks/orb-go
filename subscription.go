@@ -51,7 +51,10 @@ func newSubscription(defaultClient, securityClient HTTPClient, serverURL, langua
 // Upcoming subscriptions are only eligible for immediate cancellation, which will set the `end_date` equal to the `start_date` upon cancellation.
 func (s *subscription) Cancel(ctx context.Context, request operations.PostSubscriptionsSubscriptionIDCancelRequest) (*operations.PostSubscriptionsSubscriptionIDCancelResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/subscriptions/{subscription_id}/cancel", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/subscriptions/{subscription_id}/cancel", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", url, nil)
 	if err != nil {
@@ -118,7 +121,10 @@ func (s *subscription) Cancel(ctx context.Context, request operations.PostSubscr
 // By default, Orb calculates the prorated difference in any fixed fees when making a plan change, adjusting the customer balance as needed. For details on this behavior, [Subscription management](../docs/Subscription-management.md#prorations-for-in-advance-fees).
 func (s *subscription) ChangeSchedule(ctx context.Context, request operations.PostSubscriptionsSubscriptionIDSchedulePlanChangeRequest) (*operations.PostSubscriptionsSubscriptionIDSchedulePlanChangeResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/subscriptions/{subscription_id}/schedule_plan_change", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/subscriptions/{subscription_id}/schedule_plan_change", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "RequestBody", "json")
 	if err != nil {
@@ -597,7 +603,10 @@ func (s *subscription) Create(ctx context.Context, request operations.PostSubscr
 // This endpoint is used to fetch a [Subscription](../reference/Orb-API.json/components/schemas/Subscription) given an identifier.
 func (s *subscription) Get(ctx context.Context, request operations.GetSubscriptionsSubscriptionIDRequest) (*operations.GetSubscriptionsSubscriptionIDResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/subscriptions/{subscription_id}", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/subscriptions/{subscription_id}", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
@@ -644,7 +653,10 @@ func (s *subscription) Get(ctx context.Context, request operations.GetSubscripti
 // The semantics of this endpoint exactly mirror those of [fetching a customer's costs](../reference/Orb-API.json/paths/~1customers~1{customer_id}~1costs/get). Use this endpoint to limit your analysis of costs to a specific subscription for the customer (e.g. to de-aggregate costs when a customer's subscription has started and stopped on the same day).
 func (s *subscription) GetCost(ctx context.Context, request operations.GetSubscriptionsSubscriptionIDCostRequest) (*operations.GetSubscriptionsSubscriptionIDCostResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/subscriptions/{subscription_id}/costs", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/subscriptions/{subscription_id}/costs", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
@@ -693,7 +705,10 @@ func (s *subscription) GetCost(ctx context.Context, request operations.GetSubscr
 // This endpoint returns a [paginated](../docs/Pagination.md) list of all plans associated with a subscription along with their start and end dates. This list contains the subscription's initial plan along with past and future plan changes.
 func (s *subscription) GetSchedule(ctx context.Context, request operations.GetSubscriptionsSubscriptionIDScheduleRequest) (*operations.GetSubscriptionsSubscriptionIDScheduleResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/subscriptions/{subscription_id}/schedule", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/subscriptions/{subscription_id}/schedule", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
@@ -863,7 +878,10 @@ func (s *subscription) GetSchedule(ctx context.Context, request operations.GetSu
 // - `second_dimension_value`: `aws`
 func (s *subscription) GetUsage(ctx context.Context, request operations.GetSubscriptionsSubscriptionIDUsageRequest) (*operations.GetSubscriptionsSubscriptionIDUsageResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/subscriptions/{subscription_id}/usage", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/subscriptions/{subscription_id}/usage", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
@@ -954,7 +972,10 @@ func (s *subscription) List(ctx context.Context, request operations.ListSubscrip
 // This endpoint can be used to unschedule any pending plan changes on an existing subscription.
 func (s *subscription) Unschedule(ctx context.Context, request operations.PostSubscriptionsSubscriptionIDUnschedulePendingPlanChangesRequest) (*operations.PostSubscriptionsSubscriptionIDUnschedulePendingPlanChangesResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/subscriptions/{subscription_id}/unschedule_pending_plan_changes", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/subscriptions/{subscription_id}/unschedule_pending_plan_changes", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", url, nil)
 	if err != nil {

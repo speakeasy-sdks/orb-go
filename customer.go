@@ -96,7 +96,10 @@ func (s *customer) Create(ctx context.Context, request operations.PostCustomersR
 // See the [Customer resource](Orb-API.json/components/schemas/Customer) for a full discussion of the Customer model.
 func (s *customer) Get(ctx context.Context, request operations.GetCustomersCustomerIDRequest) (*operations.GetCustomersCustomerIDResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
@@ -153,7 +156,10 @@ func (s *customer) Get(ctx context.Context, request operations.GetCustomersCusto
 // The customer balance can only be applied to invoices or adjusted manually if invoices are not synced to a separate invoicing provider. If a payment gateway such as Stripe is used, the balance will be applied to the invoice before forwarding payment to the gateway.
 func (s *customer) GetBalance(ctx context.Context, request operations.GetCustomersCustomerIDBalanceTransactionsRequest) (*operations.GetCustomersCustomerIDBalanceTransactionsResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}/balance_transactions", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}/balance_transactions", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
@@ -200,7 +206,10 @@ func (s *customer) GetBalance(ctx context.Context, request operations.GetCustome
 // Note that the resource and semantics of this endpoint exactly mirror [Get Customer](Orb-API.json/paths/~1customers/get).
 func (s *customer) GetByExternalID(ctx context.Context, request operations.GetCustomersExternalCustomerIDExternalCustomerIDRequest) (*operations.GetCustomersExternalCustomerIDExternalCustomerIDResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/customers/external_customer_id/{external_customer_id}", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/customers/external_customer_id/{external_customer_id}", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
@@ -307,7 +316,10 @@ func (s *customer) GetByExternalID(ctx context.Context, request operations.GetCu
 // When a price uses matrix pricing, it's important to view costs grouped by those matrix dimensions. Orb will return `price_groups` with the `grouping_key` and `secondary_grouping_key` based on the matrix price definition, for each `grouping_value` and `secondary_grouping_value` available.
 func (s *customer) GetCosts(ctx context.Context, request operations.GetCustomerCostsRequest) (*operations.GetCustomerCostsResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}/costs", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}/costs", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
@@ -356,7 +368,10 @@ func (s *customer) GetCosts(ctx context.Context, request operations.GetCustomerC
 // This endpoint's resource and semantics exactly mirror [View customer costs](../reference/Orb-API.json/paths/~1customers~1{customer_id}~1costs/get) but operates on an [external customer ID](../docs/Customer-ID-Aliases.md) rather than an Orb issued identifier.
 func (s *customer) GetCostsByExternalID(ctx context.Context, request operations.GetExternalCustomerCostsRequest) (*operations.GetExternalCustomerCostsResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/customers/external_customer_id/{external_customer_id}/costs", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/customers/external_customer_id/{external_customer_id}/costs", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
@@ -455,7 +470,10 @@ func (s *customer) List(ctx context.Context) (*operations.ListCustomersResponse,
 // Other fields on a customer are currently immutable.
 func (s *customer) Update(ctx context.Context, request operations.PutCustomersCustomerIDRequest) (*operations.PutCustomersCustomerIDResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "RequestBody", "json")
 	if err != nil {
@@ -509,7 +527,10 @@ func (s *customer) Update(ctx context.Context, request operations.PutCustomersCu
 // Note that the resource and semantics of this endpoint exactly mirror [Update Customer](Orb-API.json/paths/~1customers~1{customer_id}/put).
 func (s *customer) UpdateByExternalID(ctx context.Context, request operations.PutCustomersExternalCustomerIDExternalCustomerIDRequest) (*operations.PutCustomersExternalCustomerIDExternalCustomerIDResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/customers/external_customer_id/{external_customer_id}", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/customers/external_customer_id/{external_customer_id}", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "RequestBody", "json")
 	if err != nil {
@@ -614,7 +635,10 @@ func (s *customer) UpdateByExternalID(ctx context.Context, request operations.Pu
 // In order to overwrite timeframes with a very large number of events, we suggest using multiple calls with small adjacent (e.g. every hour) timeframes.
 func (s *customer) UpdateUsage(ctx context.Context, request operations.PatchCustomersCustomerIDUsageRequest) (*operations.PatchCustomersCustomerIDUsageResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}/usage", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}/usage", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "RequestBody", "json")
 	if err != nil {
@@ -680,7 +704,10 @@ func (s *customer) UpdateUsage(ctx context.Context, request operations.PatchCust
 // This endpoint's resource and semantics exactly mirror [Amend customer usage](../reference/Orb-API.json/paths/~1customers~1{customer_id}~1usage/patch) but operates on an [external customer ID](see (../docs/Customer-ID-Aliases.md)) rather than an Orb issued identifier.
 func (s *customer) UpdateUsageByExternalID(ctx context.Context, request operations.PatchExternalCustomersCustomerIDUsageRequest) (*operations.PatchExternalCustomersCustomerIDUsageResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/customers/external_customer_id/{external_customer_id}/usage", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/customers/external_customer_id/{external_customer_id}/usage", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "RequestBody", "json")
 	if err != nil {

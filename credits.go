@@ -94,7 +94,10 @@ func newCredits(defaultClient, securityClient HTTPClient, serverURL, language, s
 // ```
 func (s *credits) Create(ctx context.Context, request operations.PostCustomersCustomerIDCreditsLedgerEntryRequest) (*operations.PostCustomersCustomerIDCreditsLedgerEntryResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}/credits/ledger_entry", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}/credits/ledger_entry", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "RequestBody", "json")
 	if err != nil {
@@ -150,7 +153,10 @@ func (s *credits) Create(ctx context.Context, request operations.PostCustomersCu
 // Orb only returns _unexpired_ credit blocks in this response. For credits that have already expired, you can view this deduction from the customer's balance in the [Credit Ledger](../reference/Orb-API.json/paths/~1customers~1{customer_id}~1credits~1ledger/get) response.
 func (s *credits) GetCredits(ctx context.Context, request operations.GetCustomersCustomerIDCreditsRequest) (*operations.GetCustomersCustomerIDCreditsResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}/credits", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}/credits", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
@@ -222,7 +228,10 @@ func (s *credits) GetCredits(ctx context.Context, request operations.GetCustomer
 // When a set of credits expire on pre-set expiration date, the customer's balance automatically reflects this change and adds an entry to the ledger indicating this event. Note that credit expiry should always happen close to a date boundary in the customer's timezone.
 func (s *credits) GetCreditsLedger(ctx context.Context, request operations.GetCustomersCustomerIDCreditsLedgerRequest) (*operations.GetCustomersCustomerIDCreditsLedgerResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}/credits/ledger", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}/credits/ledger", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {

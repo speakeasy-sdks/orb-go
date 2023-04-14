@@ -43,7 +43,10 @@ func newPlan(defaultClient, securityClient HTTPClient, serverURL, language, sdkV
 // Orb supports plan phases, also known as contract ramps. For plans with phases, the serialized prices refer to all prices across all phases.
 func (s *plan) Get(ctx context.Context, request operations.GetPlansPlanIDRequest) (*operations.GetPlansPlanIDResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/plans/{plan_id}", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/plans/{plan_id}", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
@@ -91,7 +94,10 @@ func (s *plan) Get(ctx context.Context, request operations.GetPlansPlanIDRequest
 // Orb supports a few different pricing models out of the box. Each of these models is serialized differently in a given [Price](../reference/Orb-API.json/components/schemas/Price) object. The `model_type` field determines the key for the configuration object that is present. A detailed explanation of price types can be found in the [Price schema](../reference/Orb-API.json/components/schemas/Price).
 func (s *plan) GetByExternalID(ctx context.Context, request operations.GetPlansExternalPlanIDRequest) (*operations.GetPlansExternalPlanIDResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/plans/external_plan_id/{external_plan_id}", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/plans/external_plan_id/{external_plan_id}", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "Plan", "json")
 	if err != nil {

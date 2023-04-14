@@ -37,7 +37,10 @@ func newInvoice(defaultClient, securityClient HTTPClient, serverURL, language, s
 // This endpoint is used to fetch an [`Invoice`](../reference/Orb-API.json/components/schemas/Invoice) given an identifier.
 func (s *invoice) Get(ctx context.Context, request operations.GetInvoiceInvoiceIDRequest) (*operations.GetInvoiceInvoiceIDResponse, error) {
 	baseURL := s.serverURL
-	url := utils.GenerateURL(ctx, baseURL, "/invoices/{invoice_id}", request, nil)
+	url, err := utils.GenerateURL(ctx, baseURL, "/invoices/{invoice_id}", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
