@@ -35,6 +35,10 @@ const (
 	PostIngestDebugEnumFalse PostIngestDebugEnum = "false"
 )
 
+func (e PostIngestDebugEnum) ToPointer() *PostIngestDebugEnum {
+	return &e
+}
+
 func (e *PostIngestDebugEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {

@@ -34,6 +34,10 @@ const (
 	PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnumNull          PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum = "null"
 )
 
+func (e PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum) ToPointer() *PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum {
+	return &e
+}
+
 func (e *PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {

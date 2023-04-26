@@ -34,6 +34,10 @@ const (
 	PostCustomersRequestBodyPaymentProviderEnumNull          PostCustomersRequestBodyPaymentProviderEnum = "null"
 )
 
+func (e PostCustomersRequestBodyPaymentProviderEnum) ToPointer() *PostCustomersRequestBodyPaymentProviderEnum {
+	return &e
+}
+
 func (e *PostCustomersRequestBodyPaymentProviderEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {

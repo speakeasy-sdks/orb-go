@@ -18,6 +18,10 @@ const (
 	GetExternalCustomerCostsViewModeEnumCumulative GetExternalCustomerCostsViewModeEnum = "cumulative"
 )
 
+func (e GetExternalCustomerCostsViewModeEnum) ToPointer() *GetExternalCustomerCostsViewModeEnum {
+	return &e
+}
+
 func (e *GetExternalCustomerCostsViewModeEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {

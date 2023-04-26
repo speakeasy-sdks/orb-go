@@ -16,6 +16,10 @@ const (
 	GetSubscriptionsSubscriptionIDUsageGranularityEnumDay GetSubscriptionsSubscriptionIDUsageGranularityEnum = "day"
 )
 
+func (e GetSubscriptionsSubscriptionIDUsageGranularityEnum) ToPointer() *GetSubscriptionsSubscriptionIDUsageGranularityEnum {
+	return &e
+}
+
 func (e *GetSubscriptionsSubscriptionIDUsageGranularityEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {

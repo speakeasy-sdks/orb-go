@@ -34,6 +34,10 @@ const (
 	PutCustomersCustomerIDRequestBodyPaymentProviderEnumNull          PutCustomersCustomerIDRequestBodyPaymentProviderEnum = "null"
 )
 
+func (e PutCustomersCustomerIDRequestBodyPaymentProviderEnum) ToPointer() *PutCustomersCustomerIDRequestBodyPaymentProviderEnum {
+	return &e
+}
+
 func (e *PutCustomersCustomerIDRequestBodyPaymentProviderEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {

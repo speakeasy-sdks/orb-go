@@ -2,12 +2,11 @@
 ```go
 package main
 
-import (
-    "context"
-    "log"
-    "Orb"
-    "Orb/pkg/models/shared"
-    "Orb/pkg/models/operations"
+import(
+	"context"
+	"log"
+	"Orb"
+	"Orb/pkg/models/operations"
 )
 
 func main() {
@@ -20,28 +19,28 @@ func main() {
     ctx := context.Background()    
     req := operations.PostCustomersRequestBody{
         BillingAddress: &operations.PostCustomersRequestBodyBillingAddress{
-            City: "Laruecester",
-            Country: "US",
-            Line1: "quibusdam",
-            Line2: "unde",
-            PostalCode: "58466-3428",
-            State: "ipsa",
+            City: sdk.String("Laruecester"),
+            Country: sdk.String("US"),
+            Line1: sdk.String("quibusdam"),
+            Line2: sdk.String("unde"),
+            PostalCode: sdk.String("58466-3428"),
+            State: sdk.String("ipsa"),
         },
-        Currency: "delectus",
+        Currency: sdk.String("delectus"),
         Email: "Geraldine_Kreiger52@gmail.com",
-        ExternalCustomerID: "iusto",
+        ExternalCustomerID: sdk.String("iusto"),
         Name: "Charlie Walsh II",
-        PaymentProvider: "quickbooks",
-        PaymentProviderID: "deserunt",
+        PaymentProvider: operations.PostCustomersRequestBodyPaymentProviderEnumQuickbooks.ToPointer(),
+        PaymentProviderID: sdk.String("deserunt"),
         ShippingAddress: &operations.PostCustomersRequestBodyShippingAddress{
-            City: "West Ritaworth",
-            Country: "US",
-            Line1: "quo",
-            Line2: "odit",
-            PostalCode: "89478-4576",
-            State: "dicta",
+            City: sdk.String("West Ritaworth"),
+            Country: sdk.String("US"),
+            Line1: sdk.String("quo"),
+            Line2: sdk.String("odit"),
+            PostalCode: sdk.String("89478-4576"),
+            State: sdk.String("dicta"),
         },
-        Timezone: "Etc/UTC",
+        Timezone: sdk.String("Etc/UTC"),
     }
 
     res, err := s.Customer.Create(ctx, req)

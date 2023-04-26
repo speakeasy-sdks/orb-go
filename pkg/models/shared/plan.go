@@ -20,6 +20,10 @@ const (
 	PlanTrialConfigTrialPeriodUnitEnumDays PlanTrialConfigTrialPeriodUnitEnum = "days"
 )
 
+func (e PlanTrialConfigTrialPeriodUnitEnum) ToPointer() *PlanTrialConfigTrialPeriodUnitEnum {
+	return &e
+}
+
 func (e *PlanTrialConfigTrialPeriodUnitEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {

@@ -24,12 +24,11 @@ go get github.com/speakeasy-sdks/orb-go
 ```go
 package main
 
-import (
-    "context"
-    "log"
-    "Orb"
-    "Orb/pkg/models/shared"
-    "Orb/pkg/models/operations"
+import(
+	"context"
+	"log"
+	"Orb"
+	"Orb/pkg/models/operations"
 )
 
 func main() {
@@ -42,28 +41,28 @@ func main() {
     ctx := context.Background()    
     req := operations.PostCustomersRequestBody{
         BillingAddress: &operations.PostCustomersRequestBodyBillingAddress{
-            City: "Laruecester",
-            Country: "US",
-            Line1: "quibusdam",
-            Line2: "unde",
-            PostalCode: "58466-3428",
-            State: "ipsa",
+            City: sdk.String("Laruecester"),
+            Country: sdk.String("US"),
+            Line1: sdk.String("quibusdam"),
+            Line2: sdk.String("unde"),
+            PostalCode: sdk.String("58466-3428"),
+            State: sdk.String("ipsa"),
         },
-        Currency: "delectus",
+        Currency: sdk.String("delectus"),
         Email: "Geraldine_Kreiger52@gmail.com",
-        ExternalCustomerID: "iusto",
+        ExternalCustomerID: sdk.String("iusto"),
         Name: "Charlie Walsh II",
-        PaymentProvider: "quickbooks",
-        PaymentProviderID: "deserunt",
+        PaymentProvider: operations.PostCustomersRequestBodyPaymentProviderEnumQuickbooks.ToPointer(),
+        PaymentProviderID: sdk.String("deserunt"),
         ShippingAddress: &operations.PostCustomersRequestBodyShippingAddress{
-            City: "West Ritaworth",
-            Country: "US",
-            Line1: "quo",
-            Line2: "odit",
-            PostalCode: "89478-4576",
-            State: "dicta",
+            City: sdk.String("West Ritaworth"),
+            Country: sdk.String("US"),
+            Line1: sdk.String("quo"),
+            Line2: sdk.String("odit"),
+            PostalCode: sdk.String("89478-4576"),
+            State: sdk.String("dicta"),
         },
-        Timezone: "Etc/UTC",
+        Timezone: sdk.String("Etc/UTC"),
     }
 
     res, err := s.Customer.Create(ctx, req)
@@ -82,60 +81,60 @@ func main() {
 ## Available Resources and Operations
 
 
-### Availability
+### [Availability](docs/availability/README.md)
 
-* `Ping` - Check availability
+* [Ping](docs/availability/README.md#ping) - Check availability
 
-### Credits
+### [Credits](docs/credits/README.md)
 
-* `Create` - Add credit ledger entry
-* `GetCredits` - Retrieve credit balance
-* `GetCreditsLedger` - View credits ledger
+* [Create](docs/credits/README.md#create) - Add credit ledger entry
+* [GetCredits](docs/credits/README.md#getcredits) - Retrieve credit balance
+* [GetCreditsLedger](docs/credits/README.md#getcreditsledger) - View credits ledger
 
-### Customer
+### [Customer](docs/customer/README.md)
 
-* `Create` - Create customer
-* `Get` - Retrieve a customer
-* `GetBalance` - Get customer balance transactions
-* `GetByExternalID` - Retrieve a customer by external ID
-* `GetCosts` - View customer costs
-* `GetCostsByExternalID` - View customer costs by external customer ID
-* `List` - List customers
-* `Update` - Update customer
-* `UpdateByExternalID` - Update a customer by external ID
-* `UpdateUsage` - Amend customer usage
-* `UpdateUsageByExternalID` - Amend customer usage by external ID
+* [Create](docs/customer/README.md#create) - Create customer
+* [Get](docs/customer/README.md#get) - Retrieve a customer
+* [GetBalance](docs/customer/README.md#getbalance) - Get customer balance transactions
+* [GetByExternalID](docs/customer/README.md#getbyexternalid) - Retrieve a customer by external ID
+* [GetCosts](docs/customer/README.md#getcosts) - View customer costs
+* [GetCostsByExternalID](docs/customer/README.md#getcostsbyexternalid) - View customer costs by external customer ID
+* [List](docs/customer/README.md#list) - List customers
+* [Update](docs/customer/README.md#update) - Update customer
+* [UpdateByExternalID](docs/customer/README.md#updatebyexternalid) - Update a customer by external ID
+* [UpdateUsage](docs/customer/README.md#updateusage) - Amend customer usage
+* [UpdateUsageByExternalID](docs/customer/README.md#updateusagebyexternalid) - Amend customer usage by external ID
 
-### Event
+### [Event](docs/event/README.md)
 
-* `Deprecate` - Deprecate single event
-* `Ingest` - Ingest events
-* `Search` - Search events
-* `Update` - Amend single event
+* [Deprecate](docs/event/README.md#deprecate) - Deprecate single event
+* [Ingest](docs/event/README.md#ingest) - Ingest events
+* [Search](docs/event/README.md#search) - Search events
+* [Update](docs/event/README.md#update) - Amend single event
 
-### Invoice
+### [Invoice](docs/invoice/README.md)
 
-* `Get` - Retrieve an Invoice
-* `GetUpcoming` - Retrieve upcoming invoice
-* `List` - List invoices
+* [Get](docs/invoice/README.md#get) - Retrieve an Invoice
+* [GetUpcoming](docs/invoice/README.md#getupcoming) - Retrieve upcoming invoice
+* [List](docs/invoice/README.md#list) - List invoices
 
-### Plan
+### [Plan](docs/plan/README.md)
 
-* `Get` - Retrieve a plan
-* `GetByExternalID` - Retrieve a plan by external plan ID
-* `List` - List plans
+* [Get](docs/plan/README.md#get) - Retrieve a plan
+* [GetByExternalID](docs/plan/README.md#getbyexternalid) - Retrieve a plan by external plan ID
+* [List](docs/plan/README.md#list) - List plans
 
-### Subscription
+### [Subscription](docs/subscription/README.md)
 
-* `Cancel` - Cancel subscription
-* `ChangeSchedule` - Schedule plan change
-* `Create` - Create subscription
-* `Get` - Retrieve a subscription
-* `GetCost` - View subscription costs
-* `GetSchedule` - View subscription schedule
-* `GetUsage` - View subscription usage
-* `List` - List subscriptions
-* `Unschedule` - Unschedule pending plan changes
+* [Cancel](docs/subscription/README.md#cancel) - Cancel subscription
+* [ChangeSchedule](docs/subscription/README.md#changeschedule) - Schedule plan change
+* [Create](docs/subscription/README.md#create) - Create subscription
+* [Get](docs/subscription/README.md#get) - Retrieve a subscription
+* [GetCost](docs/subscription/README.md#getcost) - View subscription costs
+* [GetSchedule](docs/subscription/README.md#getschedule) - View subscription schedule
+* [GetUsage](docs/subscription/README.md#getusage) - View subscription usage
+* [List](docs/subscription/README.md#list) - List subscriptions
+* [Unschedule](docs/subscription/README.md#unschedule) - Unschedule pending plan changes
 <!-- End SDK Available Operations -->
 
 ### Maturity

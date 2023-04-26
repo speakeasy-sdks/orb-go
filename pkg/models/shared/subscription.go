@@ -16,6 +16,10 @@ const (
 	SubscriptionStatusEnumUpcoming SubscriptionStatusEnum = "upcoming"
 )
 
+func (e SubscriptionStatusEnum) ToPointer() *SubscriptionStatusEnum {
+	return &e
+}
+
 func (e *SubscriptionStatusEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {

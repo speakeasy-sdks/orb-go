@@ -21,6 +21,10 @@ const (
 	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnumImmediate             PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnum = "immediate"
 )
 
+func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnum) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnum {
+	return &e
+}
+
 func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {
@@ -44,6 +48,10 @@ type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7
 const (
 	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelTypeEnumTieredBps PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelTypeEnum = "tiered_bps"
 )
+
+func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelTypeEnum) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelTypeEnum {
+	return &e
+}
 
 func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelTypeEnum) UnmarshalJSON(data []byte) error {
 	var s string
@@ -95,6 +103,10 @@ const (
 	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelTypeEnumBulkBps PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelTypeEnum = "bulk_bps"
 )
 
+func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelTypeEnum) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelTypeEnum {
+	return &e
+}
+
 func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelTypeEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {
@@ -129,6 +141,10 @@ const (
 	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelTypeEnumBps PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelTypeEnum = "bps"
 )
 
+func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelTypeEnum) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelTypeEnum {
+	return &e
+}
+
 func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelTypeEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {
@@ -157,6 +173,10 @@ type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4
 const (
 	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelTypeEnumPackage PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelTypeEnum = "package"
 )
+
+func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelTypeEnum) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelTypeEnum {
+	return &e
+}
 
 func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelTypeEnum) UnmarshalJSON(data []byte) error {
 	var s string
@@ -201,6 +221,10 @@ const (
 	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelTypeEnumBulk PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelTypeEnum = "bulk"
 )
 
+func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelTypeEnum) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelTypeEnum {
+	return &e
+}
+
 func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelTypeEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {
@@ -229,6 +253,10 @@ type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2
 const (
 	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelTypeEnumUnit PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelTypeEnum = "unit"
 )
+
+func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelTypeEnum) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelTypeEnum {
+	return &e
+}
 
 func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelTypeEnum) UnmarshalJSON(data []byte) error {
 	var s string
@@ -262,6 +290,10 @@ type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1
 const (
 	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelTypeEnumTiered PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelTypeEnum = "tiered"
 )
+
+func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelTypeEnum) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelTypeEnum {
+	return &e
+}
 
 func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelTypeEnum) UnmarshalJSON(data []byte) error {
 	var s string

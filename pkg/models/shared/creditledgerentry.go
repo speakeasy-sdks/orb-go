@@ -30,6 +30,10 @@ const (
 	CreditLedgerEntryEntryStatusEnumPending   CreditLedgerEntryEntryStatusEnum = "pending"
 )
 
+func (e CreditLedgerEntryEntryStatusEnum) ToPointer() *CreditLedgerEntryEntryStatusEnum {
+	return &e
+}
+
 func (e *CreditLedgerEntryEntryStatusEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {
@@ -54,6 +58,10 @@ const (
 	CreditLedgerEntryEntryTypeEnumExpirationChange  CreditLedgerEntryEntryTypeEnum = "expiration_change"
 	CreditLedgerEntryEntryTypeEnumCreditBlockExpiry CreditLedgerEntryEntryTypeEnum = "credit_block_expiry"
 )
+
+func (e CreditLedgerEntryEntryTypeEnum) ToPointer() *CreditLedgerEntryEntryTypeEnum {
+	return &e
+}
 
 func (e *CreditLedgerEntryEntryTypeEnum) UnmarshalJSON(data []byte) error {
 	var s string

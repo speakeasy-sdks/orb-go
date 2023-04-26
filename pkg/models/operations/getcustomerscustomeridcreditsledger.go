@@ -17,6 +17,10 @@ const (
 	GetCustomersCustomerIDCreditsLedgerEntryStatusEnumPending   GetCustomersCustomerIDCreditsLedgerEntryStatusEnum = "pending"
 )
 
+func (e GetCustomersCustomerIDCreditsLedgerEntryStatusEnum) ToPointer() *GetCustomersCustomerIDCreditsLedgerEntryStatusEnum {
+	return &e
+}
+
 func (e *GetCustomersCustomerIDCreditsLedgerEntryStatusEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {
@@ -42,6 +46,10 @@ const (
 	GetCustomersCustomerIDCreditsLedgerEntryTypeEnumExpirationChange  GetCustomersCustomerIDCreditsLedgerEntryTypeEnum = "expiration_change"
 	GetCustomersCustomerIDCreditsLedgerEntryTypeEnumCreditBlockExpiry GetCustomersCustomerIDCreditsLedgerEntryTypeEnum = "credit_block_expiry"
 )
+
+func (e GetCustomersCustomerIDCreditsLedgerEntryTypeEnum) ToPointer() *GetCustomersCustomerIDCreditsLedgerEntryTypeEnum {
+	return &e
+}
 
 func (e *GetCustomersCustomerIDCreditsLedgerEntryTypeEnum) UnmarshalJSON(data []byte) error {
 	var s string

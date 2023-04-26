@@ -32,6 +32,10 @@ const (
 	CustomerPaymentProviderEnumNull          CustomerPaymentProviderEnum = "null"
 )
 
+func (e CustomerPaymentProviderEnum) ToPointer() *CustomerPaymentProviderEnum {
+	return &e
+}
+
 func (e *CustomerPaymentProviderEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {

@@ -41,6 +41,10 @@ const (
 	InvoiceLineItemsSubLineItemsTypeEnumTier   InvoiceLineItemsSubLineItemsTypeEnum = "tier"
 )
 
+func (e InvoiceLineItemsSubLineItemsTypeEnum) ToPointer() *InvoiceLineItemsSubLineItemsTypeEnum {
+	return &e
+}
+
 func (e *InvoiceLineItemsSubLineItemsTypeEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {
@@ -109,6 +113,10 @@ const (
 	InvoiceStatusEnumPaid   InvoiceStatusEnum = "paid"
 	InvoiceStatusEnumSynced InvoiceStatusEnum = "synced"
 )
+
+func (e InvoiceStatusEnum) ToPointer() *InvoiceStatusEnum {
+	return &e
+}
 
 func (e *InvoiceStatusEnum) UnmarshalJSON(data []byte) error {
 	var s string

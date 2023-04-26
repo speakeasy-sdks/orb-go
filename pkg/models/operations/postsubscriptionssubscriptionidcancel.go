@@ -17,6 +17,10 @@ const (
 	PostSubscriptionsSubscriptionIDCancelCancelOptionEnumImmediate             PostSubscriptionsSubscriptionIDCancelCancelOptionEnum = "immediate"
 )
 
+func (e PostSubscriptionsSubscriptionIDCancelCancelOptionEnum) ToPointer() *PostSubscriptionsSubscriptionIDCancelCancelOptionEnum {
+	return &e
+}
+
 func (e *PostSubscriptionsSubscriptionIDCancelCancelOptionEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {

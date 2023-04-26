@@ -47,6 +47,10 @@ const (
 	PriceCadenceEnumQuarterly PriceCadenceEnum = "quarterly"
 )
 
+func (e PriceCadenceEnum) ToPointer() *PriceCadenceEnum {
+	return &e
+}
+
 func (e *PriceCadenceEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {
@@ -89,6 +93,10 @@ const (
 	PriceModelTypeEnumBulkBps   PriceModelTypeEnum = "bulk_bps"
 	PriceModelTypeEnumMatrix    PriceModelTypeEnum = "matrix"
 )
+
+func (e PriceModelTypeEnum) ToPointer() *PriceModelTypeEnum {
+	return &e
+}
 
 func (e *PriceModelTypeEnum) UnmarshalJSON(data []byte) error {
 	var s string

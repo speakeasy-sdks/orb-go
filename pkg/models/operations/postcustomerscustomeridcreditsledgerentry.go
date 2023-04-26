@@ -18,6 +18,10 @@ const (
 	PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeEnumExpirationChange PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeEnum = "expiration_change"
 )
 
+func (e PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeEnum) ToPointer() *PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeEnum {
+	return &e
+}
+
 func (e *PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {

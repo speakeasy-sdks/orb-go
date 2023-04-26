@@ -17,6 +17,10 @@ const (
 	CustomerBalanceTransactionActionEnumManualAdjustment CustomerBalanceTransactionActionEnum = "manual_adjustment"
 )
 
+func (e CustomerBalanceTransactionActionEnum) ToPointer() *CustomerBalanceTransactionActionEnum {
+	return &e
+}
+
 func (e *CustomerBalanceTransactionActionEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {

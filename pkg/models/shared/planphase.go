@@ -16,6 +16,10 @@ const (
 	PlanPhaseDurationUnitEnumAnnual    PlanPhaseDurationUnitEnum = "annual"
 )
 
+func (e PlanPhaseDurationUnitEnum) ToPointer() *PlanPhaseDurationUnitEnum {
+	return &e
+}
+
 func (e *PlanPhaseDurationUnitEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {

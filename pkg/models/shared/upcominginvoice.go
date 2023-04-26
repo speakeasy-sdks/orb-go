@@ -42,6 +42,10 @@ const (
 	UpcomingInvoiceLineItemsSubLineItemsTypeEnumTier   UpcomingInvoiceLineItemsSubLineItemsTypeEnum = "tier"
 )
 
+func (e UpcomingInvoiceLineItemsSubLineItemsTypeEnum) ToPointer() *UpcomingInvoiceLineItemsSubLineItemsTypeEnum {
+	return &e
+}
+
 func (e *UpcomingInvoiceLineItemsSubLineItemsTypeEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {

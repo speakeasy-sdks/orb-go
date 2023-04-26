@@ -21,6 +21,10 @@ const (
 	PostSubscriptionsRequestBodyExternalMarketplaceEnumAzure  PostSubscriptionsRequestBodyExternalMarketplaceEnum = "azure"
 )
 
+func (e PostSubscriptionsRequestBodyExternalMarketplaceEnum) ToPointer() *PostSubscriptionsRequestBodyExternalMarketplaceEnum {
+	return &e
+}
+
 func (e *PostSubscriptionsRequestBodyExternalMarketplaceEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {
@@ -52,6 +56,10 @@ type PostSubscriptionsRequestBodyPriceOverrides7ModelTypeEnum string
 const (
 	PostSubscriptionsRequestBodyPriceOverrides7ModelTypeEnumTieredBps PostSubscriptionsRequestBodyPriceOverrides7ModelTypeEnum = "tiered_bps"
 )
+
+func (e PostSubscriptionsRequestBodyPriceOverrides7ModelTypeEnum) ToPointer() *PostSubscriptionsRequestBodyPriceOverrides7ModelTypeEnum {
+	return &e
+}
 
 func (e *PostSubscriptionsRequestBodyPriceOverrides7ModelTypeEnum) UnmarshalJSON(data []byte) error {
 	var s string
@@ -104,6 +112,10 @@ const (
 	PostSubscriptionsRequestBodyPriceOverrides6ModelTypeEnumBulkBps PostSubscriptionsRequestBodyPriceOverrides6ModelTypeEnum = "bulk_bps"
 )
 
+func (e PostSubscriptionsRequestBodyPriceOverrides6ModelTypeEnum) ToPointer() *PostSubscriptionsRequestBodyPriceOverrides6ModelTypeEnum {
+	return &e
+}
+
 func (e *PostSubscriptionsRequestBodyPriceOverrides6ModelTypeEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {
@@ -139,6 +151,10 @@ const (
 	PostSubscriptionsRequestBodyPriceOverrides5ModelTypeEnumBps PostSubscriptionsRequestBodyPriceOverrides5ModelTypeEnum = "bps"
 )
 
+func (e PostSubscriptionsRequestBodyPriceOverrides5ModelTypeEnum) ToPointer() *PostSubscriptionsRequestBodyPriceOverrides5ModelTypeEnum {
+	return &e
+}
+
 func (e *PostSubscriptionsRequestBodyPriceOverrides5ModelTypeEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {
@@ -168,6 +184,10 @@ type PostSubscriptionsRequestBodyPriceOverrides4ModelTypeEnum string
 const (
 	PostSubscriptionsRequestBodyPriceOverrides4ModelTypeEnumPackage PostSubscriptionsRequestBodyPriceOverrides4ModelTypeEnum = "package"
 )
+
+func (e PostSubscriptionsRequestBodyPriceOverrides4ModelTypeEnum) ToPointer() *PostSubscriptionsRequestBodyPriceOverrides4ModelTypeEnum {
+	return &e
+}
 
 func (e *PostSubscriptionsRequestBodyPriceOverrides4ModelTypeEnum) UnmarshalJSON(data []byte) error {
 	var s string
@@ -213,6 +233,10 @@ const (
 	PostSubscriptionsRequestBodyPriceOverrides3ModelTypeEnumBulk PostSubscriptionsRequestBodyPriceOverrides3ModelTypeEnum = "bulk"
 )
 
+func (e PostSubscriptionsRequestBodyPriceOverrides3ModelTypeEnum) ToPointer() *PostSubscriptionsRequestBodyPriceOverrides3ModelTypeEnum {
+	return &e
+}
+
 func (e *PostSubscriptionsRequestBodyPriceOverrides3ModelTypeEnum) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {
@@ -242,6 +266,10 @@ type PostSubscriptionsRequestBodyPriceOverrides2ModelTypeEnum string
 const (
 	PostSubscriptionsRequestBodyPriceOverrides2ModelTypeEnumUnit PostSubscriptionsRequestBodyPriceOverrides2ModelTypeEnum = "unit"
 )
+
+func (e PostSubscriptionsRequestBodyPriceOverrides2ModelTypeEnum) ToPointer() *PostSubscriptionsRequestBodyPriceOverrides2ModelTypeEnum {
+	return &e
+}
 
 func (e *PostSubscriptionsRequestBodyPriceOverrides2ModelTypeEnum) UnmarshalJSON(data []byte) error {
 	var s string
@@ -277,6 +305,10 @@ type PostSubscriptionsRequestBodyPriceOverrides1ModelTypeEnum string
 const (
 	PostSubscriptionsRequestBodyPriceOverrides1ModelTypeEnumTiered PostSubscriptionsRequestBodyPriceOverrides1ModelTypeEnum = "tiered"
 )
+
+func (e PostSubscriptionsRequestBodyPriceOverrides1ModelTypeEnum) ToPointer() *PostSubscriptionsRequestBodyPriceOverrides1ModelTypeEnum {
+	return &e
+}
 
 func (e *PostSubscriptionsRequestBodyPriceOverrides1ModelTypeEnum) UnmarshalJSON(data []byte) error {
 	var s string
