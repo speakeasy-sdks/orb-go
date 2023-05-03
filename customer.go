@@ -40,6 +40,7 @@ func newCustomer(defaultClient, securityClient HTTPClient, serverURL, language, 
 // * Automated charges can be configured by setting `payment_provider` and `payment_provider_id` to automatically issue invoices
 // * [Customer ID Aliases](../docs/Customer-ID-Aliases.md) can be configured by setting `external_customer_id`
 // * [Timezone localization](../docs/Timezone-localization.md) can be configured on a per-customer basis by setting the `timezone` parameter
+
 func (s *customer) Create(ctx context.Context, request operations.PostCustomersRequestBody) (*operations.PostCustomersResponse, error) {
 	baseURL := s.serverURL
 	url := strings.TrimSuffix(baseURL, "/") + "/customers"
@@ -94,6 +95,7 @@ func (s *customer) Create(ctx context.Context, request operations.PostCustomersR
 // This endpoint is used to fetch customer details given an identifier.
 //
 // See the [Customer resource](Orb-API.json/components/schemas/Customer) for a full discussion of the Customer model.
+
 func (s *customer) Get(ctx context.Context, request operations.GetCustomersCustomerIDRequest) (*operations.GetCustomersCustomerIDResponse, error) {
 	baseURL := s.serverURL
 	url, err := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}", request, nil)
@@ -154,6 +156,7 @@ func (s *customer) Get(ctx context.Context, request operations.GetCustomersCusto
 // ## Eligibility
 //
 // The customer balance can only be applied to invoices or adjusted manually if invoices are not synced to a separate invoicing provider. If a payment gateway such as Stripe is used, the balance will be applied to the invoice before forwarding payment to the gateway.
+
 func (s *customer) GetBalance(ctx context.Context, request operations.GetCustomersCustomerIDBalanceTransactionsRequest) (*operations.GetCustomersCustomerIDBalanceTransactionsResponse, error) {
 	baseURL := s.serverURL
 	url, err := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}/balance_transactions", request, nil)
@@ -204,6 +207,7 @@ func (s *customer) GetBalance(ctx context.Context, request operations.GetCustome
 // This endpoint is used to fetch customer details given an `external_customer_id` (see [Customer ID Aliases](../docs/Customer-ID-Aliases.md)).
 //
 // Note that the resource and semantics of this endpoint exactly mirror [Get Customer](Orb-API.json/paths/~1customers/get).
+
 func (s *customer) GetByExternalID(ctx context.Context, request operations.GetCustomersExternalCustomerIDExternalCustomerIDRequest) (*operations.GetCustomersExternalCustomerIDExternalCustomerIDResponse, error) {
 	baseURL := s.serverURL
 	url, err := utils.GenerateURL(ctx, baseURL, "/customers/external_customer_id/{external_customer_id}", request, nil)
@@ -265,8 +269,10 @@ func (s *customer) GetByExternalID(ctx context.Context, request operations.GetCu
 //
 // If timeframe bounds are specified, Orb fetches all subscriptions that were active in that timeframe. If two subscriptions overlap on a single day, costs from each price will be summed, and prices for both subscriptions will be included in the breakdown.
 //
+//
 // ## Prepaid plans
 // For plans that include prices which deduct credits rather than accrue in-arrears charges in a billable currency, this endpoint will return the total deduction amount, in credits, for the specified timeframe.
+//
 //
 // ## Cumulative subtotals and totals
 //
@@ -281,6 +287,7 @@ func (s *customer) GetByExternalID(ctx context.Context, request operations.GetCu
 // | 2023-02-01 | 2023-02-04 | 20 | $50.00 | $50.00 |
 // | 2023-02-01 | 2023-02-05 | 28 | $70.00 | $70.00 |
 // | 2023-02-01 | 2023-02-06 | 36 | $90.00 | $90.00 |
+//
 //
 // ### Periodic values
 // When the query parameter `view_mode=periodic` is specified, Orb will return an incremental day-by-day view of costs. In this case, there will always be a one-day difference between `timeframe_start` and `timeframe_end` for the timeframes returned. This is a transform on top of the cumulative costs, calculated by taking the difference of each timeframe with the last. Note that in the above example, the `Total` value would be 0 for the second two data points, since the minimum commitment has not yet been hit and each day is not contributing anything to the total cost.
@@ -314,6 +321,8 @@ func (s *customer) GetByExternalID(ctx context.Context, request operations.GetCu
 //
 // ### Matrix prices
 // When a price uses matrix pricing, it's important to view costs grouped by those matrix dimensions. Orb will return `price_groups` with the `grouping_key` and `secondary_grouping_key` based on the matrix price definition, for each `grouping_value` and `secondary_grouping_value` available.
+//
+
 func (s *customer) GetCosts(ctx context.Context, request operations.GetCustomerCostsRequest) (*operations.GetCustomerCostsResponse, error) {
 	baseURL := s.serverURL
 	url, err := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}/costs", request, nil)
@@ -366,6 +375,7 @@ func (s *customer) GetCosts(ctx context.Context, request operations.GetCustomerC
 
 // GetCostsByExternalID - View customer costs by external customer ID
 // This endpoint's resource and semantics exactly mirror [View customer costs](../reference/Orb-API.json/paths/~1customers~1{customer_id}~1costs/get) but operates on an [external customer ID](../docs/Customer-ID-Aliases.md) rather than an Orb issued identifier.
+
 func (s *customer) GetCostsByExternalID(ctx context.Context, request operations.GetExternalCustomerCostsRequest) (*operations.GetExternalCustomerCostsResponse, error) {
 	baseURL := s.serverURL
 	url, err := utils.GenerateURL(ctx, baseURL, "/customers/external_customer_id/{external_customer_id}/costs", request, nil)
@@ -418,9 +428,11 @@ func (s *customer) GetCostsByExternalID(ctx context.Context, request operations.
 
 // List - List customers
 //
+//
 // This endpoint returns a list of all customers for an account. The list of customers is ordered starting from the most recently created customer. This endpoint follows Orb's [standardized pagination format](../docs/Pagination.md).
 //
 // See [Customer](../reference/Orb-API.json/components/schemas/Customer) for an overview of the customer model.
+
 func (s *customer) List(ctx context.Context) (*operations.ListCustomersResponse, error) {
 	baseURL := s.serverURL
 	url := strings.TrimSuffix(baseURL, "/") + "/customers"
@@ -468,6 +480,7 @@ func (s *customer) List(ctx context.Context) (*operations.ListCustomersResponse,
 // This endpoint can be used to update the `payment_provider`, `payment_provider_id`, `name`, `email`, `shipping_address`, and `billing_address` of an existing customer.
 //
 // Other fields on a customer are currently immutable.
+
 func (s *customer) Update(ctx context.Context, request operations.PutCustomersCustomerIDRequest) (*operations.PutCustomersCustomerIDResponse, error) {
 	baseURL := s.serverURL
 	url, err := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}", request, nil)
@@ -525,6 +538,7 @@ func (s *customer) Update(ctx context.Context, request operations.PutCustomersCu
 // This endpoint is used to update customer details given an `external_customer_id` (see [Customer ID Aliases](../docs/Customer-ID-Aliases.md)).
 //
 // Note that the resource and semantics of this endpoint exactly mirror [Update Customer](Orb-API.json/paths/~1customers~1{customer_id}/put).
+
 func (s *customer) UpdateByExternalID(ctx context.Context, request operations.PutCustomersExternalCustomerIDExternalCustomerIDRequest) (*operations.PutCustomersExternalCustomerIDExternalCustomerIDResponse, error) {
 	baseURL := s.serverURL
 	url, err := utils.GenerateURL(ctx, baseURL, "/customers/external_customer_id/{external_customer_id}", request, nil)
@@ -592,34 +606,33 @@ func (s *customer) UpdateByExternalID(ctx context.Context, request operations.Pu
 // 1. Amendments are **always audit-safe**. The amendment process will still retain original events in the timeframe, though they will be ignored for billing calculations. For auditing and data fidelity purposes, Orb never overwrites or permanently deletes ingested usage data.
 // 2. Amendments always preserve data **consistency**. In other words, either an amendment is fully processed by the system (and the new events for the timeframe are honored rather than the existing ones) or the amendment request fails. To maintain this important property, Orb prevents _partial event ingestion_ on this endpoint.
 //
-// ## Response semantics
-//   - Either all events are ingested successfully, or all fail to ingest (returning a `4xx` or `5xx` response code).
 //
+// ## Response semantics
+//  - Either all events are ingested successfully, or all fail to ingest (returning a `4xx` or `5xx` response code).
 // - Any event that fails schema validation will lead to a `4xx` response. In this case, to maintain data consistency, Orb will not ingest any events and will also not deprecate existing events in the time period.
 // - You can assume that the amendment is successful on receipt of a `2xx` response.While a successful response from this endpoint indicates that the new events have been ingested, updating usage totals happens asynchronously and may be delayed by a few minutes.
 //
 // As emphasized above, Orb will never show an inconsistent state (e.g. in invoice previews or dashboards); either it will show the existing state (before the amendment) or the new state (with new events in the requested timeframe).
 //
+//
 // ## Sample request body
 //
 // ```json
-//
-//	{
-//		"events": [{
-//			"event_name": "payment_processed",
-//			"timestamp": "2022-03-24T07:15:00Z",
-//			"properties": {
-//				"amount": 100
-//			}
-//		}, {
-//			"event_name": "payment_failed",
-//			"timestamp": "2022-03-24T07:15:00Z",
-//			"properties": {
-//				"amount": 100
-//			}
-//		}]
-//	}
-//
+// {
+// 	"events": [{
+// 		"event_name": "payment_processed",
+// 		"timestamp": "2022-03-24T07:15:00Z",
+// 		"properties": {
+// 			"amount": 100
+// 		}
+// 	}, {
+// 		"event_name": "payment_failed",
+// 		"timestamp": "2022-03-24T07:15:00Z",
+// 		"properties": {
+// 			"amount": 100
+// 		}
+// 	}]
+// }
 // ```
 //
 // ## Request Validation
@@ -629,10 +642,12 @@ func (s *customer) UpdateByExternalID(ctx context.Context, request operations.Pu
 //
 // - Both `timeframe_start` and `timeframe_end` must be timestamps in the past. Furthermore, Orb will generally validate that the `timeframe_start` and `timeframe_end` fall within the customer's _current_ subscription billing period. However, Orb does allow amendments while in the grace period of the previous billing period; in this instance, the timeframe can start before the current period.
 //
+//
 // ## API Limits
 // Note that Orb does not currently enforce a hard rate-limit for API usage or a maximum request payload size. Similar to the event ingestion API, this API is architected for high-throughput ingestion. It is also safe to _programmatically_ call this endpoint if your system can automatically detect a need for historical amendment.
 //
 // In order to overwrite timeframes with a very large number of events, we suggest using multiple calls with small adjacent (e.g. every hour) timeframes.
+
 func (s *customer) UpdateUsage(ctx context.Context, request operations.PatchCustomersCustomerIDUsageRequest) (*operations.PatchCustomersCustomerIDUsageResponse, error) {
 	baseURL := s.serverURL
 	url, err := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}/usage", request, nil)
@@ -702,6 +717,7 @@ func (s *customer) UpdateUsage(ctx context.Context, request operations.PatchCust
 
 // UpdateUsageByExternalID - Amend customer usage by external ID
 // This endpoint's resource and semantics exactly mirror [Amend customer usage](../reference/Orb-API.json/paths/~1customers~1{customer_id}~1usage/patch) but operates on an [external customer ID](see (../docs/Customer-ID-Aliases.md)) rather than an Orb issued identifier.
+
 func (s *customer) UpdateUsageByExternalID(ctx context.Context, request operations.PatchExternalCustomersCustomerIDUsageRequest) (*operations.PatchExternalCustomersCustomerIDUsageResponse, error) {
 	baseURL := s.serverURL
 	url, err := utils.GenerateURL(ctx, baseURL, "/customers/external_customer_id/{external_customer_id}/usage", request, nil)

@@ -39,11 +39,11 @@ func (e PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProvid
 }
 
 func (e *PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "quickbooks":
 		fallthrough
 	case "stripe_charge":
@@ -53,10 +53,10 @@ func (e *PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProvi
 	case "bill.com":
 		fallthrough
 	case "null":
-		*e = PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum(s)
+		*e = PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum: %s", s)
+		return fmt.Errorf("invalid value for PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum: %v", v)
 	}
 }
 

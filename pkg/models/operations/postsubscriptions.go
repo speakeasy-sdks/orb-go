@@ -26,20 +26,20 @@ func (e PostSubscriptionsRequestBodyExternalMarketplaceEnum) ToPointer() *PostSu
 }
 
 func (e *PostSubscriptionsRequestBodyExternalMarketplaceEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "google":
 		fallthrough
 	case "aws":
 		fallthrough
 	case "azure":
-		*e = PostSubscriptionsRequestBodyExternalMarketplaceEnum(s)
+		*e = PostSubscriptionsRequestBodyExternalMarketplaceEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyExternalMarketplaceEnum: %s", s)
+		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyExternalMarketplaceEnum: %v", v)
 	}
 }
 
@@ -62,16 +62,16 @@ func (e PostSubscriptionsRequestBodyPriceOverrides7ModelTypeEnum) ToPointer() *P
 }
 
 func (e *PostSubscriptionsRequestBodyPriceOverrides7ModelTypeEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "tiered_bps":
-		*e = PostSubscriptionsRequestBodyPriceOverrides7ModelTypeEnum(s)
+		*e = PostSubscriptionsRequestBodyPriceOverrides7ModelTypeEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides7ModelTypeEnum: %s", s)
+		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides7ModelTypeEnum: %v", v)
 	}
 }
 
@@ -117,16 +117,16 @@ func (e PostSubscriptionsRequestBodyPriceOverrides6ModelTypeEnum) ToPointer() *P
 }
 
 func (e *PostSubscriptionsRequestBodyPriceOverrides6ModelTypeEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "bulk_bps":
-		*e = PostSubscriptionsRequestBodyPriceOverrides6ModelTypeEnum(s)
+		*e = PostSubscriptionsRequestBodyPriceOverrides6ModelTypeEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides6ModelTypeEnum: %s", s)
+		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides6ModelTypeEnum: %v", v)
 	}
 }
 
@@ -156,16 +156,16 @@ func (e PostSubscriptionsRequestBodyPriceOverrides5ModelTypeEnum) ToPointer() *P
 }
 
 func (e *PostSubscriptionsRequestBodyPriceOverrides5ModelTypeEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "bps":
-		*e = PostSubscriptionsRequestBodyPriceOverrides5ModelTypeEnum(s)
+		*e = PostSubscriptionsRequestBodyPriceOverrides5ModelTypeEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides5ModelTypeEnum: %s", s)
+		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides5ModelTypeEnum: %v", v)
 	}
 }
 
@@ -190,16 +190,16 @@ func (e PostSubscriptionsRequestBodyPriceOverrides4ModelTypeEnum) ToPointer() *P
 }
 
 func (e *PostSubscriptionsRequestBodyPriceOverrides4ModelTypeEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "package":
-		*e = PostSubscriptionsRequestBodyPriceOverrides4ModelTypeEnum(s)
+		*e = PostSubscriptionsRequestBodyPriceOverrides4ModelTypeEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides4ModelTypeEnum: %s", s)
+		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides4ModelTypeEnum: %v", v)
 	}
 }
 
@@ -238,16 +238,16 @@ func (e PostSubscriptionsRequestBodyPriceOverrides3ModelTypeEnum) ToPointer() *P
 }
 
 func (e *PostSubscriptionsRequestBodyPriceOverrides3ModelTypeEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "bulk":
-		*e = PostSubscriptionsRequestBodyPriceOverrides3ModelTypeEnum(s)
+		*e = PostSubscriptionsRequestBodyPriceOverrides3ModelTypeEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides3ModelTypeEnum: %s", s)
+		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides3ModelTypeEnum: %v", v)
 	}
 }
 
@@ -272,16 +272,16 @@ func (e PostSubscriptionsRequestBodyPriceOverrides2ModelTypeEnum) ToPointer() *P
 }
 
 func (e *PostSubscriptionsRequestBodyPriceOverrides2ModelTypeEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "unit":
-		*e = PostSubscriptionsRequestBodyPriceOverrides2ModelTypeEnum(s)
+		*e = PostSubscriptionsRequestBodyPriceOverrides2ModelTypeEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides2ModelTypeEnum: %s", s)
+		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides2ModelTypeEnum: %v", v)
 	}
 }
 
@@ -311,16 +311,16 @@ func (e PostSubscriptionsRequestBodyPriceOverrides1ModelTypeEnum) ToPointer() *P
 }
 
 func (e *PostSubscriptionsRequestBodyPriceOverrides1ModelTypeEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "tiered":
-		*e = PostSubscriptionsRequestBodyPriceOverrides1ModelTypeEnum(s)
+		*e = PostSubscriptionsRequestBodyPriceOverrides1ModelTypeEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides1ModelTypeEnum: %s", s)
+		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides1ModelTypeEnum: %v", v)
 	}
 }
 

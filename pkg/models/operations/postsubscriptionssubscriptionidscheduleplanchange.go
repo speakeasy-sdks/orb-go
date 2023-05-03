@@ -26,20 +26,20 @@ func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOption
 }
 
 func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "requested_date":
 		fallthrough
 	case "end_of_subscription_term":
 		fallthrough
 	case "immediate":
-		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnum(s)
+		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnum: %s", s)
+		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnum: %v", v)
 	}
 }
 
@@ -54,16 +54,16 @@ func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrid
 }
 
 func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelTypeEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "tiered_bps":
-		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelTypeEnum(s)
+		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelTypeEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelTypeEnum: %s", s)
+		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelTypeEnum: %v", v)
 	}
 }
 
@@ -108,16 +108,16 @@ func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrid
 }
 
 func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelTypeEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "bulk_bps":
-		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelTypeEnum(s)
+		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelTypeEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelTypeEnum: %s", s)
+		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelTypeEnum: %v", v)
 	}
 }
 
@@ -146,16 +146,16 @@ func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrid
 }
 
 func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelTypeEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "bps":
-		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelTypeEnum(s)
+		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelTypeEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelTypeEnum: %s", s)
+		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelTypeEnum: %v", v)
 	}
 }
 
@@ -179,16 +179,16 @@ func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrid
 }
 
 func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelTypeEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "package":
-		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelTypeEnum(s)
+		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelTypeEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelTypeEnum: %s", s)
+		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelTypeEnum: %v", v)
 	}
 }
 
@@ -226,16 +226,16 @@ func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrid
 }
 
 func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelTypeEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "bulk":
-		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelTypeEnum(s)
+		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelTypeEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelTypeEnum: %s", s)
+		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelTypeEnum: %v", v)
 	}
 }
 
@@ -259,16 +259,16 @@ func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrid
 }
 
 func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelTypeEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "unit":
-		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelTypeEnum(s)
+		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelTypeEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelTypeEnum: %s", s)
+		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelTypeEnum: %v", v)
 	}
 }
 
@@ -296,16 +296,16 @@ func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrid
 }
 
 func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelTypeEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "tiered":
-		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelTypeEnum(s)
+		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelTypeEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelTypeEnum: %s", s)
+		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelTypeEnum: %v", v)
 	}
 }
 

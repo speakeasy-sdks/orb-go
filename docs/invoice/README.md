@@ -33,12 +33,10 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.GetInvoiceInvoiceIDRequest{
+    ctx := context.Background()
+    res, err := s.Invoice.Get(ctx, operations.GetInvoiceInvoiceIDRequest{
         InvoiceID: "quasi",
-    }
-
-    res, err := s.Invoice.Get(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -72,12 +70,10 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.GetInvoicesUpcomingRequest{
+    ctx := context.Background()
+    res, err := s.Invoice.GetUpcoming(ctx, operations.GetInvoicesUpcomingRequest{
         SubscriptionID: "iure",
-    }
-
-    res, err := s.Invoice.GetUpcoming(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -113,14 +109,12 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.ListInvoicesRequest{
+    ctx := context.Background()
+    res, err := s.Invoice.List(ctx, operations.ListInvoicesRequest{
         CustomerID: sdk.String("doloribus"),
         ExternalCustomerID: sdk.String("debitis"),
         SubscriptionID: sdk.String("eius"),
-    }
-
-    res, err := s.Invoice.List(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }

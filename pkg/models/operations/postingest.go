@@ -40,18 +40,18 @@ func (e PostIngestDebugEnum) ToPointer() *PostIngestDebugEnum {
 }
 
 func (e *PostIngestDebugEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "true":
 		fallthrough
 	case "false":
-		*e = PostIngestDebugEnum(s)
+		*e = PostIngestDebugEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostIngestDebugEnum: %s", s)
+		return fmt.Errorf("invalid value for PostIngestDebugEnum: %v", v)
 	}
 }
 

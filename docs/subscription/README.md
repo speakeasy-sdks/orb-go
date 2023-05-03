@@ -54,13 +54,11 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.PostSubscriptionsSubscriptionIDCancelRequest{
+    ctx := context.Background()
+    res, err := s.Subscription.Cancel(ctx, operations.PostSubscriptionsSubscriptionIDCancelRequest{
         CancelOption: operations.PostSubscriptionsSubscriptionIDCancelCancelOptionEnumImmediate,
         SubscriptionID: "similique",
-    }
-
-    res, err := s.Subscription.Cancel(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -113,8 +111,8 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.PostSubscriptionsSubscriptionIDSchedulePlanChangeRequest{
+    ctx := context.Background()
+    res, err := s.Subscription.ChangeSchedule(ctx, operations.PostSubscriptionsSubscriptionIDSchedulePlanChangeRequest{
         RequestBody: &operations.PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBody{
             AlignBillingWithPlanChangeDate: sdk.Bool(false),
             ChangeDate: types.MustDateFromString("2022-01-01"),
@@ -129,9 +127,7 @@ func main() {
             },
         },
         SubscriptionID: "quis",
-    }
-
-    res, err := s.Subscription.ChangeSchedule(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -508,8 +504,8 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.PostSubscriptionsRequestBody{
+    ctx := context.Background()
+    res, err := s.Subscription.Create(ctx, operations.PostSubscriptionsRequestBody{
         AlignBillingWithSubscriptionStartDate: sdk.Bool(false),
         CustomerID: sdk.String("97DPcZE9hxsbb9Y9"),
         ExternalCustomerID: sdk.String("beatae"),
@@ -543,9 +539,7 @@ func main() {
             operations.PostSubscriptionsRequestBodyPriceOverrides{},
         },
         StartDate: types.MustDateFromString("2022-01-01"),
-    }
-
-    res, err := s.Subscription.Create(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -579,12 +573,10 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.GetSubscriptionsSubscriptionIDRequest{
+    ctx := context.Background()
+    res, err := s.Subscription.Get(ctx, operations.GetSubscriptionsSubscriptionIDRequest{
         SubscriptionID: "neque",
-    }
-
-    res, err := s.Subscription.Get(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -622,16 +614,14 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.GetSubscriptionsSubscriptionIDCostRequest{
+    ctx := context.Background()
+    res, err := s.Subscription.GetCost(ctx, operations.GetSubscriptionsSubscriptionIDCostRequest{
         GroupBy: sdk.String("in"),
         SubscriptionID: "minus",
         TimeframeEnd: types.MustTimeFromString("2022-02-02T05:00:00Z"),
         TimeframeStart: types.MustTimeFromString("2022-02-02T05:00:00Z"),
         ViewMode: sdk.String("eum"),
-    }
-
-    res, err := s.Subscription.GetCost(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -665,12 +655,10 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.GetSubscriptionsSubscriptionIDScheduleRequest{
+    ctx := context.Background()
+    res, err := s.Subscription.GetSchedule(ctx, operations.GetSubscriptionsSubscriptionIDScheduleRequest{
         SubscriptionID: "modi",
-    }
-
-    res, err := s.Subscription.GetSchedule(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -827,17 +815,15 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.GetSubscriptionsSubscriptionIDUsageRequest{
+    ctx := context.Background()
+    res, err := s.Subscription.GetUsage(ctx, operations.GetSubscriptionsSubscriptionIDUsageRequest{
         BillableMetricID: sdk.String("corporis"),
         Granularity: operations.GetSubscriptionsSubscriptionIDUsageGranularityEnumDay.ToPointer(),
         GroupBy: sdk.String("magnam"),
         SubscriptionID: "voluptates",
         TimeframeEnd: types.MustTimeFromString("2022-02-02T05:00:00Z"),
         TimeframeStart: types.MustTimeFromString("2022-02-02T05:00:00Z"),
-    }
-
-    res, err := s.Subscription.GetUsage(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -873,13 +859,11 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.ListSubscriptionsRequest{
+    ctx := context.Background()
+    res, err := s.Subscription.List(ctx, operations.ListSubscriptionsRequest{
         CustomerID: sdk.String("maiores"),
         ExternalCustomerID: sdk.String("tempore"),
-    }
-
-    res, err := s.Subscription.List(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -913,12 +897,10 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.PostSubscriptionsSubscriptionIDUnschedulePendingPlanChangesRequest{
+    ctx := context.Background()
+    res, err := s.Subscription.Unschedule(ctx, operations.PostSubscriptionsSubscriptionIDUnschedulePendingPlanChangesRequest{
         SubscriptionID: "aperiam",
-    }
-
-    res, err := s.Subscription.Unschedule(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }

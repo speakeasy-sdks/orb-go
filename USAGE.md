@@ -16,8 +16,8 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.PostCustomersRequestBody{
+    ctx := context.Background()
+    res, err := s.Customer.Create(ctx, operations.PostCustomersRequestBody{
         BillingAddress: &operations.PostCustomersRequestBodyBillingAddress{
             City: sdk.String("Laruecester"),
             Country: sdk.String("US"),
@@ -41,9 +41,7 @@ func main() {
             State: sdk.String("dicta"),
         },
         Timezone: sdk.String("Etc/UTC"),
-    }
-
-    res, err := s.Customer.Create(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }

@@ -52,20 +52,20 @@ func (e PriceCadenceEnum) ToPointer() *PriceCadenceEnum {
 }
 
 func (e *PriceCadenceEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "annual":
 		fallthrough
 	case "monthly":
 		fallthrough
 	case "quarterly":
-		*e = PriceCadenceEnum(s)
+		*e = PriceCadenceEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PriceCadenceEnum: %s", s)
+		return fmt.Errorf("invalid value for PriceCadenceEnum: %v", v)
 	}
 }
 
@@ -99,11 +99,11 @@ func (e PriceModelTypeEnum) ToPointer() *PriceModelTypeEnum {
 }
 
 func (e *PriceModelTypeEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "unit":
 		fallthrough
 	case "tiered":
@@ -119,10 +119,10 @@ func (e *PriceModelTypeEnum) UnmarshalJSON(data []byte) error {
 	case "bulk_bps":
 		fallthrough
 	case "matrix":
-		*e = PriceModelTypeEnum(s)
+		*e = PriceModelTypeEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PriceModelTypeEnum: %s", s)
+		return fmt.Errorf("invalid value for PriceModelTypeEnum: %v", v)
 	}
 }
 

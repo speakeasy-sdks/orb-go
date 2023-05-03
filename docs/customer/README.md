@@ -46,8 +46,8 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.PostCustomersRequestBody{
+    ctx := context.Background()
+    res, err := s.Customer.Create(ctx, operations.PostCustomersRequestBody{
         BillingAddress: &operations.PostCustomersRequestBodyBillingAddress{
             City: sdk.String("East Ona"),
             Country: sdk.String("US"),
@@ -71,9 +71,7 @@ func main() {
             State: sdk.String("omnis"),
         },
         Timezone: sdk.String("Etc/UTC"),
-    }
-
-    res, err := s.Customer.Create(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -109,12 +107,10 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.GetCustomersCustomerIDRequest{
+    ctx := context.Background()
+    res, err := s.Customer.Get(ctx, operations.GetCustomersCustomerIDRequest{
         CustomerID: "nemo",
-    }
-
-    res, err := s.Customer.Get(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -160,12 +156,10 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.GetCustomersCustomerIDBalanceTransactionsRequest{
+    ctx := context.Background()
+    res, err := s.Customer.GetBalance(ctx, operations.GetCustomersCustomerIDBalanceTransactionsRequest{
         CustomerID: "minima",
-    }
-
-    res, err := s.Customer.GetBalance(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -201,12 +195,10 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.GetCustomersExternalCustomerIDExternalCustomerIDRequest{
+    ctx := context.Background()
+    res, err := s.Customer.GetByExternalID(ctx, operations.GetCustomersExternalCustomerIDExternalCustomerIDRequest{
         ExternalCustomerID: "excepturi",
-    }
-
-    res, err := s.Customer.GetByExternalID(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -307,16 +299,14 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.GetCustomerCostsRequest{
+    ctx := context.Background()
+    res, err := s.Customer.GetCosts(ctx, operations.GetCustomerCostsRequest{
         CustomerID: "accusantium",
         GroupBy: sdk.String("iure"),
         TimeframeEnd: sdk.String("2022-03-01T05:00:00Z"),
         TimeframeStart: types.MustTimeFromString("2022-02-01T05:00:00Z"),
         ViewMode: operations.GetCustomerCostsViewModeEnumCumulative.ToPointer(),
-    }
-
-    res, err := s.Customer.GetCosts(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -351,16 +341,14 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.GetExternalCustomerCostsRequest{
+    ctx := context.Background()
+    res, err := s.Customer.GetCostsByExternalID(ctx, operations.GetExternalCustomerCostsRequest{
         ExternalCustomerID: "doloribus",
         GroupBy: sdk.String("sapiente"),
         TimeframeEnd: sdk.String("2022-03-01T05:00:00Z"),
         TimeframeStart: types.MustTimeFromString("2022-02-01T05:00:00Z"),
         ViewMode: operations.GetExternalCustomerCostsViewModeEnumPeriodic.ToPointer(),
-    }
-
-    res, err := s.Customer.GetCostsByExternalID(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -434,8 +422,8 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.PutCustomersCustomerIDRequest{
+    ctx := context.Background()
+    res, err := s.Customer.Update(ctx, operations.PutCustomersCustomerIDRequest{
         RequestBody: &operations.PutCustomersCustomerIDRequestBody{
             BillingAddress: &operations.PutCustomersCustomerIDRequestBodyBillingAddress{
                 City: sdk.String("Durganfurt"),
@@ -459,9 +447,7 @@ func main() {
             },
         },
         CustomerID: "reprehenderit",
-    }
-
-    res, err := s.Customer.Update(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -497,8 +483,8 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.PutCustomersExternalCustomerIDExternalCustomerIDRequest{
+    ctx := context.Background()
+    res, err := s.Customer.UpdateByExternalID(ctx, operations.PutCustomersExternalCustomerIDExternalCustomerIDRequest{
         RequestBody: &operations.PutCustomersExternalCustomerIDExternalCustomerIDRequestBody{
             BillingAddress: &operations.PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyBillingAddress{
                 City: sdk.String("Fort Blanche"),
@@ -522,9 +508,7 @@ func main() {
             },
         },
         ExternalCustomerID: "labore",
-    }
-
-    res, err := s.Customer.UpdateByExternalID(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -612,8 +596,8 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.PatchCustomersCustomerIDUsageRequest{
+    ctx := context.Background()
+    res, err := s.Customer.UpdateUsage(ctx, operations.PatchCustomersCustomerIDUsageRequest{
         RequestBody: &operations.PatchCustomersCustomerIDUsageRequestBody{
             Events: []PatchCustomersCustomerIDUsageRequestBodyEvents{
                 operations.PatchCustomersCustomerIDUsageRequestBodyEvents{
@@ -636,9 +620,7 @@ func main() {
         CustomerID: "tempora",
         TimeframeEnd: types.MustTimeFromString("2022-05-11T17:46:20Z"),
         TimeframeStart: types.MustTimeFromString("2022-05-11T17:46:20Z"),
-    }
-
-    res, err := s.Customer.UpdateUsage(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -673,8 +655,8 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.PatchExternalCustomersCustomerIDUsageRequest{
+    ctx := context.Background()
+    res, err := s.Customer.UpdateUsageByExternalID(ctx, operations.PatchExternalCustomersCustomerIDUsageRequest{
         RequestBody: &operations.PatchExternalCustomersCustomerIDUsageRequestBody{
             Events: []PatchExternalCustomersCustomerIDUsageRequestBodyEvents{
                 operations.PatchExternalCustomersCustomerIDUsageRequestBodyEvents{
@@ -707,9 +689,7 @@ func main() {
         ExternalCustomerID: "cumque",
         TimeframeEnd: types.MustTimeFromString("2022-05-11T17:46:20Z"),
         TimeframeStart: types.MustTimeFromString("2022-05-11T17:46:20Z"),
-    }
-
-    res, err := s.Customer.UpdateUsageByExternalID(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }

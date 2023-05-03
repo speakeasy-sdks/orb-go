@@ -49,12 +49,10 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.PutDeprecateEventsEventIDRequest{
+    ctx := context.Background()
+    res, err := s.Event.Deprecate(ctx, operations.PutDeprecateEventsEventIDRequest{
         EventID: "fQp2wSmK7CF9oPcu",
-    }
-
-    res, err := s.Event.Deprecate(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -224,8 +222,8 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.PostIngestRequest{
+    ctx := context.Background()
+    res, err := s.Event.Ingest(ctx, operations.PostIngestRequest{
         RequestBody: &operations.PostIngestRequestBody{
             Events: []PostIngestRequestBodyEvents{
                 operations.PostIngestRequestBodyEvents{
@@ -276,9 +274,7 @@ func main() {
             },
         },
         Debug: operations.PostIngestDebugEnumTrue.ToPointer(),
-    }
-
-    res, err := s.Event.Ingest(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -322,17 +318,15 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.PostEventsSearchRequestBody{
+    ctx := context.Background()
+    res, err := s.Event.Search(ctx, operations.PostEventsSearchRequestBody{
         EventIds: []string{
             "ullam",
             "provident",
             "quos",
         },
         InvoiceID: sdk.String("sint"),
-    }
-
-    res, err := s.Event.Search(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -381,8 +375,8 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.PutEventsEventIDRequest{
+    ctx := context.Background()
+    res, err := s.Event.Update(ctx, operations.PutEventsEventIDRequest{
         RequestBody: &operations.PutEventsEventIDRequestBody{
             CustomerID: sdk.String("accusantium"),
             EventName: "mollitia",
@@ -395,9 +389,7 @@ func main() {
             Timestamp: types.MustTimeFromString("2020-12-09T16:09:53Z"),
         },
         EventID: "fQp2wSmK7CF9oPcu",
-    }
-
-    res, err := s.Event.Update(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }

@@ -46,18 +46,18 @@ func (e InvoiceLineItemsSubLineItemsTypeEnum) ToPointer() *InvoiceLineItemsSubLi
 }
 
 func (e *InvoiceLineItemsSubLineItemsTypeEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "matrix":
 		fallthrough
 	case "tier":
-		*e = InvoiceLineItemsSubLineItemsTypeEnum(s)
+		*e = InvoiceLineItemsSubLineItemsTypeEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for InvoiceLineItemsSubLineItemsTypeEnum: %s", s)
+		return fmt.Errorf("invalid value for InvoiceLineItemsSubLineItemsTypeEnum: %v", v)
 	}
 }
 
@@ -119,20 +119,20 @@ func (e InvoiceStatusEnum) ToPointer() *InvoiceStatusEnum {
 }
 
 func (e *InvoiceStatusEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "issued":
 		fallthrough
 	case "paid":
 		fallthrough
 	case "synced":
-		*e = InvoiceStatusEnum(s)
+		*e = InvoiceStatusEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for InvoiceStatusEnum: %s", s)
+		return fmt.Errorf("invalid value for InvoiceStatusEnum: %v", v)
 	}
 }
 

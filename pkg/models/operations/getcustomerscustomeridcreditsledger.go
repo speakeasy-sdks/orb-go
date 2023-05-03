@@ -22,18 +22,18 @@ func (e GetCustomersCustomerIDCreditsLedgerEntryStatusEnum) ToPointer() *GetCust
 }
 
 func (e *GetCustomersCustomerIDCreditsLedgerEntryStatusEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "committed":
 		fallthrough
 	case "pending":
-		*e = GetCustomersCustomerIDCreditsLedgerEntryStatusEnum(s)
+		*e = GetCustomersCustomerIDCreditsLedgerEntryStatusEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for GetCustomersCustomerIDCreditsLedgerEntryStatusEnum: %s", s)
+		return fmt.Errorf("invalid value for GetCustomersCustomerIDCreditsLedgerEntryStatusEnum: %v", v)
 	}
 }
 
@@ -52,11 +52,11 @@ func (e GetCustomersCustomerIDCreditsLedgerEntryTypeEnum) ToPointer() *GetCustom
 }
 
 func (e *GetCustomersCustomerIDCreditsLedgerEntryTypeEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "increment":
 		fallthrough
 	case "decrement":
@@ -64,10 +64,10 @@ func (e *GetCustomersCustomerIDCreditsLedgerEntryTypeEnum) UnmarshalJSON(data []
 	case "expiration_change":
 		fallthrough
 	case "credit_block_expiry":
-		*e = GetCustomersCustomerIDCreditsLedgerEntryTypeEnum(s)
+		*e = GetCustomersCustomerIDCreditsLedgerEntryTypeEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for GetCustomersCustomerIDCreditsLedgerEntryTypeEnum: %s", s)
+		return fmt.Errorf("invalid value for GetCustomersCustomerIDCreditsLedgerEntryTypeEnum: %v", v)
 	}
 }
 

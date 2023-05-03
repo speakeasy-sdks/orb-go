@@ -39,12 +39,10 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.GetPlansPlanIDRequest{
+    ctx := context.Background()
+    res, err := s.Plan.Get(ctx, operations.GetPlansPlanIDRequest{
         PlanID: "maxime",
-    }
-
-    res, err := s.Plan.Get(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -83,8 +81,8 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.GetPlansExternalPlanIDRequest{
+    ctx := context.Background()
+    res, err := s.Plan.GetByExternalID(ctx, operations.GetPlansExternalPlanIDRequest{
         Plan: &shared.Plan{
             BasePlanID: sdk.String("deleniti"),
             CreatedAt: types.MustTimeFromString("2022-02-08T00:19:59.821Z"),
@@ -407,9 +405,7 @@ func main() {
             },
         },
         ExternalPlanID: "minima",
-    }
-
-    res, err := s.Plan.GetByExternalID(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -448,8 +444,8 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.ListPlansRequestBody{
+    ctx := context.Background()
+    res, err := s.Plan.List(ctx, operations.ListPlansRequestBody{
         Data: []shared.Plan{
             shared.Plan{
                 BasePlanID: sdk.String("fugit"),
@@ -1197,9 +1193,7 @@ func main() {
             "corporis": "error",
             "earum": "adipisci",
         },
-    }
-
-    res, err := s.Plan.List(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }

@@ -39,11 +39,11 @@ func (e PostCustomersRequestBodyPaymentProviderEnum) ToPointer() *PostCustomersR
 }
 
 func (e *PostCustomersRequestBodyPaymentProviderEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "quickbooks":
 		fallthrough
 	case "bill.com":
@@ -53,10 +53,10 @@ func (e *PostCustomersRequestBodyPaymentProviderEnum) UnmarshalJSON(data []byte)
 	case "stripe_invoice":
 		fallthrough
 	case "null":
-		*e = PostCustomersRequestBodyPaymentProviderEnum(s)
+		*e = PostCustomersRequestBodyPaymentProviderEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostCustomersRequestBodyPaymentProviderEnum: %s", s)
+		return fmt.Errorf("invalid value for PostCustomersRequestBodyPaymentProviderEnum: %v", v)
 	}
 }
 

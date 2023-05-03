@@ -41,6 +41,7 @@ func newPlan(defaultClient, securityClient HTTPClient, serverURL, language, sdkV
 //
 // ## Phases
 // Orb supports plan phases, also known as contract ramps. For plans with phases, the serialized prices refer to all prices across all phases.
+
 func (s *plan) Get(ctx context.Context, request operations.GetPlansPlanIDRequest) (*operations.GetPlansPlanIDResponse, error) {
 	baseURL := s.serverURL
 	url, err := utils.GenerateURL(ctx, baseURL, "/plans/{plan_id}", request, nil)
@@ -92,6 +93,7 @@ func (s *plan) Get(ctx context.Context, request operations.GetPlansPlanIDRequest
 //
 // ## Serialized prices
 // Orb supports a few different pricing models out of the box. Each of these models is serialized differently in a given [Price](../reference/Orb-API.json/components/schemas/Price) object. The `model_type` field determines the key for the configuration object that is present. A detailed explanation of price types can be found in the [Price schema](../reference/Orb-API.json/components/schemas/Price).
+
 func (s *plan) GetByExternalID(ctx context.Context, request operations.GetPlansExternalPlanIDRequest) (*operations.GetPlansExternalPlanIDResponse, error) {
 	baseURL := s.serverURL
 	url, err := utils.GenerateURL(ctx, baseURL, "/plans/external_plan_id/{external_plan_id}", request, nil)
@@ -140,6 +142,8 @@ func (s *plan) GetByExternalID(ctx context.Context, request operations.GetPlansE
 // This endpoint returns a list of all [plans](../reference/Orb-API.json/components/schemas/Plan) for an account in a list format.
 //
 // The list of plans is ordered starting from the most recently created plan. The response also includes [`pagination_metadata`](../reference/Orb-API.json/components/schemas/Pagination-metadata), which lets the caller retrieve the next page of results if they exist. More information about pagination can be found in the [Pagination-metadata schema](../reference/Orb-API.json/components/schemas/Pagination-metadata).
+//
+
 func (s *plan) List(ctx context.Context, request operations.ListPlansRequestBody) (*operations.ListPlansResponse, error) {
 	baseURL := s.serverURL
 	url := strings.TrimSuffix(baseURL, "/") + "/plans"

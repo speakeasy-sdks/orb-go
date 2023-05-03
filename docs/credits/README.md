@@ -87,8 +87,8 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.PostCustomersCustomerIDCreditsLedgerEntryRequest{
+    ctx := context.Background()
+    res, err := s.Credits.Create(ctx, operations.PostCustomersCustomerIDCreditsLedgerEntryRequest{
         RequestBody: &operations.PostCustomersCustomerIDCreditsLedgerEntryRequestBody{
             Amount: 7206.33,
             BlockID: sdk.String("officia"),
@@ -99,9 +99,7 @@ func main() {
             TargetExpiryDate: types.MustDateFromString("2023-02-01"),
         },
         CustomerID: "hic",
-    }
-
-    res, err := s.Credits.Create(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -139,12 +137,10 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.GetCustomersCustomerIDCreditsRequest{
+    ctx := context.Background()
+    res, err := s.Credits.GetCredits(ctx, operations.GetCustomersCustomerIDCreditsRequest{
         CustomerID: "optio",
-    }
-
-    res, err := s.Credits.GetCredits(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -206,15 +202,13 @@ func main() {
         }),
     )
 
-    ctx := context.Background()    
-    req := operations.GetCustomersCustomerIDCreditsLedgerRequest{
+    ctx := context.Background()
+    res, err := s.Credits.GetCreditsLedger(ctx, operations.GetCustomersCustomerIDCreditsLedgerRequest{
         CustomerID: "totam",
         EntryStatus: operations.GetCustomersCustomerIDCreditsLedgerEntryStatusEnumCommitted.ToPointer(),
         EntryType: operations.GetCustomersCustomerIDCreditsLedgerEntryTypeEnumDecrement.ToPointer(),
         MinimumAmount: sdk.Float64(4736),
-    }
-
-    res, err := s.Credits.GetCreditsLedger(ctx, req)
+    })
     if err != nil {
         log.Fatal(err)
     }

@@ -39,21 +39,20 @@ func newCredits(defaultClient, securityClient HTTPClient, serverURL, language, s
 // 1. After calling this endpoint, [Fetch Credit Balance](../reference/Orb-API.json/paths/~1customers~1{customer_id}~1credits/get) will return a credit block that represents the changes (i.e. balance changes or transfers).
 // 2. A ledger entry will be added to the credits ledger for this customer, and therefore returned in the [View Credits Ledger](../reference/Orb-API.json/paths/~1customers~1{customer_id}~1credits~1ledger/get) response as well as serialized in the response to this request. In the case of deductions without a specified block, multiple ledger entries may be created if the deduction spans credit blocks.
 //
+//
 // ## Adding credits
 // Adding credits is done by creating an entry of type `increment`. This requires the caller to specify a number of credits as well as an optional expiry date in `YYYY-MM-DD` format. Orb also recommends specifying a description to assist with auditing. When adding credits, the caller can also specify a cost basis per-credit, to indicate how much in USD a customer paid for a single credit in a block. This can later be used for revenue recognition.
 //
 // The following snippet illustrates a sample request body to increment credits which will expire in January of 2022.
 //
 // ```json
-//
-//	{
-//	  "entry_type": "increment",
-//	  "amount": 100,
-//	  "expiry_date": "2022-12-28",
-//	  "per_unit_cost_basis": "0.20",
-//	  "description": "Purchased 100 credits"
-//	}
-//
+// {
+//   "entry_type": "increment",
+//   "amount": 100,
+//   "expiry_date": "2022-12-28",
+//   "per_unit_cost_basis": "0.20",
+//   "description": "Purchased 100 credits"
+// }
 // ```
 //
 // Note that by default, Orb will always first increment any _negative_ balance in existing blocks before adding the remaining amount to the desired credit block.
@@ -64,13 +63,11 @@ func newCredits(defaultClient, securityClient HTTPClient, serverURL, language, s
 // The following snippet illustrates a sample request body to decrement credits.
 //
 // ```json
-//
-//	{
-//	  "entry_type": "decrement",
-//	  "amount": 20,
-//	  "description": "Removing excess credits"
-//	}
-//
+// {
+//   "entry_type": "decrement",
+//   "amount": 20,
+//   "description": "Removing excess credits"
+// }
 // ```
 //
 // ## Changing credits expiry
@@ -81,17 +78,16 @@ func newCredits(defaultClient, securityClient HTTPClient, serverURL, language, s
 // The following snippet illustrates a sample request body to extend the expiration date of credits by one year:
 //
 // ```json
-//
-//	{
-//	  "entry_type": "expiration_change",
-//	  "amount": 10,
-//	  "expiry_date": "2022-12-28",
-//	  "block_id": "UiUhFWeLHPrBY4Ad",
-//	  "target_expiry_date": "2023-12-28",
-//	  "description": "Extending credit validity"
-//	}
-//
+// {
+//   "entry_type": "expiration_change",
+//   "amount": 10,
+//   "expiry_date": "2022-12-28",
+//   "block_id": "UiUhFWeLHPrBY4Ad",
+//   "target_expiry_date": "2023-12-28",
+//   "description": "Extending credit validity"
+// }
 // ```
+
 func (s *credits) Create(ctx context.Context, request operations.PostCustomersCustomerIDCreditsLedgerEntryRequest) (*operations.PostCustomersCustomerIDCreditsLedgerEntryResponse, error) {
 	baseURL := s.serverURL
 	url, err := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}/credits/ledger_entry", request, nil)
@@ -151,6 +147,7 @@ func (s *credits) Create(ctx context.Context, request operations.PostCustomersCu
 // Orb keeps track of credit balances in _credit blocks_, where each block is optionally associated with an `expiry_date`. Each time credits are added, a new credit block is created. Credits which do not expire have an `expiry_date` of `null`. To aid in revenue recognition, credit blocks can optionally have a `per_unit_cost_basis`, to indicate how much in USD a customer paid for a single credit in a block.
 //
 // Orb only returns _unexpired_ credit blocks in this response. For credits that have already expired, you can view this deduction from the customer's balance in the [Credit Ledger](../reference/Orb-API.json/paths/~1customers~1{customer_id}~1credits~1ledger/get) response.
+
 func (s *credits) GetCredits(ctx context.Context, request operations.GetCustomersCustomerIDCreditsRequest) (*operations.GetCustomersCustomerIDCreditsResponse, error) {
 	baseURL := s.serverURL
 	url, err := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}/credits", request, nil)
@@ -223,9 +220,11 @@ func (s *credits) GetCredits(ctx context.Context, request operations.GetCustomer
 //
 // Note that for this entry type, `starting_balance` will equal `ending_balance`, and the `amount` represents the balance transferred. The credit block linked to the ledger entry is the source credit block from which there was an expiration change.
 //
+//
 // ## Credits expiry
 //
 // When a set of credits expire on pre-set expiration date, the customer's balance automatically reflects this change and adds an entry to the ledger indicating this event. Note that credit expiry should always happen close to a date boundary in the customer's timezone.
+
 func (s *credits) GetCreditsLedger(ctx context.Context, request operations.GetCustomersCustomerIDCreditsLedgerRequest) (*operations.GetCustomersCustomerIDCreditsLedgerResponse, error) {
 	baseURL := s.serverURL
 	url, err := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}/credits/ledger", request, nil)

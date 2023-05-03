@@ -36,6 +36,7 @@ func newAvailability(defaultClient, securityClient HTTPClient, serverURL, langua
 // This endpoint allows you to test your connection to the Orb API and check the validity of your API key, passed in the `Authorization` header. This is particularly useful for checking that your environment is set up properly, and is a great choice for connectors and integrations.
 //
 // This API does not have any side-effects or return any Orb resources.
+
 func (s *availability) Ping(ctx context.Context) (*operations.GetPingResponse, error) {
 	baseURL := s.serverURL
 	url := strings.TrimSuffix(baseURL, "/") + "/ping"

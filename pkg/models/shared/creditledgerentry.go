@@ -35,18 +35,18 @@ func (e CreditLedgerEntryEntryStatusEnum) ToPointer() *CreditLedgerEntryEntrySta
 }
 
 func (e *CreditLedgerEntryEntryStatusEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "committed":
 		fallthrough
 	case "pending":
-		*e = CreditLedgerEntryEntryStatusEnum(s)
+		*e = CreditLedgerEntryEntryStatusEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for CreditLedgerEntryEntryStatusEnum: %s", s)
+		return fmt.Errorf("invalid value for CreditLedgerEntryEntryStatusEnum: %v", v)
 	}
 }
 
@@ -64,11 +64,11 @@ func (e CreditLedgerEntryEntryTypeEnum) ToPointer() *CreditLedgerEntryEntryTypeE
 }
 
 func (e *CreditLedgerEntryEntryTypeEnum) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := json.Unmarshal(data, &s); err != nil {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
-	switch s {
+	switch v {
 	case "increment":
 		fallthrough
 	case "decrement":
@@ -76,10 +76,10 @@ func (e *CreditLedgerEntryEntryTypeEnum) UnmarshalJSON(data []byte) error {
 	case "expiration_change":
 		fallthrough
 	case "credit_block_expiry":
-		*e = CreditLedgerEntryEntryTypeEnum(s)
+		*e = CreditLedgerEntryEntryTypeEnum(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for CreditLedgerEntryEntryTypeEnum: %s", s)
+		return fmt.Errorf("invalid value for CreditLedgerEntryEntryTypeEnum: %v", v)
 	}
 }
 

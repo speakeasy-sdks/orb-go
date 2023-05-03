@@ -35,6 +35,7 @@ func newInvoice(defaultClient, securityClient HTTPClient, serverURL, language, s
 
 // Get - Retrieve an Invoice
 // This endpoint is used to fetch an [`Invoice`](../reference/Orb-API.json/components/schemas/Invoice) given an identifier.
+
 func (s *invoice) Get(ctx context.Context, request operations.GetInvoiceInvoiceIDRequest) (*operations.GetInvoiceInvoiceIDResponse, error) {
 	baseURL := s.serverURL
 	url, err := utils.GenerateURL(ctx, baseURL, "/invoices/{invoice_id}", request, nil)
@@ -83,6 +84,7 @@ func (s *invoice) Get(ctx context.Context, request operations.GetInvoiceInvoiceI
 
 // GetUpcoming - Retrieve upcoming invoice
 // This endpoint can be used to fetch the [`UpcomingInvoice`](../reference/Orb-API.json/components/schemas/Upcoming%20Invoice) for the current billing period given a subscription.
+
 func (s *invoice) GetUpcoming(ctx context.Context, request operations.GetInvoicesUpcomingRequest) (*operations.GetInvoicesUpcomingResponse, error) {
 	baseURL := s.serverURL
 	url := strings.TrimSuffix(baseURL, "/") + "/invoices/upcoming"
@@ -134,6 +136,7 @@ func (s *invoice) GetUpcoming(ctx context.Context, request operations.GetInvoice
 // This endpoint returns a list of all [`Invoice`](../reference/Orb-API.json/components/schemas/Invoice)s for an account in a list format.
 //
 // The list of invoices is ordered starting from the most recently issued invoice date. The response also includes `pagination_metadata`, which lets the caller retrieve the next page of results if they exist.
+
 func (s *invoice) List(ctx context.Context, request operations.ListInvoicesRequest) (*operations.ListInvoicesResponse, error) {
 	baseURL := s.serverURL
 	url := strings.TrimSuffix(baseURL, "/") + "/invoices"
