@@ -24,12 +24,12 @@ type CustomerBillingAddress struct {
 type CustomerPaymentProviderEnum string
 
 const (
-	CustomerPaymentProviderEnumStripe        CustomerPaymentProviderEnum = "stripe"
-	CustomerPaymentProviderEnumQuickbooks    CustomerPaymentProviderEnum = "quickbooks"
-	CustomerPaymentProviderEnumBillCom       CustomerPaymentProviderEnum = "bill.com"
-	CustomerPaymentProviderEnumStripeCharge  CustomerPaymentProviderEnum = "stripe_charge"
-	CustomerPaymentProviderEnumStripeInvoice CustomerPaymentProviderEnum = "stripe_invoice"
-	CustomerPaymentProviderEnumNull          CustomerPaymentProviderEnum = "null"
+	CustomerPaymentProviderEnumStripe                 CustomerPaymentProviderEnum = "stripe"
+	CustomerPaymentProviderEnumQuickbooks             CustomerPaymentProviderEnum = "quickbooks"
+	CustomerPaymentProviderEnumBillCom                CustomerPaymentProviderEnum = "bill.com"
+	CustomerPaymentProviderEnumStripeCharge           CustomerPaymentProviderEnum = "stripe_charge"
+	CustomerPaymentProviderEnumStripeInvoice          CustomerPaymentProviderEnum = "stripe_invoice"
+	CustomerPaymentProviderEnumLessThanNilGreaterThan CustomerPaymentProviderEnum = "<nil>"
 )
 
 func (e CustomerPaymentProviderEnum) ToPointer() *CustomerPaymentProviderEnum {
@@ -52,7 +52,7 @@ func (e *CustomerPaymentProviderEnum) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "stripe_invoice":
 		fallthrough
-	case "null":
+	case "<nil>":
 		*e = CustomerPaymentProviderEnum(v)
 		return nil
 	default:

@@ -32,7 +32,7 @@ func newCredits(defaultClient, securityClient HTTPClient, serverURL, language, s
 	}
 }
 
-// Create - Add credit ledger entry
+// Get - Add credit ledger entry
 // This endpoint allows you to create a new ledger entry for a specified customer's balance. This can be used to increment balance, deduct credits, and change the expiry date of existing credits.
 //
 // ## Effects of adding a ledger entry
@@ -88,7 +88,7 @@ func newCredits(defaultClient, securityClient HTTPClient, serverURL, language, s
 // }
 // ```
 
-func (s *credits) Create(ctx context.Context, request operations.PostCustomersCustomerIDCreditsLedgerEntryRequest) (*operations.PostCustomersCustomerIDCreditsLedgerEntryResponse, error) {
+func (s *credits) Get(ctx context.Context, request operations.PostCustomersCustomerIDCreditsLedgerEntryRequest) (*operations.PostCustomersCustomerIDCreditsLedgerEntryResponse, error) {
 	baseURL := s.serverURL
 	url, err := utils.GenerateURL(ctx, baseURL, "/customers/{customer_id}/credits/ledger_entry", request, nil)
 	if err != nil {

@@ -27,11 +27,11 @@ type PostCustomersRequestBodyBillingAddress struct {
 type PostCustomersRequestBodyPaymentProviderEnum string
 
 const (
-	PostCustomersRequestBodyPaymentProviderEnumQuickbooks    PostCustomersRequestBodyPaymentProviderEnum = "quickbooks"
-	PostCustomersRequestBodyPaymentProviderEnumBillCom       PostCustomersRequestBodyPaymentProviderEnum = "bill.com"
-	PostCustomersRequestBodyPaymentProviderEnumStripeCharge  PostCustomersRequestBodyPaymentProviderEnum = "stripe_charge"
-	PostCustomersRequestBodyPaymentProviderEnumStripeInvoice PostCustomersRequestBodyPaymentProviderEnum = "stripe_invoice"
-	PostCustomersRequestBodyPaymentProviderEnumNull          PostCustomersRequestBodyPaymentProviderEnum = "null"
+	PostCustomersRequestBodyPaymentProviderEnumQuickbooks             PostCustomersRequestBodyPaymentProviderEnum = "quickbooks"
+	PostCustomersRequestBodyPaymentProviderEnumBillCom                PostCustomersRequestBodyPaymentProviderEnum = "bill.com"
+	PostCustomersRequestBodyPaymentProviderEnumStripeCharge           PostCustomersRequestBodyPaymentProviderEnum = "stripe_charge"
+	PostCustomersRequestBodyPaymentProviderEnumStripeInvoice          PostCustomersRequestBodyPaymentProviderEnum = "stripe_invoice"
+	PostCustomersRequestBodyPaymentProviderEnumLessThanNilGreaterThan PostCustomersRequestBodyPaymentProviderEnum = "<nil>"
 )
 
 func (e PostCustomersRequestBodyPaymentProviderEnum) ToPointer() *PostCustomersRequestBodyPaymentProviderEnum {
@@ -52,7 +52,7 @@ func (e *PostCustomersRequestBodyPaymentProviderEnum) UnmarshalJSON(data []byte)
 		fallthrough
 	case "stripe_invoice":
 		fallthrough
-	case "null":
+	case "<nil>":
 		*e = PostCustomersRequestBodyPaymentProviderEnum(v)
 		return nil
 	default:

@@ -6,11 +6,11 @@ Actions related to credit management.
 
 ### Available Operations
 
-* [Create](#create) - Add credit ledger entry
+* [Get](#get) - Add credit ledger entry
 * [GetCredits](#getcredits) - Retrieve credit balance
 * [GetCreditsLedger](#getcreditsledger) - View credits ledger
 
-## Create
+## Get
 
 This endpoint allows you to create a new ledger entry for a specified customer's balance. This can be used to increment balance, deduct credits, and change the expiry date of existing credits.
 
@@ -88,7 +88,7 @@ func main() {
     )
 
     ctx := context.Background()
-    res, err := s.Credits.Create(ctx, operations.PostCustomersCustomerIDCreditsLedgerEntryRequest{
+    res, err := s.Credits.Get(ctx, operations.PostCustomersCustomerIDCreditsLedgerEntryRequest{
         RequestBody: &operations.PostCustomersCustomerIDCreditsLedgerEntryRequestBody{
             Amount: 7206.33,
             BlockID: sdk.String("officia"),

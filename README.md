@@ -85,7 +85,7 @@ func main() {
 
 ### [Credits](docs/credits/README.md)
 
-* [Create](docs/credits/README.md#create) - Add credit ledger entry
+* [Get](docs/credits/README.md#get) - Add credit ledger entry
 * [GetCredits](docs/credits/README.md#getcredits) - Retrieve credit balance
 * [GetCreditsLedger](docs/credits/README.md#getcreditsledger) - View credits ledger
 

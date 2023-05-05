@@ -27,11 +27,11 @@ type PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyBillingAddress s
 type PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum string
 
 const (
-	PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnumQuickbooks    PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum = "quickbooks"
-	PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnumStripeCharge  PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum = "stripe_charge"
-	PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnumStripeInvoice PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum = "stripe_invoice"
-	PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnumBillCom       PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum = "bill.com"
-	PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnumNull          PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum = "null"
+	PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnumQuickbooks             PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum = "quickbooks"
+	PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnumStripeCharge           PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum = "stripe_charge"
+	PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnumStripeInvoice          PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum = "stripe_invoice"
+	PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnumBillCom                PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum = "bill.com"
+	PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnumLessThanNilGreaterThan PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum = "<nil>"
 )
 
 func (e PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum) ToPointer() *PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum {
@@ -52,7 +52,7 @@ func (e *PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProvi
 		fallthrough
 	case "bill.com":
 		fallthrough
-	case "null":
+	case "<nil>":
 		*e = PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum(v)
 		return nil
 	default:

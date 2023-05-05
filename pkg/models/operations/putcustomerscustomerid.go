@@ -27,11 +27,11 @@ type PutCustomersCustomerIDRequestBodyBillingAddress struct {
 type PutCustomersCustomerIDRequestBodyPaymentProviderEnum string
 
 const (
-	PutCustomersCustomerIDRequestBodyPaymentProviderEnumStripeInvoice PutCustomersCustomerIDRequestBodyPaymentProviderEnum = "stripe_invoice"
-	PutCustomersCustomerIDRequestBodyPaymentProviderEnumQuickbooks    PutCustomersCustomerIDRequestBodyPaymentProviderEnum = "quickbooks"
-	PutCustomersCustomerIDRequestBodyPaymentProviderEnumBillCom       PutCustomersCustomerIDRequestBodyPaymentProviderEnum = "bill.com"
-	PutCustomersCustomerIDRequestBodyPaymentProviderEnumStripeCharge  PutCustomersCustomerIDRequestBodyPaymentProviderEnum = "stripe_charge"
-	PutCustomersCustomerIDRequestBodyPaymentProviderEnumNull          PutCustomersCustomerIDRequestBodyPaymentProviderEnum = "null"
+	PutCustomersCustomerIDRequestBodyPaymentProviderEnumStripeInvoice          PutCustomersCustomerIDRequestBodyPaymentProviderEnum = "stripe_invoice"
+	PutCustomersCustomerIDRequestBodyPaymentProviderEnumQuickbooks             PutCustomersCustomerIDRequestBodyPaymentProviderEnum = "quickbooks"
+	PutCustomersCustomerIDRequestBodyPaymentProviderEnumBillCom                PutCustomersCustomerIDRequestBodyPaymentProviderEnum = "bill.com"
+	PutCustomersCustomerIDRequestBodyPaymentProviderEnumStripeCharge           PutCustomersCustomerIDRequestBodyPaymentProviderEnum = "stripe_charge"
+	PutCustomersCustomerIDRequestBodyPaymentProviderEnumLessThanNilGreaterThan PutCustomersCustomerIDRequestBodyPaymentProviderEnum = "<nil>"
 )
 
 func (e PutCustomersCustomerIDRequestBodyPaymentProviderEnum) ToPointer() *PutCustomersCustomerIDRequestBodyPaymentProviderEnum {
@@ -52,7 +52,7 @@ func (e *PutCustomersCustomerIDRequestBodyPaymentProviderEnum) UnmarshalJSON(dat
 		fallthrough
 	case "stripe_charge":
 		fallthrough
-	case "null":
+	case "<nil>":
 		*e = PutCustomersCustomerIDRequestBodyPaymentProviderEnum(v)
 		return nil
 	default:
