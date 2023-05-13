@@ -83,7 +83,7 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            BearerAuth: "Bearer YOUR_BEARER_TOKEN_HERE",
+            BearerAuth: "YOUR_BEARER_TOKEN_HERE",
         }),
     )
 
@@ -133,7 +133,7 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            BearerAuth: "Bearer YOUR_BEARER_TOKEN_HERE",
+            BearerAuth: "YOUR_BEARER_TOKEN_HERE",
         }),
     )
 
@@ -198,7 +198,7 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            BearerAuth: "Bearer YOUR_BEARER_TOKEN_HERE",
+            BearerAuth: "YOUR_BEARER_TOKEN_HERE",
         }),
     )
 
