@@ -55,3 +55,11 @@ Based on:
 - Speakeasy CLI 1.31.1 (2.27.0) https://github.com/speakeasy-api/speakeasy
 ### Releases
 - [Go v0.6.0] https://github.com/speakeasy-sdks/orb-go/releases/tag/v0.6.0 - .
+
+## 2023-05-16 01:10:23
+### Changes
+Based on:
+- OpenAPI Doc 1.0 https://prod.speakeasyapi.dev/v1/apis/Orb/version/v1.0/schema/download
+- Speakeasy CLI 1.32.0 (2.28.0) https://github.com/speakeasy-api/speakeasy
+### Releases
+- [Go v0.7.0] https://github.com/speakeasy-sdks/orb-go/releases/tag/v0.7.0 - .
