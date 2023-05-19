@@ -33,19 +33,19 @@ type InvoiceLineItemsSubLineItemsTierConfig struct {
 	UnitAmount string  `json:"unit_amount"`
 }
 
-// InvoiceLineItemsSubLineItemsTypeEnum - An identifier for a sub line item that is specific to a pricing model.
-type InvoiceLineItemsSubLineItemsTypeEnum string
+// InvoiceLineItemsSubLineItemsType - An identifier for a sub line item that is specific to a pricing model.
+type InvoiceLineItemsSubLineItemsType string
 
 const (
-	InvoiceLineItemsSubLineItemsTypeEnumMatrix InvoiceLineItemsSubLineItemsTypeEnum = "matrix"
-	InvoiceLineItemsSubLineItemsTypeEnumTier   InvoiceLineItemsSubLineItemsTypeEnum = "tier"
+	InvoiceLineItemsSubLineItemsTypeMatrix InvoiceLineItemsSubLineItemsType = "matrix"
+	InvoiceLineItemsSubLineItemsTypeTier   InvoiceLineItemsSubLineItemsType = "tier"
 )
 
-func (e InvoiceLineItemsSubLineItemsTypeEnum) ToPointer() *InvoiceLineItemsSubLineItemsTypeEnum {
+func (e InvoiceLineItemsSubLineItemsType) ToPointer() *InvoiceLineItemsSubLineItemsType {
 	return &e
 }
 
-func (e *InvoiceLineItemsSubLineItemsTypeEnum) UnmarshalJSON(data []byte) error {
+func (e *InvoiceLineItemsSubLineItemsType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -54,10 +54,10 @@ func (e *InvoiceLineItemsSubLineItemsTypeEnum) UnmarshalJSON(data []byte) error 
 	case "matrix":
 		fallthrough
 	case "tier":
-		*e = InvoiceLineItemsSubLineItemsTypeEnum(v)
+		*e = InvoiceLineItemsSubLineItemsType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for InvoiceLineItemsSubLineItemsTypeEnum: %v", v)
+		return fmt.Errorf("invalid value for InvoiceLineItemsSubLineItemsType: %v", v)
 	}
 }
 
@@ -71,7 +71,7 @@ type InvoiceLineItemsSubLineItems struct {
 	// Only available if `type` is `tier`. Contains the range of units in this tier and the unit amount.
 	TierConfig *InvoiceLineItemsSubLineItemsTierConfig `json:"tier_config,omitempty"`
 	// An identifier for a sub line item that is specific to a pricing model.
-	Type InvoiceLineItemsSubLineItemsTypeEnum `json:"type"`
+	Type InvoiceLineItemsSubLineItemsType `json:"type"`
 }
 
 type InvoiceLineItemsTaxAmounts struct {
@@ -105,20 +105,20 @@ type InvoiceLineItems struct {
 	TaxAmounts []InvoiceLineItemsTaxAmounts `json:"tax_amounts"`
 }
 
-// InvoiceStatusEnum - The status of this invoice as known to Orb. Invoices that have been issued for past billing periods are marked `"issued"`. Invoices will be marked `"paid"` upon confirmation of successful automatic payment collection by Orb. Invoices synced to an external billing provider (such as Bill.com, QuickBooks, or Stripe Invoicing) will be marked as `"synced"`.
-type InvoiceStatusEnum string
+// InvoiceStatus - The status of this invoice as known to Orb. Invoices that have been issued for past billing periods are marked `"issued"`. Invoices will be marked `"paid"` upon confirmation of successful automatic payment collection by Orb. Invoices synced to an external billing provider (such as Bill.com, QuickBooks, or Stripe Invoicing) will be marked as `"synced"`.
+type InvoiceStatus string
 
 const (
-	InvoiceStatusEnumIssued InvoiceStatusEnum = "issued"
-	InvoiceStatusEnumPaid   InvoiceStatusEnum = "paid"
-	InvoiceStatusEnumSynced InvoiceStatusEnum = "synced"
+	InvoiceStatusIssued InvoiceStatus = "issued"
+	InvoiceStatusPaid   InvoiceStatus = "paid"
+	InvoiceStatusSynced InvoiceStatus = "synced"
 )
 
-func (e InvoiceStatusEnum) ToPointer() *InvoiceStatusEnum {
+func (e InvoiceStatus) ToPointer() *InvoiceStatus {
 	return &e
 }
 
-func (e *InvoiceStatusEnum) UnmarshalJSON(data []byte) error {
+func (e *InvoiceStatus) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -129,10 +129,10 @@ func (e *InvoiceStatusEnum) UnmarshalJSON(data []byte) error {
 	case "paid":
 		fallthrough
 	case "synced":
-		*e = InvoiceStatusEnum(v)
+		*e = InvoiceStatus(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for InvoiceStatusEnum: %v", v)
+		return fmt.Errorf("invalid value for InvoiceStatus: %v", v)
 	}
 }
 
@@ -165,7 +165,7 @@ type Invoice struct {
 	LineItems []InvoiceLineItems     `json:"line_items"`
 	Minimum   map[string]interface{} `json:"minimum"`
 	// The status of this invoice as known to Orb. Invoices that have been issued for past billing periods are marked `"issued"`. Invoices will be marked `"paid"` upon confirmation of successful automatic payment collection by Orb. Invoices synced to an external billing provider (such as Bill.com, QuickBooks, or Stripe Invoicing) will be marked as `"synced"`.
-	Status *InvoiceStatusEnum `json:"status,omitempty"`
+	Status *InvoiceStatus `json:"status,omitempty"`
 	// The associated subscription for this invoice.
 	Subscription InvoiceSubscription `json:"subscription"`
 	// The total before any discounts and minimums are applied.

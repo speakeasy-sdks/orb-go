@@ -9,19 +9,19 @@ import (
 	"net/http"
 )
 
-// GetCustomersCustomerIDCreditsLedgerEntryStatusEnum - Filters to a single status of ledger entry
-type GetCustomersCustomerIDCreditsLedgerEntryStatusEnum string
+// GetCustomersCustomerIDCreditsLedgerEntryStatus - Filters to a single status of ledger entry
+type GetCustomersCustomerIDCreditsLedgerEntryStatus string
 
 const (
-	GetCustomersCustomerIDCreditsLedgerEntryStatusEnumCommitted GetCustomersCustomerIDCreditsLedgerEntryStatusEnum = "committed"
-	GetCustomersCustomerIDCreditsLedgerEntryStatusEnumPending   GetCustomersCustomerIDCreditsLedgerEntryStatusEnum = "pending"
+	GetCustomersCustomerIDCreditsLedgerEntryStatusCommitted GetCustomersCustomerIDCreditsLedgerEntryStatus = "committed"
+	GetCustomersCustomerIDCreditsLedgerEntryStatusPending   GetCustomersCustomerIDCreditsLedgerEntryStatus = "pending"
 )
 
-func (e GetCustomersCustomerIDCreditsLedgerEntryStatusEnum) ToPointer() *GetCustomersCustomerIDCreditsLedgerEntryStatusEnum {
+func (e GetCustomersCustomerIDCreditsLedgerEntryStatus) ToPointer() *GetCustomersCustomerIDCreditsLedgerEntryStatus {
 	return &e
 }
 
-func (e *GetCustomersCustomerIDCreditsLedgerEntryStatusEnum) UnmarshalJSON(data []byte) error {
+func (e *GetCustomersCustomerIDCreditsLedgerEntryStatus) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -30,28 +30,28 @@ func (e *GetCustomersCustomerIDCreditsLedgerEntryStatusEnum) UnmarshalJSON(data 
 	case "committed":
 		fallthrough
 	case "pending":
-		*e = GetCustomersCustomerIDCreditsLedgerEntryStatusEnum(v)
+		*e = GetCustomersCustomerIDCreditsLedgerEntryStatus(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for GetCustomersCustomerIDCreditsLedgerEntryStatusEnum: %v", v)
+		return fmt.Errorf("invalid value for GetCustomersCustomerIDCreditsLedgerEntryStatus: %v", v)
 	}
 }
 
-// GetCustomersCustomerIDCreditsLedgerEntryTypeEnum - Filter to a single type of ledger entry
-type GetCustomersCustomerIDCreditsLedgerEntryTypeEnum string
+// GetCustomersCustomerIDCreditsLedgerEntryType - Filter to a single type of ledger entry
+type GetCustomersCustomerIDCreditsLedgerEntryType string
 
 const (
-	GetCustomersCustomerIDCreditsLedgerEntryTypeEnumIncrement         GetCustomersCustomerIDCreditsLedgerEntryTypeEnum = "increment"
-	GetCustomersCustomerIDCreditsLedgerEntryTypeEnumDecrement         GetCustomersCustomerIDCreditsLedgerEntryTypeEnum = "decrement"
-	GetCustomersCustomerIDCreditsLedgerEntryTypeEnumExpirationChange  GetCustomersCustomerIDCreditsLedgerEntryTypeEnum = "expiration_change"
-	GetCustomersCustomerIDCreditsLedgerEntryTypeEnumCreditBlockExpiry GetCustomersCustomerIDCreditsLedgerEntryTypeEnum = "credit_block_expiry"
+	GetCustomersCustomerIDCreditsLedgerEntryTypeIncrement         GetCustomersCustomerIDCreditsLedgerEntryType = "increment"
+	GetCustomersCustomerIDCreditsLedgerEntryTypeDecrement         GetCustomersCustomerIDCreditsLedgerEntryType = "decrement"
+	GetCustomersCustomerIDCreditsLedgerEntryTypeExpirationChange  GetCustomersCustomerIDCreditsLedgerEntryType = "expiration_change"
+	GetCustomersCustomerIDCreditsLedgerEntryTypeCreditBlockExpiry GetCustomersCustomerIDCreditsLedgerEntryType = "credit_block_expiry"
 )
 
-func (e GetCustomersCustomerIDCreditsLedgerEntryTypeEnum) ToPointer() *GetCustomersCustomerIDCreditsLedgerEntryTypeEnum {
+func (e GetCustomersCustomerIDCreditsLedgerEntryType) ToPointer() *GetCustomersCustomerIDCreditsLedgerEntryType {
 	return &e
 }
 
-func (e *GetCustomersCustomerIDCreditsLedgerEntryTypeEnum) UnmarshalJSON(data []byte) error {
+func (e *GetCustomersCustomerIDCreditsLedgerEntryType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -64,19 +64,19 @@ func (e *GetCustomersCustomerIDCreditsLedgerEntryTypeEnum) UnmarshalJSON(data []
 	case "expiration_change":
 		fallthrough
 	case "credit_block_expiry":
-		*e = GetCustomersCustomerIDCreditsLedgerEntryTypeEnum(v)
+		*e = GetCustomersCustomerIDCreditsLedgerEntryType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for GetCustomersCustomerIDCreditsLedgerEntryTypeEnum: %v", v)
+		return fmt.Errorf("invalid value for GetCustomersCustomerIDCreditsLedgerEntryType: %v", v)
 	}
 }
 
 type GetCustomersCustomerIDCreditsLedgerRequest struct {
 	CustomerID string `pathParam:"style=simple,explode=false,name=customer_id"`
 	// Filters to a single status of ledger entry
-	EntryStatus *GetCustomersCustomerIDCreditsLedgerEntryStatusEnum `queryParam:"style=form,explode=true,name=entry_status"`
+	EntryStatus *GetCustomersCustomerIDCreditsLedgerEntryStatus `queryParam:"style=form,explode=true,name=entry_status"`
 	// Filter to a single type of ledger entry
-	EntryType *GetCustomersCustomerIDCreditsLedgerEntryTypeEnum `queryParam:"style=form,explode=true,name=entry_type"`
+	EntryType *GetCustomersCustomerIDCreditsLedgerEntryType `queryParam:"style=form,explode=true,name=entry_type"`
 	// Filter to ledger entries that affect at least this amount
 	MinimumAmount *float64 `queryParam:"style=form,explode=true,name=minimum_amount"`
 }

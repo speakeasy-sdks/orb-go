@@ -53,6 +53,8 @@ func (s *customer) Create(ctx context.Context, request operations.PostCustomersR
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	req.Header.Set("Content-Type", reqContentType)
 
@@ -105,6 +107,8 @@ func (s *customer) Get(ctx context.Context, request operations.GetCustomersCusto
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	client := s.securityClient
 
@@ -165,6 +169,8 @@ func (s *customer) GetBalance(ctx context.Context, request operations.GetCustome
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	client := s.securityClient
 
@@ -215,6 +221,8 @@ func (s *customer) GetByExternalID(ctx context.Context, request operations.GetCu
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	client := s.securityClient
 
@@ -325,6 +333,8 @@ func (s *customer) GetCosts(ctx context.Context, request operations.GetCustomerC
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
@@ -377,6 +387,8 @@ func (s *customer) GetCostsByExternalID(ctx context.Context, request operations.
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
@@ -429,6 +441,8 @@ func (s *customer) List(ctx context.Context) (*operations.ListCustomersResponse,
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	client := s.securityClient
 
@@ -484,6 +498,8 @@ func (s *customer) Update(ctx context.Context, request operations.PutCustomersCu
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	req.Header.Set("Content-Type", reqContentType)
 
@@ -541,6 +557,8 @@ func (s *customer) UpdateByExternalID(ctx context.Context, request operations.Pu
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	req.Header.Set("Content-Type", reqContentType)
 
@@ -649,6 +667,8 @@ func (s *customer) UpdateUsage(ctx context.Context, request operations.PatchCust
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
+	req.Header.Set("Accept", "application/json;q=1, application/json;q=0")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	req.Header.Set("Content-Type", reqContentType)
 
@@ -718,6 +738,8 @@ func (s *customer) UpdateUsageByExternalID(ctx context.Context, request operatio
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
+	req.Header.Set("Accept", "application/json;q=1, application/json;q=0")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	req.Header.Set("Content-Type", reqContentType)
 

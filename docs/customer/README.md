@@ -60,7 +60,7 @@ func main() {
         Email: "Lexie_Howe68@gmail.com",
         ExternalCustomerID: sdk.String("in"),
         Name: "Sheryl Kertzmann",
-        PaymentProvider: operations.PostCustomersRequestBodyPaymentProviderEnumQuickbooks.ToPointer(),
+        PaymentProvider: operations.PostCustomersRequestBodyPaymentProviderQuickbooks.ToPointer(),
         PaymentProviderID: sdk.String("ipsa"),
         ShippingAddress: &operations.PostCustomersRequestBodyShippingAddress{
             City: sdk.String("Parma"),
@@ -305,7 +305,7 @@ func main() {
         GroupBy: sdk.String("iure"),
         TimeframeEnd: sdk.String("2022-03-01T05:00:00Z"),
         TimeframeStart: types.MustTimeFromString("2022-02-01T05:00:00Z"),
-        ViewMode: operations.GetCustomerCostsViewModeEnumCumulative.ToPointer(),
+        ViewMode: operations.GetCustomerCostsViewModeCumulative.ToPointer(),
     })
     if err != nil {
         log.Fatal(err)
@@ -347,7 +347,7 @@ func main() {
         GroupBy: sdk.String("sapiente"),
         TimeframeEnd: sdk.String("2022-03-01T05:00:00Z"),
         TimeframeStart: types.MustTimeFromString("2022-02-01T05:00:00Z"),
-        ViewMode: operations.GetExternalCustomerCostsViewModeEnumPeriodic.ToPointer(),
+        ViewMode: operations.GetExternalCustomerCostsViewModePeriodic.ToPointer(),
     })
     if err != nil {
         log.Fatal(err)
@@ -435,7 +435,7 @@ func main() {
             },
             Email: sdk.String("Madison77@hotmail.com"),
             Name: sdk.String("Mandy Hills"),
-            PaymentProvider: operations.PutCustomersCustomerIDRequestBodyPaymentProviderEnumStripeInvoice.ToPointer(),
+            PaymentProvider: operations.PutCustomersCustomerIDRequestBodyPaymentProviderStripeInvoice.ToPointer(),
             PaymentProviderID: sdk.String("quasi"),
             ShippingAddress: &operations.PutCustomersCustomerIDRequestBodyShippingAddress{
                 City: sdk.String("Smithamchester"),
@@ -496,7 +496,7 @@ func main() {
             },
             Email: sdk.String("Curt_Pouros@gmail.com"),
             Name: sdk.String("Joel Lang"),
-            PaymentProvider: operations.PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnumQuickbooks.ToPointer(),
+            PaymentProvider: operations.PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderQuickbooks.ToPointer(),
             PaymentProviderID: sdk.String("repudiandae"),
             ShippingAddress: &operations.PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyShippingAddress{
                 City: sdk.String("Arnoldoshire"),

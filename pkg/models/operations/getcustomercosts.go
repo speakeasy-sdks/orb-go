@@ -10,19 +10,19 @@ import (
 	"time"
 )
 
-// GetCustomerCostsViewModeEnum - Controls whether Orb returns cumulative costs since the start of the billing period, or incremental day-by-day costs. If your customer has minimums or discounts, it's strongly recommended that you use the default cumulative behavior.
-type GetCustomerCostsViewModeEnum string
+// GetCustomerCostsViewMode - Controls whether Orb returns cumulative costs since the start of the billing period, or incremental day-by-day costs. If your customer has minimums or discounts, it's strongly recommended that you use the default cumulative behavior.
+type GetCustomerCostsViewMode string
 
 const (
-	GetCustomerCostsViewModeEnumPeriodic   GetCustomerCostsViewModeEnum = "periodic"
-	GetCustomerCostsViewModeEnumCumulative GetCustomerCostsViewModeEnum = "cumulative"
+	GetCustomerCostsViewModePeriodic   GetCustomerCostsViewMode = "periodic"
+	GetCustomerCostsViewModeCumulative GetCustomerCostsViewMode = "cumulative"
 )
 
-func (e GetCustomerCostsViewModeEnum) ToPointer() *GetCustomerCostsViewModeEnum {
+func (e GetCustomerCostsViewMode) ToPointer() *GetCustomerCostsViewMode {
 	return &e
 }
 
-func (e *GetCustomerCostsViewModeEnum) UnmarshalJSON(data []byte) error {
+func (e *GetCustomerCostsViewMode) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -31,10 +31,10 @@ func (e *GetCustomerCostsViewModeEnum) UnmarshalJSON(data []byte) error {
 	case "periodic":
 		fallthrough
 	case "cumulative":
-		*e = GetCustomerCostsViewModeEnum(v)
+		*e = GetCustomerCostsViewMode(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for GetCustomerCostsViewModeEnum: %v", v)
+		return fmt.Errorf("invalid value for GetCustomerCostsViewMode: %v", v)
 	}
 }
 
@@ -48,7 +48,7 @@ type GetCustomerCostsRequest struct {
 	// Costs returned are inclusive of `timeframe_start`.
 	TimeframeStart *time.Time `queryParam:"style=form,explode=true,name=timeframe_start"`
 	// Controls whether Orb returns cumulative costs since the start of the billing period, or incremental day-by-day costs. If your customer has minimums or discounts, it's strongly recommended that you use the default cumulative behavior.
-	ViewMode *GetCustomerCostsViewModeEnum `queryParam:"style=form,explode=true,name=view_mode"`
+	ViewMode *GetCustomerCostsViewMode `queryParam:"style=form,explode=true,name=view_mode"`
 }
 
 type GetCustomerCosts200ApplicationJSONDataPerPriceCostsPriceGroups struct {

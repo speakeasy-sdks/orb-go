@@ -10,19 +10,19 @@ import (
 	"net/http"
 )
 
-type PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeEnum string
+type PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryType string
 
 const (
-	PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeEnumIncrement        PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeEnum = "increment"
-	PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeEnumDecrement        PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeEnum = "decrement"
-	PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeEnumExpirationChange PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeEnum = "expiration_change"
+	PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeIncrement        PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryType = "increment"
+	PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeDecrement        PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryType = "decrement"
+	PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeExpirationChange PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryType = "expiration_change"
 )
 
-func (e PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeEnum) ToPointer() *PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeEnum {
+func (e PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryType) ToPointer() *PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryType {
 	return &e
 }
 
-func (e *PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeEnum) UnmarshalJSON(data []byte) error {
+func (e *PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -33,10 +33,10 @@ func (e *PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeEnum) Unma
 	case "decrement":
 		fallthrough
 	case "expiration_change":
-		*e = PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeEnum(v)
+		*e = PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeEnum: %v", v)
+		return fmt.Errorf("invalid value for PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryType: %v", v)
 	}
 }
 
@@ -45,8 +45,8 @@ type PostCustomersCustomerIDCreditsLedgerEntryRequestBody struct {
 	// The ID of the block affected by an `expiration_change`
 	BlockID *string `json:"block_id,omitempty"`
 	// Optional metadata that can be specified when adding ledger results via the API. For example, this can be used to note an increment refers to trial credits, or for noting corrections as a result of an incident, etc.
-	Description *string                                                           `json:"description,omitempty"`
-	EntryType   PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeEnum `json:"entry_type"`
+	Description *string                                                       `json:"description,omitempty"`
+	EntryType   PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryType `json:"entry_type"`
 	// A future date (specified in YYYY-MM-DD format) that denotes when this credit balance should expire.
 	//
 	//

@@ -39,19 +39,19 @@ type PriceBulkConfig struct {
 	Tiers []PriceBulkConfigTiers `json:"tiers,omitempty"`
 }
 
-type PriceCadenceEnum string
+type PriceCadence string
 
 const (
-	PriceCadenceEnumAnnual    PriceCadenceEnum = "annual"
-	PriceCadenceEnumMonthly   PriceCadenceEnum = "monthly"
-	PriceCadenceEnumQuarterly PriceCadenceEnum = "quarterly"
+	PriceCadenceAnnual    PriceCadence = "annual"
+	PriceCadenceMonthly   PriceCadence = "monthly"
+	PriceCadenceQuarterly PriceCadence = "quarterly"
 )
 
-func (e PriceCadenceEnum) ToPointer() *PriceCadenceEnum {
+func (e PriceCadence) ToPointer() *PriceCadence {
 	return &e
 }
 
-func (e *PriceCadenceEnum) UnmarshalJSON(data []byte) error {
+func (e *PriceCadence) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -62,10 +62,10 @@ func (e *PriceCadenceEnum) UnmarshalJSON(data []byte) error {
 	case "monthly":
 		fallthrough
 	case "quarterly":
-		*e = PriceCadenceEnum(v)
+		*e = PriceCadence(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PriceCadenceEnum: %v", v)
+		return fmt.Errorf("invalid value for PriceCadence: %v", v)
 	}
 }
 
@@ -81,24 +81,24 @@ type PriceMatrixConfig struct {
 	MatrixValues      []PriceMatrixConfigMatrixValues `json:"matrix_values,omitempty"`
 }
 
-type PriceModelTypeEnum string
+type PriceModelType string
 
 const (
-	PriceModelTypeEnumUnit      PriceModelTypeEnum = "unit"
-	PriceModelTypeEnumTiered    PriceModelTypeEnum = "tiered"
-	PriceModelTypeEnumBulk      PriceModelTypeEnum = "bulk"
-	PriceModelTypeEnumPackage   PriceModelTypeEnum = "package"
-	PriceModelTypeEnumBps       PriceModelTypeEnum = "bps"
-	PriceModelTypeEnumTieredBps PriceModelTypeEnum = "tiered_bps"
-	PriceModelTypeEnumBulkBps   PriceModelTypeEnum = "bulk_bps"
-	PriceModelTypeEnumMatrix    PriceModelTypeEnum = "matrix"
+	PriceModelTypeUnit      PriceModelType = "unit"
+	PriceModelTypeTiered    PriceModelType = "tiered"
+	PriceModelTypeBulk      PriceModelType = "bulk"
+	PriceModelTypePackage   PriceModelType = "package"
+	PriceModelTypeBps       PriceModelType = "bps"
+	PriceModelTypeTieredBps PriceModelType = "tiered_bps"
+	PriceModelTypeBulkBps   PriceModelType = "bulk_bps"
+	PriceModelTypeMatrix    PriceModelType = "matrix"
 )
 
-func (e PriceModelTypeEnum) ToPointer() *PriceModelTypeEnum {
+func (e PriceModelType) ToPointer() *PriceModelType {
 	return &e
 }
 
-func (e *PriceModelTypeEnum) UnmarshalJSON(data []byte) error {
+func (e *PriceModelType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -119,10 +119,10 @@ func (e *PriceModelTypeEnum) UnmarshalJSON(data []byte) error {
 	case "bulk_bps":
 		fallthrough
 	case "matrix":
-		*e = PriceModelTypeEnum(v)
+		*e = PriceModelType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PriceModelTypeEnum: %v", v)
+		return fmt.Errorf("invalid value for PriceModelType: %v", v)
 	}
 }
 
@@ -361,9 +361,9 @@ type Price struct {
 	// Provided when model_type is `bulk_bps`
 	BulkBpsConfig *PriceBulkBpsConfig `json:"bulk_bps_config,omitempty"`
 	// Provided when model_type is `bulk`
-	BulkConfig *PriceBulkConfig  `json:"bulk_config,omitempty"`
-	Cadence    *PriceCadenceEnum `json:"cadence,omitempty"`
-	CreatedAt  *time.Time        `json:"created_at,omitempty"`
+	BulkConfig *PriceBulkConfig `json:"bulk_config,omitempty"`
+	Cadence    *PriceCadence    `json:"cadence,omitempty"`
+	CreatedAt  *time.Time       `json:"created_at,omitempty"`
 	// An ISO 4217 currency string for this plan's prices.
 	Currency string                 `json:"currency"`
 	Discount map[string]interface{} `json:"discount"`
@@ -373,7 +373,7 @@ type Price struct {
 	// Provided when model_type is `matrix`
 	MatrixConfig *PriceMatrixConfig     `json:"matrix_config,omitempty"`
 	Minimum      map[string]interface{} `json:"minimum"`
-	ModelType    *PriceModelTypeEnum    `json:"model_type,omitempty"`
+	ModelType    *PriceModelType        `json:"model_type,omitempty"`
 	Name         *string                `json:"name,omitempty"`
 	// Provided when model_type is `package`
 	PackageConfig *PricePackageConfig `json:"package_config,omitempty"`

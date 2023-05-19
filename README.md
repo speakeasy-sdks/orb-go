@@ -52,7 +52,7 @@ func main() {
         Email: "Geraldine_Kreiger52@gmail.com",
         ExternalCustomerID: sdk.String("iusto"),
         Name: "Charlie Walsh II",
-        PaymentProvider: operations.PostCustomersRequestBodyPaymentProviderEnumQuickbooks.ToPointer(),
+        PaymentProvider: operations.PostCustomersRequestBodyPaymentProviderQuickbooks.ToPointer(),
         PaymentProviderID: sdk.String("deserunt"),
         ShippingAddress: &operations.PostCustomersRequestBodyShippingAddress{
             City: sdk.String("West Ritaworth"),

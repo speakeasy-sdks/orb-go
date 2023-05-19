@@ -9,19 +9,19 @@ import (
 	"net/http"
 )
 
-// PostSubscriptionsSubscriptionIDCancelCancelOptionEnum - Determines the timing of subscription cancellation
-type PostSubscriptionsSubscriptionIDCancelCancelOptionEnum string
+// PostSubscriptionsSubscriptionIDCancelCancelOption - Determines the timing of subscription cancellation
+type PostSubscriptionsSubscriptionIDCancelCancelOption string
 
 const (
-	PostSubscriptionsSubscriptionIDCancelCancelOptionEnumEndOfSubscriptionTerm PostSubscriptionsSubscriptionIDCancelCancelOptionEnum = "end_of_subscription_term"
-	PostSubscriptionsSubscriptionIDCancelCancelOptionEnumImmediate             PostSubscriptionsSubscriptionIDCancelCancelOptionEnum = "immediate"
+	PostSubscriptionsSubscriptionIDCancelCancelOptionEndOfSubscriptionTerm PostSubscriptionsSubscriptionIDCancelCancelOption = "end_of_subscription_term"
+	PostSubscriptionsSubscriptionIDCancelCancelOptionImmediate             PostSubscriptionsSubscriptionIDCancelCancelOption = "immediate"
 )
 
-func (e PostSubscriptionsSubscriptionIDCancelCancelOptionEnum) ToPointer() *PostSubscriptionsSubscriptionIDCancelCancelOptionEnum {
+func (e PostSubscriptionsSubscriptionIDCancelCancelOption) ToPointer() *PostSubscriptionsSubscriptionIDCancelCancelOption {
 	return &e
 }
 
-func (e *PostSubscriptionsSubscriptionIDCancelCancelOptionEnum) UnmarshalJSON(data []byte) error {
+func (e *PostSubscriptionsSubscriptionIDCancelCancelOption) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -30,17 +30,17 @@ func (e *PostSubscriptionsSubscriptionIDCancelCancelOptionEnum) UnmarshalJSON(da
 	case "end_of_subscription_term":
 		fallthrough
 	case "immediate":
-		*e = PostSubscriptionsSubscriptionIDCancelCancelOptionEnum(v)
+		*e = PostSubscriptionsSubscriptionIDCancelCancelOption(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDCancelCancelOptionEnum: %v", v)
+		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDCancelCancelOption: %v", v)
 	}
 }
 
 type PostSubscriptionsSubscriptionIDCancelRequest struct {
 	// Determines the timing of subscription cancellation
-	CancelOption   PostSubscriptionsSubscriptionIDCancelCancelOptionEnum `queryParam:"style=form,explode=true,name=cancel_option"`
-	SubscriptionID string                                                `pathParam:"style=simple,explode=false,name=subscription_id"`
+	CancelOption   PostSubscriptionsSubscriptionIDCancelCancelOption `queryParam:"style=form,explode=true,name=cancel_option"`
+	SubscriptionID string                                            `pathParam:"style=simple,explode=false,name=subscription_id"`
 }
 
 type PostSubscriptionsSubscriptionIDCancelResponse struct {

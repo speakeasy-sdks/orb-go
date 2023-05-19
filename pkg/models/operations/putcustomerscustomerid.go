@@ -21,24 +21,24 @@ type PutCustomersCustomerIDRequestBodyBillingAddress struct {
 	State      *string `json:"state,omitempty"`
 }
 
-// PutCustomersCustomerIDRequestBodyPaymentProviderEnum - This is used for creating charges or invoices in an external system via Orb. When not in test mode:
+// PutCustomersCustomerIDRequestBodyPaymentProvider - This is used for creating charges or invoices in an external system via Orb. When not in test mode:
 // - the connection must first be configured in the Orb webapp.
 // - if the provider is an invoicing provider (`stripe_invoice`, `quickbooks`, `bill.com`), any product mappings must first be configured with the Orb team.
-type PutCustomersCustomerIDRequestBodyPaymentProviderEnum string
+type PutCustomersCustomerIDRequestBodyPaymentProvider string
 
 const (
-	PutCustomersCustomerIDRequestBodyPaymentProviderEnumStripeInvoice          PutCustomersCustomerIDRequestBodyPaymentProviderEnum = "stripe_invoice"
-	PutCustomersCustomerIDRequestBodyPaymentProviderEnumQuickbooks             PutCustomersCustomerIDRequestBodyPaymentProviderEnum = "quickbooks"
-	PutCustomersCustomerIDRequestBodyPaymentProviderEnumBillCom                PutCustomersCustomerIDRequestBodyPaymentProviderEnum = "bill.com"
-	PutCustomersCustomerIDRequestBodyPaymentProviderEnumStripeCharge           PutCustomersCustomerIDRequestBodyPaymentProviderEnum = "stripe_charge"
-	PutCustomersCustomerIDRequestBodyPaymentProviderEnumLessThanNilGreaterThan PutCustomersCustomerIDRequestBodyPaymentProviderEnum = "<nil>"
+	PutCustomersCustomerIDRequestBodyPaymentProviderStripeInvoice          PutCustomersCustomerIDRequestBodyPaymentProvider = "stripe_invoice"
+	PutCustomersCustomerIDRequestBodyPaymentProviderQuickbooks             PutCustomersCustomerIDRequestBodyPaymentProvider = "quickbooks"
+	PutCustomersCustomerIDRequestBodyPaymentProviderBillCom                PutCustomersCustomerIDRequestBodyPaymentProvider = "bill.com"
+	PutCustomersCustomerIDRequestBodyPaymentProviderStripeCharge           PutCustomersCustomerIDRequestBodyPaymentProvider = "stripe_charge"
+	PutCustomersCustomerIDRequestBodyPaymentProviderLessThanNilGreaterThan PutCustomersCustomerIDRequestBodyPaymentProvider = "<nil>"
 )
 
-func (e PutCustomersCustomerIDRequestBodyPaymentProviderEnum) ToPointer() *PutCustomersCustomerIDRequestBodyPaymentProviderEnum {
+func (e PutCustomersCustomerIDRequestBodyPaymentProvider) ToPointer() *PutCustomersCustomerIDRequestBodyPaymentProvider {
 	return &e
 }
 
-func (e *PutCustomersCustomerIDRequestBodyPaymentProviderEnum) UnmarshalJSON(data []byte) error {
+func (e *PutCustomersCustomerIDRequestBodyPaymentProvider) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -53,10 +53,10 @@ func (e *PutCustomersCustomerIDRequestBodyPaymentProviderEnum) UnmarshalJSON(dat
 	case "stripe_charge":
 		fallthrough
 	case "<nil>":
-		*e = PutCustomersCustomerIDRequestBodyPaymentProviderEnum(v)
+		*e = PutCustomersCustomerIDRequestBodyPaymentProvider(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PutCustomersCustomerIDRequestBodyPaymentProviderEnum: %v", v)
+		return fmt.Errorf("invalid value for PutCustomersCustomerIDRequestBodyPaymentProvider: %v", v)
 	}
 }
 
@@ -82,7 +82,7 @@ type PutCustomersCustomerIDRequestBody struct {
 	// This is used for creating charges or invoices in an external system via Orb. When not in test mode:
 	// - the connection must first be configured in the Orb webapp.
 	// - if the provider is an invoicing provider (`stripe_invoice`, `quickbooks`, `bill.com`), any product mappings must first be configured with the Orb team.
-	PaymentProvider *PutCustomersCustomerIDRequestBodyPaymentProviderEnum `json:"payment_provider,omitempty"`
+	PaymentProvider *PutCustomersCustomerIDRequestBodyPaymentProvider `json:"payment_provider,omitempty"`
 	// The ID of this customer in an external payments solution, such as Stripe. This is used for creating charges or invoices in the external system via Orb.
 	PaymentProviderID *string `json:"payment_provider_id,omitempty"`
 	// The customer's shipping address; all fields in the address are optional. Note that downstream tax calculations are based on the shipping address.

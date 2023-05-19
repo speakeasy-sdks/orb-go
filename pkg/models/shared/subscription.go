@@ -8,19 +8,19 @@ import (
 	"time"
 )
 
-type SubscriptionStatusEnum string
+type SubscriptionStatus string
 
 const (
-	SubscriptionStatusEnumActive   SubscriptionStatusEnum = "active"
-	SubscriptionStatusEnumEnded    SubscriptionStatusEnum = "ended"
-	SubscriptionStatusEnumUpcoming SubscriptionStatusEnum = "upcoming"
+	SubscriptionStatusActive   SubscriptionStatus = "active"
+	SubscriptionStatusEnded    SubscriptionStatus = "ended"
+	SubscriptionStatusUpcoming SubscriptionStatus = "upcoming"
 )
 
-func (e SubscriptionStatusEnum) ToPointer() *SubscriptionStatusEnum {
+func (e SubscriptionStatus) ToPointer() *SubscriptionStatus {
 	return &e
 }
 
-func (e *SubscriptionStatusEnum) UnmarshalJSON(data []byte) error {
+func (e *SubscriptionStatus) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -31,10 +31,10 @@ func (e *SubscriptionStatusEnum) UnmarshalJSON(data []byte) error {
 	case "ended":
 		fallthrough
 	case "upcoming":
-		*e = SubscriptionStatusEnum(v)
+		*e = SubscriptionStatus(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for SubscriptionStatusEnum: %v", v)
+		return fmt.Errorf("invalid value for SubscriptionStatus: %v", v)
 	}
 }
 
@@ -66,6 +66,6 @@ type Subscription struct {
 	ID      string    `json:"id"`
 	Plan    Plan      `json:"plan"`
 	// The date Orb starts billing for this subscription.
-	StartDate time.Time              `json:"start_date"`
-	Status    SubscriptionStatusEnum `json:"status"`
+	StartDate time.Time          `json:"start_date"`
+	Status    SubscriptionStatus `json:"status"`
 }

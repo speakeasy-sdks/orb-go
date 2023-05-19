@@ -56,7 +56,7 @@ func main() {
 
     ctx := context.Background()
     res, err := s.Subscription.Cancel(ctx, operations.PostSubscriptionsSubscriptionIDCancelRequest{
-        CancelOption: operations.PostSubscriptionsSubscriptionIDCancelCancelOptionEnumImmediate,
+        CancelOption: operations.PostSubscriptionsSubscriptionIDCancelCancelOptionImmediate,
         SubscriptionID: "similique",
     })
     if err != nil {
@@ -116,7 +116,7 @@ func main() {
         RequestBody: &operations.PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBody{
             AlignBillingWithPlanChangeDate: sdk.Bool(false),
             ChangeDate: types.MustDateFromString("2022-01-01"),
-            ChangeOption: operations.PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnumRequestedDate,
+            ChangeOption: operations.PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionRequestedDate,
             ExternalPlanID: sdk.String("ZMwNQefe7J3ecf7W"),
             MinimumAmount: sdk.String("1.23"),
             PlanID: sdk.String("ZMwNQefe7J3ecf7W"),
@@ -509,7 +509,7 @@ func main() {
         AlignBillingWithSubscriptionStartDate: sdk.Bool(false),
         CustomerID: sdk.String("97DPcZE9hxsbb9Y9"),
         ExternalCustomerID: sdk.String("beatae"),
-        ExternalMarketplace: operations.PostSubscriptionsRequestBodyExternalMarketplaceEnumGoogle.ToPointer(),
+        ExternalMarketplace: operations.PostSubscriptionsRequestBodyExternalMarketplaceGoogle.ToPointer(),
         ExternalMarketplaceReportingID: sdk.String("project_number:983410661111"),
         ExternalPlanID: sdk.String("unde"),
         MinimumAmount: sdk.String("1.23"),
@@ -818,7 +818,7 @@ func main() {
     ctx := context.Background()
     res, err := s.Subscription.GetUsage(ctx, operations.GetSubscriptionsSubscriptionIDUsageRequest{
         BillableMetricID: sdk.String("corporis"),
-        Granularity: operations.GetSubscriptionsSubscriptionIDUsageGranularityEnumDay.ToPointer(),
+        Granularity: operations.GetSubscriptionsSubscriptionIDUsageGranularityDay.ToPointer(),
         GroupBy: sdk.String("magnam"),
         SubscriptionID: "voluptates",
         TimeframeEnd: types.MustTimeFromString("2022-02-02T05:00:00Z"),

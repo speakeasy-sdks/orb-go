@@ -21,24 +21,24 @@ type PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyBillingAddress s
 	State      *string `json:"state,omitempty"`
 }
 
-// PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum - This is used for creating charges or invoices in an external system via Orb. When not in test mode:
+// PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProvider - This is used for creating charges or invoices in an external system via Orb. When not in test mode:
 // - the connection must first be configured in the Orb webapp.
 // - if the provider is an invoicing provider (`stripe_invoice`, `quickbooks`, `bill.com`), any product mappings must first be configured with the Orb team.
-type PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum string
+type PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProvider string
 
 const (
-	PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnumQuickbooks             PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum = "quickbooks"
-	PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnumStripeCharge           PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum = "stripe_charge"
-	PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnumStripeInvoice          PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum = "stripe_invoice"
-	PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnumBillCom                PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum = "bill.com"
-	PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnumLessThanNilGreaterThan PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum = "<nil>"
+	PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderQuickbooks             PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProvider = "quickbooks"
+	PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderStripeCharge           PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProvider = "stripe_charge"
+	PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderStripeInvoice          PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProvider = "stripe_invoice"
+	PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderBillCom                PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProvider = "bill.com"
+	PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderLessThanNilGreaterThan PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProvider = "<nil>"
 )
 
-func (e PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum) ToPointer() *PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum {
+func (e PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProvider) ToPointer() *PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProvider {
 	return &e
 }
 
-func (e *PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum) UnmarshalJSON(data []byte) error {
+func (e *PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProvider) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -53,10 +53,10 @@ func (e *PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProvi
 	case "bill.com":
 		fallthrough
 	case "<nil>":
-		*e = PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum(v)
+		*e = PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProvider(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum: %v", v)
+		return fmt.Errorf("invalid value for PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProvider: %v", v)
 	}
 }
 
@@ -80,7 +80,7 @@ type PutCustomersExternalCustomerIDExternalCustomerIDRequestBody struct {
 	// This is used for creating charges or invoices in an external system via Orb. When not in test mode:
 	// - the connection must first be configured in the Orb webapp.
 	// - if the provider is an invoicing provider (`stripe_invoice`, `quickbooks`, `bill.com`), any product mappings must first be configured with the Orb team.
-	PaymentProvider *PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderEnum `json:"payment_provider,omitempty"`
+	PaymentProvider *PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProvider `json:"payment_provider,omitempty"`
 	// The ID of this customer in an external payments solution, such as Stripe. This is used for creating charges or invoices in the external system via Orb.
 	PaymentProviderID *string `json:"payment_provider_id,omitempty"`
 	// The customer's shipping address; all fields in the address are optional. Note that downstream tax calculations are based on the shipping address.

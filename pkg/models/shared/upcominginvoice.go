@@ -34,19 +34,19 @@ type UpcomingInvoiceLineItemsSubLineItemsTierConfig struct {
 	UnitAmount string  `json:"unit_amount"`
 }
 
-// UpcomingInvoiceLineItemsSubLineItemsTypeEnum - An identifier for a sub line item that is specific to a pricing model.
-type UpcomingInvoiceLineItemsSubLineItemsTypeEnum string
+// UpcomingInvoiceLineItemsSubLineItemsType - An identifier for a sub line item that is specific to a pricing model.
+type UpcomingInvoiceLineItemsSubLineItemsType string
 
 const (
-	UpcomingInvoiceLineItemsSubLineItemsTypeEnumMatrix UpcomingInvoiceLineItemsSubLineItemsTypeEnum = "matrix"
-	UpcomingInvoiceLineItemsSubLineItemsTypeEnumTier   UpcomingInvoiceLineItemsSubLineItemsTypeEnum = "tier"
+	UpcomingInvoiceLineItemsSubLineItemsTypeMatrix UpcomingInvoiceLineItemsSubLineItemsType = "matrix"
+	UpcomingInvoiceLineItemsSubLineItemsTypeTier   UpcomingInvoiceLineItemsSubLineItemsType = "tier"
 )
 
-func (e UpcomingInvoiceLineItemsSubLineItemsTypeEnum) ToPointer() *UpcomingInvoiceLineItemsSubLineItemsTypeEnum {
+func (e UpcomingInvoiceLineItemsSubLineItemsType) ToPointer() *UpcomingInvoiceLineItemsSubLineItemsType {
 	return &e
 }
 
-func (e *UpcomingInvoiceLineItemsSubLineItemsTypeEnum) UnmarshalJSON(data []byte) error {
+func (e *UpcomingInvoiceLineItemsSubLineItemsType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -55,10 +55,10 @@ func (e *UpcomingInvoiceLineItemsSubLineItemsTypeEnum) UnmarshalJSON(data []byte
 	case "matrix":
 		fallthrough
 	case "tier":
-		*e = UpcomingInvoiceLineItemsSubLineItemsTypeEnum(v)
+		*e = UpcomingInvoiceLineItemsSubLineItemsType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for UpcomingInvoiceLineItemsSubLineItemsTypeEnum: %v", v)
+		return fmt.Errorf("invalid value for UpcomingInvoiceLineItemsSubLineItemsType: %v", v)
 	}
 }
 
@@ -72,7 +72,7 @@ type UpcomingInvoiceLineItemsSubLineItems struct {
 	// Only available if `type` is `tier`. Contains the range of units in this tier and the unit amount.
 	TierConfig *UpcomingInvoiceLineItemsSubLineItemsTierConfig `json:"tier_config,omitempty"`
 	// An identifier for a sub line item that is specific to a pricing model.
-	Type UpcomingInvoiceLineItemsSubLineItemsTypeEnum `json:"type"`
+	Type UpcomingInvoiceLineItemsSubLineItemsType `json:"type"`
 }
 
 type UpcomingInvoiceLineItems struct {

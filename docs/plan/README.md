@@ -113,7 +113,7 @@ func main() {
                         "voluptatem": "porro",
                     },
                     Duration: sdk.Int64(164694),
-                    DurationUnit: shared.PlanPhaseDurationUnitEnumQuarterly,
+                    DurationUnit: shared.PlanPhaseDurationUnitQuarterly,
                     Minimum: map[string]interface{}{
                         "eaque": "occaecati",
                         "rerum": "adipisci",
@@ -130,7 +130,7 @@ func main() {
                         "dolorem": "dolorem",
                     },
                     Duration: sdk.Int64(222443),
-                    DurationUnit: shared.PlanPhaseDurationUnitEnumMonthly,
+                    DurationUnit: shared.PlanPhaseDurationUnitMonthly,
                     Minimum: map[string]interface{}{
                         "hic": "excepturi",
                     },
@@ -168,7 +168,7 @@ func main() {
                             },
                         },
                     },
-                    Cadence: shared.PriceCadenceEnumAnnual.ToPointer(),
+                    Cadence: shared.PriceCadenceAnnual.ToPointer(),
                     CreatedAt: types.MustTimeFromString("2021-06-10T21:59:23.045Z"),
                     Currency: "USD",
                     Discount: map[string]interface{}{
@@ -206,7 +206,7 @@ func main() {
                     Minimum: map[string]interface{}{
                         "neque": "fugit",
                     },
-                    ModelType: shared.PriceModelTypeEnumTiered.ToPointer(),
+                    ModelType: shared.PriceModelTypeTiered.ToPointer(),
                     Name: sdk.String("Ashley Hermiston"),
                     PackageConfig: &shared.PricePackageConfig{
                         PackageAmount: sdk.String("voluptatem"),
@@ -295,7 +295,7 @@ func main() {
                             },
                         },
                     },
-                    Cadence: shared.PriceCadenceEnumMonthly.ToPointer(),
+                    Cadence: shared.PriceCadenceMonthly.ToPointer(),
                     CreatedAt: types.MustTimeFromString("2022-05-12T14:13:14.359Z"),
                     Currency: "USD",
                     Discount: map[string]interface{}{
@@ -342,7 +342,7 @@ func main() {
                         "tempora": "numquam",
                         "explicabo": "provident",
                     },
-                    ModelType: shared.PriceModelTypeEnumUnit.ToPointer(),
+                    ModelType: shared.PriceModelTypeUnit.ToPointer(),
                     Name: sdk.String("Megan Kuhlman"),
                     PackageConfig: &shared.PricePackageConfig{
                         PackageAmount: sdk.String("esse"),
@@ -401,7 +401,7 @@ func main() {
             },
             TrialConfig: &shared.PlanTrialConfig{
                 TrialPeriod: sdk.Float64(1288.6),
-                TrialPeriodUnit: shared.PlanTrialConfigTrialPeriodUnitEnumDays,
+                TrialPeriodUnit: shared.PlanTrialConfigTrialPeriodUnitDays,
             },
         },
         ExternalPlanID: "minima",
@@ -475,7 +475,7 @@ func main() {
                             "earum": "vel",
                         },
                         Duration: sdk.Int64(447378),
-                        DurationUnit: shared.PlanPhaseDurationUnitEnumMonthly,
+                        DurationUnit: shared.PlanPhaseDurationUnitMonthly,
                         Minimum: map[string]interface{}{
                             "illum": "soluta",
                             "accusantium": "aliquam",
@@ -491,7 +491,7 @@ func main() {
                             "dolorum": "architecto",
                         },
                         Duration: sdk.Int64(609178),
-                        DurationUnit: shared.PlanPhaseDurationUnitEnumAnnual,
+                        DurationUnit: shared.PlanPhaseDurationUnitAnnual,
                         Minimum: map[string]interface{}{
                             "at": "et",
                         },
@@ -543,7 +543,7 @@ func main() {
                                 },
                             },
                         },
-                        Cadence: shared.PriceCadenceEnumMonthly.ToPointer(),
+                        Cadence: shared.PriceCadenceMonthly.ToPointer(),
                         CreatedAt: types.MustTimeFromString("2021-09-23T14:56:28.537Z"),
                         Currency: "USD",
                         Discount: map[string]interface{}{
@@ -575,7 +575,7 @@ func main() {
                         Minimum: map[string]interface{}{
                             "voluptas": "voluptas",
                         },
-                        ModelType: shared.PriceModelTypeEnumBulk.ToPointer(),
+                        ModelType: shared.PriceModelTypeBulk.ToPointer(),
                         Name: sdk.String("Gayle Parisian"),
                         PackageConfig: &shared.PricePackageConfig{
                             PackageAmount: sdk.String("dolores"),
@@ -670,7 +670,7 @@ func main() {
                                 },
                             },
                         },
-                        Cadence: shared.PriceCadenceEnumMonthly.ToPointer(),
+                        Cadence: shared.PriceCadenceMonthly.ToPointer(),
                         CreatedAt: types.MustTimeFromString("2022-09-02T17:12:20.523Z"),
                         Currency: "USD",
                         Discount: map[string]interface{}{
@@ -703,7 +703,7 @@ func main() {
                             "saepe": "error",
                             "consequatur": "incidunt",
                         },
-                        ModelType: shared.PriceModelTypeEnumMatrix.ToPointer(),
+                        ModelType: shared.PriceModelTypeMatrix.ToPointer(),
                         Name: sdk.String("Ms. Opal Buckridge"),
                         PackageConfig: &shared.PricePackageConfig{
                             PackageAmount: sdk.String("quidem"),
@@ -792,7 +792,7 @@ func main() {
                                 },
                             },
                         },
-                        Cadence: shared.PriceCadenceEnumAnnual.ToPointer(),
+                        Cadence: shared.PriceCadenceAnnual.ToPointer(),
                         CreatedAt: types.MustTimeFromString("2021-04-24T18:03:33.752Z"),
                         Currency: "USD",
                         Discount: map[string]interface{}{
@@ -821,7 +821,7 @@ func main() {
                             "alias": "maiores",
                             "reiciendis": "dolores",
                         },
-                        ModelType: shared.PriceModelTypeEnumTieredBps.ToPointer(),
+                        ModelType: shared.PriceModelTypeTieredBps.ToPointer(),
                         Name: sdk.String("Joanne Parisian DVM"),
                         PackageConfig: &shared.PricePackageConfig{
                             PackageAmount: sdk.String("omnis"),
@@ -891,7 +891,7 @@ func main() {
                                 },
                             },
                         },
-                        Cadence: shared.PriceCadenceEnumQuarterly.ToPointer(),
+                        Cadence: shared.PriceCadenceQuarterly.ToPointer(),
                         CreatedAt: types.MustTimeFromString("2022-11-19T04:16:20.363Z"),
                         Currency: "USD",
                         Discount: map[string]interface{}{
@@ -922,7 +922,7 @@ func main() {
                             "dicta": "odio",
                             "tempora": "esse",
                         },
-                        ModelType: shared.PriceModelTypeEnumPackage.ToPointer(),
+                        ModelType: shared.PriceModelTypePackage.ToPointer(),
                         Name: sdk.String("Jeanne Beer II"),
                         PackageConfig: &shared.PricePackageConfig{
                             PackageAmount: sdk.String("fugiat"),
@@ -982,7 +982,7 @@ func main() {
                 },
                 TrialConfig: &shared.PlanTrialConfig{
                     TrialPeriod: sdk.Float64(3732.16),
-                    TrialPeriodUnit: shared.PlanTrialConfigTrialPeriodUnitEnumDays,
+                    TrialPeriodUnit: shared.PlanTrialConfigTrialPeriodUnitDays,
                 },
             },
             shared.Plan{
@@ -1011,7 +1011,7 @@ func main() {
                             "officia": "voluptas",
                         },
                         Duration: sdk.Int64(254025),
-                        DurationUnit: shared.PlanPhaseDurationUnitEnumQuarterly,
+                        DurationUnit: shared.PlanPhaseDurationUnitQuarterly,
                         Minimum: map[string]interface{}{
                             "eius": "aspernatur",
                             "ducimus": "nesciunt",
@@ -1026,7 +1026,7 @@ func main() {
                             "cupiditate": "reiciendis",
                         },
                         Duration: sdk.Int64(746837),
-                        DurationUnit: shared.PlanPhaseDurationUnitEnumMonthly,
+                        DurationUnit: shared.PlanPhaseDurationUnitMonthly,
                         Minimum: map[string]interface{}{
                             "eos": "occaecati",
                             "iste": "magni",
@@ -1044,7 +1044,7 @@ func main() {
                             "totam": "earum",
                         },
                         Duration: sdk.Int64(267207),
-                        DurationUnit: shared.PlanPhaseDurationUnitEnumAnnual,
+                        DurationUnit: shared.PlanPhaseDurationUnitAnnual,
                         Minimum: map[string]interface{}{
                             "voluptatem": "ipsam",
                             "vel": "alias",
@@ -1061,7 +1061,7 @@ func main() {
                             "impedit": "hic",
                         },
                         Duration: sdk.Int64(900103),
-                        DurationUnit: shared.PlanPhaseDurationUnitEnumAnnual,
+                        DurationUnit: shared.PlanPhaseDurationUnitAnnual,
                         Minimum: map[string]interface{}{
                             "voluptas": "debitis",
                             "delectus": "quae",
@@ -1096,7 +1096,7 @@ func main() {
                                 },
                             },
                         },
-                        Cadence: shared.PriceCadenceEnumQuarterly.ToPointer(),
+                        Cadence: shared.PriceCadenceQuarterly.ToPointer(),
                         CreatedAt: types.MustTimeFromString("2022-03-25T02:57:12.529Z"),
                         Currency: "USD",
                         Discount: map[string]interface{}{
@@ -1128,7 +1128,7 @@ func main() {
                             "fugit": "alias",
                             "magni": "vel",
                         },
-                        ModelType: shared.PriceModelTypeEnumUnit.ToPointer(),
+                        ModelType: shared.PriceModelTypeUnit.ToPointer(),
                         Name: sdk.String("Pauline Durgan"),
                         PackageConfig: &shared.PricePackageConfig{
                             PackageAmount: sdk.String("et"),
@@ -1184,7 +1184,7 @@ func main() {
                 },
                 TrialConfig: &shared.PlanTrialConfig{
                     TrialPeriod: sdk.Float64(4835.18),
-                    TrialPeriodUnit: shared.PlanTrialConfigTrialPeriodUnitEnumDays,
+                    TrialPeriodUnit: shared.PlanTrialConfigTrialPeriodUnitDays,
                 },
             },
         },

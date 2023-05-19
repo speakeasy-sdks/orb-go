@@ -12,20 +12,20 @@ import (
 	"net/http"
 )
 
-// PostSubscriptionsRequestBodyExternalMarketplaceEnum - Optionally provide the name of the external marketplace that the subscription is attached to.
-type PostSubscriptionsRequestBodyExternalMarketplaceEnum string
+// PostSubscriptionsRequestBodyExternalMarketplace - Optionally provide the name of the external marketplace that the subscription is attached to.
+type PostSubscriptionsRequestBodyExternalMarketplace string
 
 const (
-	PostSubscriptionsRequestBodyExternalMarketplaceEnumGoogle PostSubscriptionsRequestBodyExternalMarketplaceEnum = "google"
-	PostSubscriptionsRequestBodyExternalMarketplaceEnumAws    PostSubscriptionsRequestBodyExternalMarketplaceEnum = "aws"
-	PostSubscriptionsRequestBodyExternalMarketplaceEnumAzure  PostSubscriptionsRequestBodyExternalMarketplaceEnum = "azure"
+	PostSubscriptionsRequestBodyExternalMarketplaceGoogle PostSubscriptionsRequestBodyExternalMarketplace = "google"
+	PostSubscriptionsRequestBodyExternalMarketplaceAws    PostSubscriptionsRequestBodyExternalMarketplace = "aws"
+	PostSubscriptionsRequestBodyExternalMarketplaceAzure  PostSubscriptionsRequestBodyExternalMarketplace = "azure"
 )
 
-func (e PostSubscriptionsRequestBodyExternalMarketplaceEnum) ToPointer() *PostSubscriptionsRequestBodyExternalMarketplaceEnum {
+func (e PostSubscriptionsRequestBodyExternalMarketplace) ToPointer() *PostSubscriptionsRequestBodyExternalMarketplace {
 	return &e
 }
 
-func (e *PostSubscriptionsRequestBodyExternalMarketplaceEnum) UnmarshalJSON(data []byte) error {
+func (e *PostSubscriptionsRequestBodyExternalMarketplace) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -36,10 +36,10 @@ func (e *PostSubscriptionsRequestBodyExternalMarketplaceEnum) UnmarshalJSON(data
 	case "aws":
 		fallthrough
 	case "azure":
-		*e = PostSubscriptionsRequestBodyExternalMarketplaceEnum(v)
+		*e = PostSubscriptionsRequestBodyExternalMarketplace(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyExternalMarketplaceEnum: %v", v)
+		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyExternalMarketplace: %v", v)
 	}
 }
 
@@ -51,27 +51,27 @@ type PostSubscriptionsRequestBodyPhaseOverrides struct {
 	Order *float64 `json:"order,omitempty"`
 }
 
-type PostSubscriptionsRequestBodyPriceOverrides7ModelTypeEnum string
+type PostSubscriptionsRequestBodyPriceOverrides7ModelType string
 
 const (
-	PostSubscriptionsRequestBodyPriceOverrides7ModelTypeEnumTieredBps PostSubscriptionsRequestBodyPriceOverrides7ModelTypeEnum = "tiered_bps"
+	PostSubscriptionsRequestBodyPriceOverrides7ModelTypeTieredBps PostSubscriptionsRequestBodyPriceOverrides7ModelType = "tiered_bps"
 )
 
-func (e PostSubscriptionsRequestBodyPriceOverrides7ModelTypeEnum) ToPointer() *PostSubscriptionsRequestBodyPriceOverrides7ModelTypeEnum {
+func (e PostSubscriptionsRequestBodyPriceOverrides7ModelType) ToPointer() *PostSubscriptionsRequestBodyPriceOverrides7ModelType {
 	return &e
 }
 
-func (e *PostSubscriptionsRequestBodyPriceOverrides7ModelTypeEnum) UnmarshalJSON(data []byte) error {
+func (e *PostSubscriptionsRequestBodyPriceOverrides7ModelType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "tiered_bps":
-		*e = PostSubscriptionsRequestBodyPriceOverrides7ModelTypeEnum(v)
+		*e = PostSubscriptionsRequestBodyPriceOverrides7ModelType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides7ModelTypeEnum: %v", v)
+		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides7ModelType: %v", v)
 	}
 }
 
@@ -92,7 +92,7 @@ type PostSubscriptionsRequestBodyPriceOverrides7 struct {
 	ID       string                 `json:"id"`
 	// The subscription's override minimum amount for this price.
 	MinimumAmount   *string                                                    `json:"minimum_amount,omitempty"`
-	ModelType       PostSubscriptionsRequestBodyPriceOverrides7ModelTypeEnum   `json:"model_type"`
+	ModelType       PostSubscriptionsRequestBodyPriceOverrides7ModelType       `json:"model_type"`
 	TieredBpsConfig PostSubscriptionsRequestBodyPriceOverrides7TieredBpsConfig `json:"tiered_bps_config"`
 }
 
@@ -106,27 +106,27 @@ type PostSubscriptionsRequestBodyPriceOverrides6BulkBpsConfig struct {
 	Tiers []PostSubscriptionsRequestBodyPriceOverrides6BulkBpsConfigTiers `json:"tiers,omitempty"`
 }
 
-type PostSubscriptionsRequestBodyPriceOverrides6ModelTypeEnum string
+type PostSubscriptionsRequestBodyPriceOverrides6ModelType string
 
 const (
-	PostSubscriptionsRequestBodyPriceOverrides6ModelTypeEnumBulkBps PostSubscriptionsRequestBodyPriceOverrides6ModelTypeEnum = "bulk_bps"
+	PostSubscriptionsRequestBodyPriceOverrides6ModelTypeBulkBps PostSubscriptionsRequestBodyPriceOverrides6ModelType = "bulk_bps"
 )
 
-func (e PostSubscriptionsRequestBodyPriceOverrides6ModelTypeEnum) ToPointer() *PostSubscriptionsRequestBodyPriceOverrides6ModelTypeEnum {
+func (e PostSubscriptionsRequestBodyPriceOverrides6ModelType) ToPointer() *PostSubscriptionsRequestBodyPriceOverrides6ModelType {
 	return &e
 }
 
-func (e *PostSubscriptionsRequestBodyPriceOverrides6ModelTypeEnum) UnmarshalJSON(data []byte) error {
+func (e *PostSubscriptionsRequestBodyPriceOverrides6ModelType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "bulk_bps":
-		*e = PostSubscriptionsRequestBodyPriceOverrides6ModelTypeEnum(v)
+		*e = PostSubscriptionsRequestBodyPriceOverrides6ModelType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides6ModelTypeEnum: %v", v)
+		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides6ModelType: %v", v)
 	}
 }
 
@@ -136,8 +136,8 @@ type PostSubscriptionsRequestBodyPriceOverrides6 struct {
 	Discount      map[string]interface{}                                    `json:"discount,omitempty"`
 	ID            string                                                    `json:"id"`
 	// The subscription's override minimum amount for this price.
-	MinimumAmount *string                                                  `json:"minimum_amount,omitempty"`
-	ModelType     PostSubscriptionsRequestBodyPriceOverrides6ModelTypeEnum `json:"model_type"`
+	MinimumAmount *string                                              `json:"minimum_amount,omitempty"`
+	ModelType     PostSubscriptionsRequestBodyPriceOverrides6ModelType `json:"model_type"`
 }
 
 type PostSubscriptionsRequestBodyPriceOverrides5BpsConfig struct {
@@ -145,27 +145,27 @@ type PostSubscriptionsRequestBodyPriceOverrides5BpsConfig struct {
 	PerUnitMaximum string  `json:"per_unit_maximum"`
 }
 
-type PostSubscriptionsRequestBodyPriceOverrides5ModelTypeEnum string
+type PostSubscriptionsRequestBodyPriceOverrides5ModelType string
 
 const (
-	PostSubscriptionsRequestBodyPriceOverrides5ModelTypeEnumBps PostSubscriptionsRequestBodyPriceOverrides5ModelTypeEnum = "bps"
+	PostSubscriptionsRequestBodyPriceOverrides5ModelTypeBps PostSubscriptionsRequestBodyPriceOverrides5ModelType = "bps"
 )
 
-func (e PostSubscriptionsRequestBodyPriceOverrides5ModelTypeEnum) ToPointer() *PostSubscriptionsRequestBodyPriceOverrides5ModelTypeEnum {
+func (e PostSubscriptionsRequestBodyPriceOverrides5ModelType) ToPointer() *PostSubscriptionsRequestBodyPriceOverrides5ModelType {
 	return &e
 }
 
-func (e *PostSubscriptionsRequestBodyPriceOverrides5ModelTypeEnum) UnmarshalJSON(data []byte) error {
+func (e *PostSubscriptionsRequestBodyPriceOverrides5ModelType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "bps":
-		*e = PostSubscriptionsRequestBodyPriceOverrides5ModelTypeEnum(v)
+		*e = PostSubscriptionsRequestBodyPriceOverrides5ModelType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides5ModelTypeEnum: %v", v)
+		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides5ModelType: %v", v)
 	}
 }
 
@@ -175,31 +175,31 @@ type PostSubscriptionsRequestBodyPriceOverrides5 struct {
 	Discount  map[string]interface{}                               `json:"discount,omitempty"`
 	ID        string                                               `json:"id"`
 	// The subscription's override minimum amount for this price.
-	MinimumAmount *string                                                  `json:"minimum_amount,omitempty"`
-	ModelType     PostSubscriptionsRequestBodyPriceOverrides5ModelTypeEnum `json:"model_type"`
+	MinimumAmount *string                                              `json:"minimum_amount,omitempty"`
+	ModelType     PostSubscriptionsRequestBodyPriceOverrides5ModelType `json:"model_type"`
 }
 
-type PostSubscriptionsRequestBodyPriceOverrides4ModelTypeEnum string
+type PostSubscriptionsRequestBodyPriceOverrides4ModelType string
 
 const (
-	PostSubscriptionsRequestBodyPriceOverrides4ModelTypeEnumPackage PostSubscriptionsRequestBodyPriceOverrides4ModelTypeEnum = "package"
+	PostSubscriptionsRequestBodyPriceOverrides4ModelTypePackage PostSubscriptionsRequestBodyPriceOverrides4ModelType = "package"
 )
 
-func (e PostSubscriptionsRequestBodyPriceOverrides4ModelTypeEnum) ToPointer() *PostSubscriptionsRequestBodyPriceOverrides4ModelTypeEnum {
+func (e PostSubscriptionsRequestBodyPriceOverrides4ModelType) ToPointer() *PostSubscriptionsRequestBodyPriceOverrides4ModelType {
 	return &e
 }
 
-func (e *PostSubscriptionsRequestBodyPriceOverrides4ModelTypeEnum) UnmarshalJSON(data []byte) error {
+func (e *PostSubscriptionsRequestBodyPriceOverrides4ModelType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "package":
-		*e = PostSubscriptionsRequestBodyPriceOverrides4ModelTypeEnum(v)
+		*e = PostSubscriptionsRequestBodyPriceOverrides4ModelType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides4ModelTypeEnum: %v", v)
+		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides4ModelType: %v", v)
 	}
 }
 
@@ -214,7 +214,7 @@ type PostSubscriptionsRequestBodyPriceOverrides4 struct {
 	ID       string                 `json:"id"`
 	// The subscription's override minimum amount for this price.
 	MinimumAmount *string                                                  `json:"minimum_amount,omitempty"`
-	ModelType     PostSubscriptionsRequestBodyPriceOverrides4ModelTypeEnum `json:"model_type"`
+	ModelType     PostSubscriptionsRequestBodyPriceOverrides4ModelType     `json:"model_type"`
 	PackageConfig PostSubscriptionsRequestBodyPriceOverrides4PackageConfig `json:"package_config"`
 }
 
@@ -227,27 +227,27 @@ type PostSubscriptionsRequestBodyPriceOverrides3BulkConfig struct {
 	Tiers []PostSubscriptionsRequestBodyPriceOverrides3BulkConfigTiers `json:"tiers"`
 }
 
-type PostSubscriptionsRequestBodyPriceOverrides3ModelTypeEnum string
+type PostSubscriptionsRequestBodyPriceOverrides3ModelType string
 
 const (
-	PostSubscriptionsRequestBodyPriceOverrides3ModelTypeEnumBulk PostSubscriptionsRequestBodyPriceOverrides3ModelTypeEnum = "bulk"
+	PostSubscriptionsRequestBodyPriceOverrides3ModelTypeBulk PostSubscriptionsRequestBodyPriceOverrides3ModelType = "bulk"
 )
 
-func (e PostSubscriptionsRequestBodyPriceOverrides3ModelTypeEnum) ToPointer() *PostSubscriptionsRequestBodyPriceOverrides3ModelTypeEnum {
+func (e PostSubscriptionsRequestBodyPriceOverrides3ModelType) ToPointer() *PostSubscriptionsRequestBodyPriceOverrides3ModelType {
 	return &e
 }
 
-func (e *PostSubscriptionsRequestBodyPriceOverrides3ModelTypeEnum) UnmarshalJSON(data []byte) error {
+func (e *PostSubscriptionsRequestBodyPriceOverrides3ModelType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "bulk":
-		*e = PostSubscriptionsRequestBodyPriceOverrides3ModelTypeEnum(v)
+		*e = PostSubscriptionsRequestBodyPriceOverrides3ModelType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides3ModelTypeEnum: %v", v)
+		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides3ModelType: %v", v)
 	}
 }
 
@@ -257,31 +257,31 @@ type PostSubscriptionsRequestBodyPriceOverrides3 struct {
 	Discount   map[string]interface{}                                `json:"discount,omitempty"`
 	ID         string                                                `json:"id"`
 	// The subscription's override minimum amount for this price.
-	MinimumAmount *string                                                  `json:"minimum_amount,omitempty"`
-	ModelType     PostSubscriptionsRequestBodyPriceOverrides3ModelTypeEnum `json:"model_type"`
+	MinimumAmount *string                                              `json:"minimum_amount,omitempty"`
+	ModelType     PostSubscriptionsRequestBodyPriceOverrides3ModelType `json:"model_type"`
 }
 
-type PostSubscriptionsRequestBodyPriceOverrides2ModelTypeEnum string
+type PostSubscriptionsRequestBodyPriceOverrides2ModelType string
 
 const (
-	PostSubscriptionsRequestBodyPriceOverrides2ModelTypeEnumUnit PostSubscriptionsRequestBodyPriceOverrides2ModelTypeEnum = "unit"
+	PostSubscriptionsRequestBodyPriceOverrides2ModelTypeUnit PostSubscriptionsRequestBodyPriceOverrides2ModelType = "unit"
 )
 
-func (e PostSubscriptionsRequestBodyPriceOverrides2ModelTypeEnum) ToPointer() *PostSubscriptionsRequestBodyPriceOverrides2ModelTypeEnum {
+func (e PostSubscriptionsRequestBodyPriceOverrides2ModelType) ToPointer() *PostSubscriptionsRequestBodyPriceOverrides2ModelType {
 	return &e
 }
 
-func (e *PostSubscriptionsRequestBodyPriceOverrides2ModelTypeEnum) UnmarshalJSON(data []byte) error {
+func (e *PostSubscriptionsRequestBodyPriceOverrides2ModelType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "unit":
-		*e = PostSubscriptionsRequestBodyPriceOverrides2ModelTypeEnum(v)
+		*e = PostSubscriptionsRequestBodyPriceOverrides2ModelType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides2ModelTypeEnum: %v", v)
+		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides2ModelType: %v", v)
 	}
 }
 
@@ -295,32 +295,32 @@ type PostSubscriptionsRequestBodyPriceOverrides2 struct {
 	FixedPriceQuantity *int64                 `json:"fixed_price_quantity,omitempty"`
 	ID                 string                 `json:"id"`
 	// The subscription's override minimum amount for this price.
-	MinimumAmount *string                                                  `json:"minimum_amount,omitempty"`
-	ModelType     PostSubscriptionsRequestBodyPriceOverrides2ModelTypeEnum `json:"model_type"`
-	UnitConfig    PostSubscriptionsRequestBodyPriceOverrides2UnitConfig    `json:"unit_config"`
+	MinimumAmount *string                                               `json:"minimum_amount,omitempty"`
+	ModelType     PostSubscriptionsRequestBodyPriceOverrides2ModelType  `json:"model_type"`
+	UnitConfig    PostSubscriptionsRequestBodyPriceOverrides2UnitConfig `json:"unit_config"`
 }
 
-type PostSubscriptionsRequestBodyPriceOverrides1ModelTypeEnum string
+type PostSubscriptionsRequestBodyPriceOverrides1ModelType string
 
 const (
-	PostSubscriptionsRequestBodyPriceOverrides1ModelTypeEnumTiered PostSubscriptionsRequestBodyPriceOverrides1ModelTypeEnum = "tiered"
+	PostSubscriptionsRequestBodyPriceOverrides1ModelTypeTiered PostSubscriptionsRequestBodyPriceOverrides1ModelType = "tiered"
 )
 
-func (e PostSubscriptionsRequestBodyPriceOverrides1ModelTypeEnum) ToPointer() *PostSubscriptionsRequestBodyPriceOverrides1ModelTypeEnum {
+func (e PostSubscriptionsRequestBodyPriceOverrides1ModelType) ToPointer() *PostSubscriptionsRequestBodyPriceOverrides1ModelType {
 	return &e
 }
 
-func (e *PostSubscriptionsRequestBodyPriceOverrides1ModelTypeEnum) UnmarshalJSON(data []byte) error {
+func (e *PostSubscriptionsRequestBodyPriceOverrides1ModelType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "tiered":
-		*e = PostSubscriptionsRequestBodyPriceOverrides1ModelTypeEnum(v)
+		*e = PostSubscriptionsRequestBodyPriceOverrides1ModelType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides1ModelTypeEnum: %v", v)
+		return fmt.Errorf("invalid value for PostSubscriptionsRequestBodyPriceOverrides1ModelType: %v", v)
 	}
 }
 
@@ -340,9 +340,9 @@ type PostSubscriptionsRequestBodyPriceOverrides1 struct {
 	// price_id
 	ID string `json:"id"`
 	// The subscription's override minimum amount for this price.
-	MinimumAmount *string                                                  `json:"minimum_amount,omitempty"`
-	ModelType     PostSubscriptionsRequestBodyPriceOverrides1ModelTypeEnum `json:"model_type"`
-	TieredConfig  PostSubscriptionsRequestBodyPriceOverrides1TieredConfig  `json:"tiered_config"`
+	MinimumAmount *string                                                 `json:"minimum_amount,omitempty"`
+	ModelType     PostSubscriptionsRequestBodyPriceOverrides1ModelType    `json:"model_type"`
+	TieredConfig  PostSubscriptionsRequestBodyPriceOverrides1TieredConfig `json:"tiered_config"`
 }
 
 type PostSubscriptionsRequestBodyPriceOverridesType string
@@ -541,7 +541,7 @@ type PostSubscriptionsRequestBody struct {
 	// The external ID of the customer to subscribe, as an alternate to passing the `customer_id`.
 	ExternalCustomerID *string `json:"external_customer_id,omitempty"`
 	// Optionally provide the name of the external marketplace that the subscription is attached to.
-	ExternalMarketplace *PostSubscriptionsRequestBodyExternalMarketplaceEnum `json:"external_marketplace,omitempty"`
+	ExternalMarketplace *PostSubscriptionsRequestBodyExternalMarketplace `json:"external_marketplace,omitempty"`
 	// The reporting ID to associate this subscription with the external marketplace. Required if external_marketplace is specified.
 	ExternalMarketplaceReportingID *string `json:"external_marketplace_reporting_id,omitempty"`
 	// The external ID of the plan, which can be used in place of the `plan_id`.

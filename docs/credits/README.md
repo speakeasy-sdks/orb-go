@@ -93,7 +93,7 @@ func main() {
             Amount: 7206.33,
             BlockID: sdk.String("officia"),
             Description: sdk.String("occaecati"),
-            EntryType: operations.PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeEnumIncrement,
+            EntryType: operations.PostCustomersCustomerIDCreditsLedgerEntryRequestBodyEntryTypeIncrement,
             ExpiryDate: types.MustDateFromString("2023-01-01"),
             PerUnitCostBasis: sdk.String("deleniti"),
             TargetExpiryDate: types.MustDateFromString("2023-02-01"),
@@ -205,8 +205,8 @@ func main() {
     ctx := context.Background()
     res, err := s.Credits.GetCreditsLedger(ctx, operations.GetCustomersCustomerIDCreditsLedgerRequest{
         CustomerID: "totam",
-        EntryStatus: operations.GetCustomersCustomerIDCreditsLedgerEntryStatusEnumCommitted.ToPointer(),
-        EntryType: operations.GetCustomersCustomerIDCreditsLedgerEntryTypeEnumDecrement.ToPointer(),
+        EntryStatus: operations.GetCustomersCustomerIDCreditsLedgerEntryStatusCommitted.ToPointer(),
+        EntryType: operations.GetCustomersCustomerIDCreditsLedgerEntryTypeDecrement.ToPointer(),
         MinimumAmount: sdk.Float64(4736),
     })
     if err != nil {

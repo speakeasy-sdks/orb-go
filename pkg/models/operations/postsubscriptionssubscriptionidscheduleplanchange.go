@@ -12,20 +12,20 @@ import (
 	"net/http"
 )
 
-// PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnum - Determines the timing of the plan change
-type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnum string
+// PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOption - Determines the timing of the plan change
+type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOption string
 
 const (
-	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnumRequestedDate         PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnum = "requested_date"
-	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnumEndOfSubscriptionTerm PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnum = "end_of_subscription_term"
-	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnumImmediate             PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnum = "immediate"
+	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionRequestedDate         PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOption = "requested_date"
+	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEndOfSubscriptionTerm PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOption = "end_of_subscription_term"
+	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionImmediate             PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOption = "immediate"
 )
 
-func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnum) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnum {
+func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOption) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOption {
 	return &e
 }
 
-func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnum) UnmarshalJSON(data []byte) error {
+func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOption) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -36,34 +36,34 @@ func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptio
 	case "end_of_subscription_term":
 		fallthrough
 	case "immediate":
-		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnum(v)
+		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOption(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnum: %v", v)
+		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOption: %v", v)
 	}
 }
 
-type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelTypeEnum string
+type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelType string
 
 const (
-	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelTypeEnumTieredBps PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelTypeEnum = "tiered_bps"
+	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelTypeTieredBps PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelType = "tiered_bps"
 )
 
-func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelTypeEnum) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelTypeEnum {
+func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelType) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelType {
 	return &e
 }
 
-func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelTypeEnum) UnmarshalJSON(data []byte) error {
+func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "tiered_bps":
-		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelTypeEnum(v)
+		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelTypeEnum: %v", v)
+		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelType: %v", v)
 	}
 }
 
@@ -83,7 +83,7 @@ type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7
 	ID string `json:"id"`
 	// The subscription's override minimum amount for this price.
 	MinimumAmount   *string                                                                                    `json:"minimum_amount,omitempty"`
-	ModelType       PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelTypeEnum   `json:"model_type"`
+	ModelType       PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7ModelType       `json:"model_type"`
 	TieredBpsConfig PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides7TieredBpsConfig `json:"tiered_bps_config"`
 }
 
@@ -97,27 +97,27 @@ type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6
 	Tiers []PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6BulkBpsConfigTiers `json:"tiers,omitempty"`
 }
 
-type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelTypeEnum string
+type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelType string
 
 const (
-	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelTypeEnumBulkBps PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelTypeEnum = "bulk_bps"
+	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelTypeBulkBps PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelType = "bulk_bps"
 )
 
-func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelTypeEnum) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelTypeEnum {
+func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelType) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelType {
 	return &e
 }
 
-func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelTypeEnum) UnmarshalJSON(data []byte) error {
+func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "bulk_bps":
-		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelTypeEnum(v)
+		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelTypeEnum: %v", v)
+		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelType: %v", v)
 	}
 }
 
@@ -126,8 +126,8 @@ type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6
 	BulkBpsConfig *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6BulkBpsConfig `json:"bulk_bps_config,omitempty"`
 	ID            string                                                                                    `json:"id"`
 	// The subscription's override minimum amount for this price.
-	MinimumAmount *string                                                                                  `json:"minimum_amount,omitempty"`
-	ModelType     PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelTypeEnum `json:"model_type"`
+	MinimumAmount *string                                                                              `json:"minimum_amount,omitempty"`
+	ModelType     PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides6ModelType `json:"model_type"`
 }
 
 type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5BpsConfig struct {
@@ -135,27 +135,27 @@ type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5
 	PerUnitMaximum string  `json:"per_unit_maximum"`
 }
 
-type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelTypeEnum string
+type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelType string
 
 const (
-	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelTypeEnumBps PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelTypeEnum = "bps"
+	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelTypeBps PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelType = "bps"
 )
 
-func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelTypeEnum) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelTypeEnum {
+func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelType) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelType {
 	return &e
 }
 
-func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelTypeEnum) UnmarshalJSON(data []byte) error {
+func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "bps":
-		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelTypeEnum(v)
+		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelTypeEnum: %v", v)
+		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelType: %v", v)
 	}
 }
 
@@ -164,31 +164,31 @@ type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5
 	BpsConfig PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5BpsConfig `json:"bps_config"`
 	ID        string                                                                               `json:"id"`
 	// The subscription's override minimum amount for this price.
-	MinimumAmount *string                                                                                  `json:"minimum_amount,omitempty"`
-	ModelType     PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelTypeEnum `json:"model_type"`
+	MinimumAmount *string                                                                              `json:"minimum_amount,omitempty"`
+	ModelType     PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides5ModelType `json:"model_type"`
 }
 
-type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelTypeEnum string
+type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelType string
 
 const (
-	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelTypeEnumPackage PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelTypeEnum = "package"
+	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelTypePackage PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelType = "package"
 )
 
-func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelTypeEnum) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelTypeEnum {
+func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelType) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelType {
 	return &e
 }
 
-func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelTypeEnum) UnmarshalJSON(data []byte) error {
+func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "package":
-		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelTypeEnum(v)
+		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelTypeEnum: %v", v)
+		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelType: %v", v)
 	}
 }
 
@@ -202,7 +202,7 @@ type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4
 	ID string `json:"id"`
 	// The subscription's override minimum amount for this price.
 	MinimumAmount *string                                                                                  `json:"minimum_amount,omitempty"`
-	ModelType     PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelTypeEnum `json:"model_type"`
+	ModelType     PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4ModelType     `json:"model_type"`
 	PackageConfig PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides4PackageConfig `json:"package_config"`
 }
 
@@ -215,27 +215,27 @@ type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3
 	Tiers []PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3BulkConfigTiers `json:"tiers"`
 }
 
-type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelTypeEnum string
+type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelType string
 
 const (
-	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelTypeEnumBulk PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelTypeEnum = "bulk"
+	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelTypeBulk PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelType = "bulk"
 )
 
-func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelTypeEnum) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelTypeEnum {
+func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelType) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelType {
 	return &e
 }
 
-func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelTypeEnum) UnmarshalJSON(data []byte) error {
+func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "bulk":
-		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelTypeEnum(v)
+		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelTypeEnum: %v", v)
+		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelType: %v", v)
 	}
 }
 
@@ -244,31 +244,31 @@ type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3
 	BulkConfig PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3BulkConfig `json:"bulk_config"`
 	ID         string                                                                                `json:"id"`
 	// The subscription's override minimum amount for this price.
-	MinimumAmount *string                                                                                  `json:"minimum_amount,omitempty"`
-	ModelType     PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelTypeEnum `json:"model_type"`
+	MinimumAmount *string                                                                              `json:"minimum_amount,omitempty"`
+	ModelType     PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides3ModelType `json:"model_type"`
 }
 
-type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelTypeEnum string
+type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelType string
 
 const (
-	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelTypeEnumUnit PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelTypeEnum = "unit"
+	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelTypeUnit PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelType = "unit"
 )
 
-func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelTypeEnum) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelTypeEnum {
+func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelType) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelType {
 	return &e
 }
 
-func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelTypeEnum) UnmarshalJSON(data []byte) error {
+func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "unit":
-		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelTypeEnum(v)
+		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelTypeEnum: %v", v)
+		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelType: %v", v)
 	}
 }
 
@@ -280,32 +280,32 @@ type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2
 type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2 struct {
 	ID string `json:"id"`
 	// The subscription's override minimum amount for this price.
-	MinimumAmount *string                                                                                  `json:"minimum_amount,omitempty"`
-	ModelType     PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelTypeEnum `json:"model_type"`
-	UnitConfig    PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2UnitConfig    `json:"unit_config"`
+	MinimumAmount *string                                                                               `json:"minimum_amount,omitempty"`
+	ModelType     PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2ModelType  `json:"model_type"`
+	UnitConfig    PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides2UnitConfig `json:"unit_config"`
 }
 
-type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelTypeEnum string
+type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelType string
 
 const (
-	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelTypeEnumTiered PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelTypeEnum = "tiered"
+	PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelTypeTiered PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelType = "tiered"
 )
 
-func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelTypeEnum) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelTypeEnum {
+func (e PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelType) ToPointer() *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelType {
 	return &e
 }
 
-func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelTypeEnum) UnmarshalJSON(data []byte) error {
+func (e *PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "tiered":
-		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelTypeEnum(v)
+		*e = PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelTypeEnum: %v", v)
+		return fmt.Errorf("invalid value for PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelType: %v", v)
 	}
 }
 
@@ -324,9 +324,9 @@ type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1
 	// price_id
 	ID string `json:"id"`
 	// The subscription's override minimum amount for this price.
-	MinimumAmount *string                                                                                  `json:"minimum_amount,omitempty"`
-	ModelType     PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelTypeEnum `json:"model_type"`
-	TieredConfig  PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1TieredConfig  `json:"tiered_config"`
+	MinimumAmount *string                                                                                 `json:"minimum_amount,omitempty"`
+	ModelType     PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1ModelType    `json:"model_type"`
+	TieredConfig  PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverrides1TieredConfig `json:"tiered_config"`
 }
 
 type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyPriceOverridesType string
@@ -523,7 +523,7 @@ type PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBody struct {
 	// The date that the plan change should take effect, localized to the customer's timezone. This parameter can only be passed if the `change_option` is `requested_date`.
 	ChangeDate *types.Date `json:"change_date,omitempty"`
 	// Determines the timing of the plan change
-	ChangeOption PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOptionEnum `json:"change_option"`
+	ChangeOption PostSubscriptionsSubscriptionIDSchedulePlanChangeRequestBodyChangeOption `json:"change_option"`
 	// The external_plan_id of the plan that the given subscription should be switched to. Note that either this property or `plan_id` must be specified.
 	ExternalPlanID *string `json:"external_plan_id,omitempty"`
 	// The subscription's override minimum amount for the plan.

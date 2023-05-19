@@ -273,7 +273,7 @@ func main() {
                 },
             },
         },
-        Debug: operations.PostIngestDebugEnumTrue.ToPointer(),
+        Debug: operations.PostIngestDebugTrue.ToPointer(),
     })
     if err != nil {
         log.Fatal(err)

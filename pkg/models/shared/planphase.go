@@ -7,20 +7,20 @@ import (
 	"fmt"
 )
 
-// PlanPhaseDurationUnitEnum - Term for this plan, which is the maximum cadence among all component prices
-type PlanPhaseDurationUnitEnum string
+// PlanPhaseDurationUnit - Term for this plan, which is the maximum cadence among all component prices
+type PlanPhaseDurationUnit string
 
 const (
-	PlanPhaseDurationUnitEnumMonthly   PlanPhaseDurationUnitEnum = "monthly"
-	PlanPhaseDurationUnitEnumQuarterly PlanPhaseDurationUnitEnum = "quarterly"
-	PlanPhaseDurationUnitEnumAnnual    PlanPhaseDurationUnitEnum = "annual"
+	PlanPhaseDurationUnitMonthly   PlanPhaseDurationUnit = "monthly"
+	PlanPhaseDurationUnitQuarterly PlanPhaseDurationUnit = "quarterly"
+	PlanPhaseDurationUnitAnnual    PlanPhaseDurationUnit = "annual"
 )
 
-func (e PlanPhaseDurationUnitEnum) ToPointer() *PlanPhaseDurationUnitEnum {
+func (e PlanPhaseDurationUnit) ToPointer() *PlanPhaseDurationUnit {
 	return &e
 }
 
-func (e *PlanPhaseDurationUnitEnum) UnmarshalJSON(data []byte) error {
+func (e *PlanPhaseDurationUnit) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -31,10 +31,10 @@ func (e *PlanPhaseDurationUnitEnum) UnmarshalJSON(data []byte) error {
 	case "quarterly":
 		fallthrough
 	case "annual":
-		*e = PlanPhaseDurationUnitEnum(v)
+		*e = PlanPhaseDurationUnit(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PlanPhaseDurationUnitEnum: %v", v)
+		return fmt.Errorf("invalid value for PlanPhaseDurationUnit: %v", v)
 	}
 }
 
@@ -45,9 +45,9 @@ type PlanPhase struct {
 	// How many terms of length `duration_unit` this phase is active for. If null, this phase is evergreen and active indefinitely
 	Duration *int64 `json:"duration,omitempty"`
 	// Term for this plan, which is the maximum cadence among all component prices
-	DurationUnit PlanPhaseDurationUnitEnum `json:"duration_unit"`
-	Minimum      map[string]interface{}    `json:"minimum"`
-	Name         *string                   `json:"name,omitempty"`
+	DurationUnit PlanPhaseDurationUnit  `json:"duration_unit"`
+	Minimum      map[string]interface{} `json:"minimum"`
+	Name         *string                `json:"name,omitempty"`
 	// Determines the ordering of the phase in a plan's lifecycle. 1 = first phase.
 	Order *int64 `json:"order,omitempty"`
 }

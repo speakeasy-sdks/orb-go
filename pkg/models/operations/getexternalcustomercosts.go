@@ -10,19 +10,19 @@ import (
 	"time"
 )
 
-// GetExternalCustomerCostsViewModeEnum - Controls whether Orb returns cumulative costs since the start of the billing period, or incremental day-by-day costs. If your customer has minimums or discounts, it's strongly recommended that you use the default cumulative behavior.
-type GetExternalCustomerCostsViewModeEnum string
+// GetExternalCustomerCostsViewMode - Controls whether Orb returns cumulative costs since the start of the billing period, or incremental day-by-day costs. If your customer has minimums or discounts, it's strongly recommended that you use the default cumulative behavior.
+type GetExternalCustomerCostsViewMode string
 
 const (
-	GetExternalCustomerCostsViewModeEnumPeriodic   GetExternalCustomerCostsViewModeEnum = "periodic"
-	GetExternalCustomerCostsViewModeEnumCumulative GetExternalCustomerCostsViewModeEnum = "cumulative"
+	GetExternalCustomerCostsViewModePeriodic   GetExternalCustomerCostsViewMode = "periodic"
+	GetExternalCustomerCostsViewModeCumulative GetExternalCustomerCostsViewMode = "cumulative"
 )
 
-func (e GetExternalCustomerCostsViewModeEnum) ToPointer() *GetExternalCustomerCostsViewModeEnum {
+func (e GetExternalCustomerCostsViewMode) ToPointer() *GetExternalCustomerCostsViewMode {
 	return &e
 }
 
-func (e *GetExternalCustomerCostsViewModeEnum) UnmarshalJSON(data []byte) error {
+func (e *GetExternalCustomerCostsViewMode) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -31,10 +31,10 @@ func (e *GetExternalCustomerCostsViewModeEnum) UnmarshalJSON(data []byte) error 
 	case "periodic":
 		fallthrough
 	case "cumulative":
-		*e = GetExternalCustomerCostsViewModeEnum(v)
+		*e = GetExternalCustomerCostsViewMode(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for GetExternalCustomerCostsViewModeEnum: %v", v)
+		return fmt.Errorf("invalid value for GetExternalCustomerCostsViewMode: %v", v)
 	}
 }
 
@@ -47,7 +47,7 @@ type GetExternalCustomerCostsRequest struct {
 	// Costs returned are inclusive of `timeframe_start`.
 	TimeframeStart *time.Time `queryParam:"style=form,explode=true,name=timeframe_start"`
 	// Controls whether Orb returns cumulative costs since the start of the billing period, or incremental day-by-day costs. If your customer has minimums or discounts, it's strongly recommended that you use the default cumulative behavior.
-	ViewMode *GetExternalCustomerCostsViewModeEnum `queryParam:"style=form,explode=true,name=view_mode"`
+	ViewMode *GetExternalCustomerCostsViewMode `queryParam:"style=form,explode=true,name=view_mode"`
 }
 
 type GetExternalCustomerCosts200ApplicationJSONDataPerPriceCostsPriceGroups struct {

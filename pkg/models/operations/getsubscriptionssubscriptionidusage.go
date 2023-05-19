@@ -9,28 +9,28 @@ import (
 	"time"
 )
 
-// GetSubscriptionsSubscriptionIDUsageGranularityEnum - This determines the windowing of usage reporting.
-type GetSubscriptionsSubscriptionIDUsageGranularityEnum string
+// GetSubscriptionsSubscriptionIDUsageGranularity - This determines the windowing of usage reporting.
+type GetSubscriptionsSubscriptionIDUsageGranularity string
 
 const (
-	GetSubscriptionsSubscriptionIDUsageGranularityEnumDay GetSubscriptionsSubscriptionIDUsageGranularityEnum = "day"
+	GetSubscriptionsSubscriptionIDUsageGranularityDay GetSubscriptionsSubscriptionIDUsageGranularity = "day"
 )
 
-func (e GetSubscriptionsSubscriptionIDUsageGranularityEnum) ToPointer() *GetSubscriptionsSubscriptionIDUsageGranularityEnum {
+func (e GetSubscriptionsSubscriptionIDUsageGranularity) ToPointer() *GetSubscriptionsSubscriptionIDUsageGranularity {
 	return &e
 }
 
-func (e *GetSubscriptionsSubscriptionIDUsageGranularityEnum) UnmarshalJSON(data []byte) error {
+func (e *GetSubscriptionsSubscriptionIDUsageGranularity) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "day":
-		*e = GetSubscriptionsSubscriptionIDUsageGranularityEnum(v)
+		*e = GetSubscriptionsSubscriptionIDUsageGranularity(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for GetSubscriptionsSubscriptionIDUsageGranularityEnum: %v", v)
+		return fmt.Errorf("invalid value for GetSubscriptionsSubscriptionIDUsageGranularity: %v", v)
 	}
 }
 
@@ -38,7 +38,7 @@ type GetSubscriptionsSubscriptionIDUsageRequest struct {
 	// When specified in conjunction with `group_by`, this parameter filters usage to a single billable metric. Note that both `group_by` and `billable_metric_id` must be specific together.
 	BillableMetricID *string `queryParam:"style=form,explode=true,name=billable_metric_id"`
 	// This determines the windowing of usage reporting.
-	Granularity *GetSubscriptionsSubscriptionIDUsageGranularityEnum `queryParam:"style=form,explode=true,name=granularity"`
+	Granularity *GetSubscriptionsSubscriptionIDUsageGranularity `queryParam:"style=form,explode=true,name=granularity"`
 	// When specified in conjunction with `billable_metric_id`, this parameter groups by the key provided. Note that both `group_by` and `billable_metric_id` must be specific together.
 	GroupBy        *string `queryParam:"style=form,explode=true,name=group_by"`
 	SubscriptionID string  `pathParam:"style=simple,explode=false,name=subscription_id"`

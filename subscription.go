@@ -60,6 +60,8 @@ func (s *subscription) Cancel(ctx context.Context, request operations.PostSubscr
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
@@ -135,6 +137,8 @@ func (s *subscription) ChangeSchedule(ctx context.Context, request operations.Po
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	req.Header.Set("Content-Type", reqContentType)
 
@@ -562,6 +566,8 @@ func (s *subscription) Create(ctx context.Context, request operations.PostSubscr
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	req.Header.Set("Content-Type", reqContentType)
 
@@ -612,6 +618,8 @@ func (s *subscription) Get(ctx context.Context, request operations.GetSubscripti
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	client := s.securityClient
 
@@ -662,6 +670,8 @@ func (s *subscription) GetCost(ctx context.Context, request operations.GetSubscr
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
@@ -714,6 +724,8 @@ func (s *subscription) GetSchedule(ctx context.Context, request operations.GetSu
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	client := s.securityClient
 
@@ -887,6 +899,8 @@ func (s *subscription) GetUsage(ctx context.Context, request operations.GetSubsc
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
+	req.Header.Set("Accept", "*/*")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
@@ -929,6 +943,8 @@ func (s *subscription) List(ctx context.Context, request operations.ListSubscrip
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
@@ -981,6 +997,8 @@ func (s *subscription) Unschedule(ctx context.Context, request operations.PostSu
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	client := s.securityClient
 

@@ -27,19 +27,19 @@ type PostIngestRequestBody struct {
 	Events []PostIngestRequestBodyEvents `json:"events"`
 }
 
-// PostIngestDebugEnum - Flag to enable additional debug information in the endpoint response
-type PostIngestDebugEnum string
+// PostIngestDebug - Flag to enable additional debug information in the endpoint response
+type PostIngestDebug string
 
 const (
-	PostIngestDebugEnumTrue  PostIngestDebugEnum = "true"
-	PostIngestDebugEnumFalse PostIngestDebugEnum = "false"
+	PostIngestDebugTrue  PostIngestDebug = "true"
+	PostIngestDebugFalse PostIngestDebug = "false"
 )
 
-func (e PostIngestDebugEnum) ToPointer() *PostIngestDebugEnum {
+func (e PostIngestDebug) ToPointer() *PostIngestDebug {
 	return &e
 }
 
-func (e *PostIngestDebugEnum) UnmarshalJSON(data []byte) error {
+func (e *PostIngestDebug) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -48,17 +48,17 @@ func (e *PostIngestDebugEnum) UnmarshalJSON(data []byte) error {
 	case "true":
 		fallthrough
 	case "false":
-		*e = PostIngestDebugEnum(v)
+		*e = PostIngestDebug(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostIngestDebugEnum: %v", v)
+		return fmt.Errorf("invalid value for PostIngestDebug: %v", v)
 	}
 }
 
 type PostIngestRequest struct {
 	RequestBody *PostIngestRequestBody `request:"mediaType=application/json"`
 	// Flag to enable additional debug information in the endpoint response
-	Debug *PostIngestDebugEnum `queryParam:"style=form,explode=true,name=debug"`
+	Debug *PostIngestDebug `queryParam:"style=form,explode=true,name=debug"`
 }
 
 // PostIngest400ApplicationJSONDebug - Optional debug information (only present when debug=true is passed to the endpoint). Contains ingested and duplicate event idempotency keys.

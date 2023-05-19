@@ -14,33 +14,33 @@ type PlanProduct struct {
 	Name      string    `json:"name"`
 }
 
-type PlanTrialConfigTrialPeriodUnitEnum string
+type PlanTrialConfigTrialPeriodUnit string
 
 const (
-	PlanTrialConfigTrialPeriodUnitEnumDays PlanTrialConfigTrialPeriodUnitEnum = "days"
+	PlanTrialConfigTrialPeriodUnitDays PlanTrialConfigTrialPeriodUnit = "days"
 )
 
-func (e PlanTrialConfigTrialPeriodUnitEnum) ToPointer() *PlanTrialConfigTrialPeriodUnitEnum {
+func (e PlanTrialConfigTrialPeriodUnit) ToPointer() *PlanTrialConfigTrialPeriodUnit {
 	return &e
 }
 
-func (e *PlanTrialConfigTrialPeriodUnitEnum) UnmarshalJSON(data []byte) error {
+func (e *PlanTrialConfigTrialPeriodUnit) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "days":
-		*e = PlanTrialConfigTrialPeriodUnitEnum(v)
+		*e = PlanTrialConfigTrialPeriodUnit(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PlanTrialConfigTrialPeriodUnitEnum: %v", v)
+		return fmt.Errorf("invalid value for PlanTrialConfigTrialPeriodUnit: %v", v)
 	}
 }
 
 type PlanTrialConfig struct {
-	TrialPeriod     *float64                           `json:"trial_period,omitempty"`
-	TrialPeriodUnit PlanTrialConfigTrialPeriodUnitEnum `json:"trial_period_unit"`
+	TrialPeriod     *float64                       `json:"trial_period,omitempty"`
+	TrialPeriodUnit PlanTrialConfigTrialPeriodUnit `json:"trial_period_unit"`
 }
 
 // Plan - OK

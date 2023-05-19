@@ -21,24 +21,24 @@ type PostCustomersRequestBodyBillingAddress struct {
 	State      *string `json:"state,omitempty"`
 }
 
-// PostCustomersRequestBodyPaymentProviderEnum - This is used for creating charges or invoices in an external system via Orb. When not in test mode:
+// PostCustomersRequestBodyPaymentProvider - This is used for creating charges or invoices in an external system via Orb. When not in test mode:
 // - the connection must first be configured in the Orb webapp.
 // - if the provider is an invoicing provider (`stripe_invoice`, `quickbooks`, `bill.com`), any product mappings must first be configured with the Orb team.
-type PostCustomersRequestBodyPaymentProviderEnum string
+type PostCustomersRequestBodyPaymentProvider string
 
 const (
-	PostCustomersRequestBodyPaymentProviderEnumQuickbooks             PostCustomersRequestBodyPaymentProviderEnum = "quickbooks"
-	PostCustomersRequestBodyPaymentProviderEnumBillCom                PostCustomersRequestBodyPaymentProviderEnum = "bill.com"
-	PostCustomersRequestBodyPaymentProviderEnumStripeCharge           PostCustomersRequestBodyPaymentProviderEnum = "stripe_charge"
-	PostCustomersRequestBodyPaymentProviderEnumStripeInvoice          PostCustomersRequestBodyPaymentProviderEnum = "stripe_invoice"
-	PostCustomersRequestBodyPaymentProviderEnumLessThanNilGreaterThan PostCustomersRequestBodyPaymentProviderEnum = "<nil>"
+	PostCustomersRequestBodyPaymentProviderQuickbooks             PostCustomersRequestBodyPaymentProvider = "quickbooks"
+	PostCustomersRequestBodyPaymentProviderBillCom                PostCustomersRequestBodyPaymentProvider = "bill.com"
+	PostCustomersRequestBodyPaymentProviderStripeCharge           PostCustomersRequestBodyPaymentProvider = "stripe_charge"
+	PostCustomersRequestBodyPaymentProviderStripeInvoice          PostCustomersRequestBodyPaymentProvider = "stripe_invoice"
+	PostCustomersRequestBodyPaymentProviderLessThanNilGreaterThan PostCustomersRequestBodyPaymentProvider = "<nil>"
 )
 
-func (e PostCustomersRequestBodyPaymentProviderEnum) ToPointer() *PostCustomersRequestBodyPaymentProviderEnum {
+func (e PostCustomersRequestBodyPaymentProvider) ToPointer() *PostCustomersRequestBodyPaymentProvider {
 	return &e
 }
 
-func (e *PostCustomersRequestBodyPaymentProviderEnum) UnmarshalJSON(data []byte) error {
+func (e *PostCustomersRequestBodyPaymentProvider) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -53,10 +53,10 @@ func (e *PostCustomersRequestBodyPaymentProviderEnum) UnmarshalJSON(data []byte)
 	case "stripe_invoice":
 		fallthrough
 	case "<nil>":
-		*e = PostCustomersRequestBodyPaymentProviderEnum(v)
+		*e = PostCustomersRequestBodyPaymentProvider(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for PostCustomersRequestBodyPaymentProviderEnum: %v", v)
+		return fmt.Errorf("invalid value for PostCustomersRequestBodyPaymentProvider: %v", v)
 	}
 }
 
@@ -86,7 +86,7 @@ type PostCustomersRequestBody struct {
 	// This is used for creating charges or invoices in an external system via Orb. When not in test mode:
 	// - the connection must first be configured in the Orb webapp.
 	// - if the provider is an invoicing provider (`stripe_invoice`, `quickbooks`, `bill.com`), any product mappings must first be configured with the Orb team.
-	PaymentProvider *PostCustomersRequestBodyPaymentProviderEnum `json:"payment_provider,omitempty"`
+	PaymentProvider *PostCustomersRequestBodyPaymentProvider `json:"payment_provider,omitempty"`
 	// The ID of this customer in an external payments solution, such as Stripe. This is used for creating charges or invoices in the external system via Orb.
 	PaymentProviderID *string `json:"payment_provider_id,omitempty"`
 	// The customer's shipping address; all fields in the address are optional. Note that downstream tax calculations are based on the shipping address.

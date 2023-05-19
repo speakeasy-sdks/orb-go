@@ -20,23 +20,23 @@ type CustomerBillingAddress struct {
 	State      *string `json:"state,omitempty"`
 }
 
-// CustomerPaymentProviderEnum - The external payments or invoicing solution connected to this customer.
-type CustomerPaymentProviderEnum string
+// CustomerPaymentProvider - The external payments or invoicing solution connected to this customer.
+type CustomerPaymentProvider string
 
 const (
-	CustomerPaymentProviderEnumStripe                 CustomerPaymentProviderEnum = "stripe"
-	CustomerPaymentProviderEnumQuickbooks             CustomerPaymentProviderEnum = "quickbooks"
-	CustomerPaymentProviderEnumBillCom                CustomerPaymentProviderEnum = "bill.com"
-	CustomerPaymentProviderEnumStripeCharge           CustomerPaymentProviderEnum = "stripe_charge"
-	CustomerPaymentProviderEnumStripeInvoice          CustomerPaymentProviderEnum = "stripe_invoice"
-	CustomerPaymentProviderEnumLessThanNilGreaterThan CustomerPaymentProviderEnum = "<nil>"
+	CustomerPaymentProviderStripe                 CustomerPaymentProvider = "stripe"
+	CustomerPaymentProviderQuickbooks             CustomerPaymentProvider = "quickbooks"
+	CustomerPaymentProviderBillCom                CustomerPaymentProvider = "bill.com"
+	CustomerPaymentProviderStripeCharge           CustomerPaymentProvider = "stripe_charge"
+	CustomerPaymentProviderStripeInvoice          CustomerPaymentProvider = "stripe_invoice"
+	CustomerPaymentProviderLessThanNilGreaterThan CustomerPaymentProvider = "<nil>"
 )
 
-func (e CustomerPaymentProviderEnum) ToPointer() *CustomerPaymentProviderEnum {
+func (e CustomerPaymentProvider) ToPointer() *CustomerPaymentProvider {
 	return &e
 }
 
-func (e *CustomerPaymentProviderEnum) UnmarshalJSON(data []byte) error {
+func (e *CustomerPaymentProvider) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -53,10 +53,10 @@ func (e *CustomerPaymentProviderEnum) UnmarshalJSON(data []byte) error {
 	case "stripe_invoice":
 		fallthrough
 	case "<nil>":
-		*e = CustomerPaymentProviderEnum(v)
+		*e = CustomerPaymentProvider(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for CustomerPaymentProviderEnum: %v", v)
+		return fmt.Errorf("invalid value for CustomerPaymentProvider: %v", v)
 	}
 }
 
@@ -95,7 +95,7 @@ type Customer struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
 	// The external payments or invoicing solution connected to this customer.
-	PaymentProvider CustomerPaymentProviderEnum `json:"payment_provider"`
+	PaymentProvider CustomerPaymentProvider `json:"payment_provider"`
 	// The ID of this customer in an external payments solution, such as Stripe. This is used for creating charges or invoices in the external system via Orb.
 	PaymentProviderID string `json:"payment_provider_id"`
 	// The customer's shipping address; all fields in the address are optional. Note that downstream tax calculations are based on the shipping address.

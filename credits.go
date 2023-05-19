@@ -108,6 +108,8 @@ func (s *credits) Get(ctx context.Context, request operations.PostCustomersCusto
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	req.Header.Set("Content-Type", reqContentType)
 
@@ -162,6 +164,8 @@ func (s *credits) GetCredits(ctx context.Context, request operations.GetCustomer
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	client := s.securityClient
 
@@ -237,6 +241,8 @@ func (s *credits) GetCreditsLedger(ctx context.Context, request operations.GetCu
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)

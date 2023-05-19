@@ -8,20 +8,20 @@ import (
 	"time"
 )
 
-// CustomerBalanceTransactionActionEnum - Describes the reason that this transaction took place.
-type CustomerBalanceTransactionActionEnum string
+// CustomerBalanceTransactionAction - Describes the reason that this transaction took place.
+type CustomerBalanceTransactionAction string
 
 const (
-	CustomerBalanceTransactionActionEnumAppliedToInvoice CustomerBalanceTransactionActionEnum = "applied_to_invoice"
-	CustomerBalanceTransactionActionEnumProratedRefund   CustomerBalanceTransactionActionEnum = "prorated_refund"
-	CustomerBalanceTransactionActionEnumManualAdjustment CustomerBalanceTransactionActionEnum = "manual_adjustment"
+	CustomerBalanceTransactionActionAppliedToInvoice CustomerBalanceTransactionAction = "applied_to_invoice"
+	CustomerBalanceTransactionActionProratedRefund   CustomerBalanceTransactionAction = "prorated_refund"
+	CustomerBalanceTransactionActionManualAdjustment CustomerBalanceTransactionAction = "manual_adjustment"
 )
 
-func (e CustomerBalanceTransactionActionEnum) ToPointer() *CustomerBalanceTransactionActionEnum {
+func (e CustomerBalanceTransactionAction) ToPointer() *CustomerBalanceTransactionAction {
 	return &e
 }
 
-func (e *CustomerBalanceTransactionActionEnum) UnmarshalJSON(data []byte) error {
+func (e *CustomerBalanceTransactionAction) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -32,10 +32,10 @@ func (e *CustomerBalanceTransactionActionEnum) UnmarshalJSON(data []byte) error 
 	case "prorated_refund":
 		fallthrough
 	case "manual_adjustment":
-		*e = CustomerBalanceTransactionActionEnum(v)
+		*e = CustomerBalanceTransactionAction(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for CustomerBalanceTransactionActionEnum: %v", v)
+		return fmt.Errorf("invalid value for CustomerBalanceTransactionAction: %v", v)
 	}
 }
 
@@ -48,7 +48,7 @@ type CustomerBalanceTransactionInvoice struct {
 // CustomerBalanceTransaction - A single change to the customer balance. All amounts are in the customer's currency.
 type CustomerBalanceTransaction struct {
 	// Describes the reason that this transaction took place.
-	Action CustomerBalanceTransactionActionEnum `json:"action"`
+	Action CustomerBalanceTransactionAction `json:"action"`
 	// The value of the amount changed in the transaction.
 	Amount string `json:"amount"`
 	// The creation time of this transaction.

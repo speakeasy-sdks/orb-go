@@ -22,19 +22,19 @@ type CreditLedgerEntryCustomer struct {
 	ID                 string `json:"id"`
 }
 
-// CreditLedgerEntryEntryStatusEnum - Committed entries are older than the ingestion grace period, and cannot change. Pending entries are newer than the grace period and are subject to updates
-type CreditLedgerEntryEntryStatusEnum string
+// CreditLedgerEntryEntryStatus - Committed entries are older than the ingestion grace period, and cannot change. Pending entries are newer than the grace period and are subject to updates
+type CreditLedgerEntryEntryStatus string
 
 const (
-	CreditLedgerEntryEntryStatusEnumCommitted CreditLedgerEntryEntryStatusEnum = "committed"
-	CreditLedgerEntryEntryStatusEnumPending   CreditLedgerEntryEntryStatusEnum = "pending"
+	CreditLedgerEntryEntryStatusCommitted CreditLedgerEntryEntryStatus = "committed"
+	CreditLedgerEntryEntryStatusPending   CreditLedgerEntryEntryStatus = "pending"
 )
 
-func (e CreditLedgerEntryEntryStatusEnum) ToPointer() *CreditLedgerEntryEntryStatusEnum {
+func (e CreditLedgerEntryEntryStatus) ToPointer() *CreditLedgerEntryEntryStatus {
 	return &e
 }
 
-func (e *CreditLedgerEntryEntryStatusEnum) UnmarshalJSON(data []byte) error {
+func (e *CreditLedgerEntryEntryStatus) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -43,27 +43,27 @@ func (e *CreditLedgerEntryEntryStatusEnum) UnmarshalJSON(data []byte) error {
 	case "committed":
 		fallthrough
 	case "pending":
-		*e = CreditLedgerEntryEntryStatusEnum(v)
+		*e = CreditLedgerEntryEntryStatus(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for CreditLedgerEntryEntryStatusEnum: %v", v)
+		return fmt.Errorf("invalid value for CreditLedgerEntryEntryStatus: %v", v)
 	}
 }
 
-type CreditLedgerEntryEntryTypeEnum string
+type CreditLedgerEntryEntryType string
 
 const (
-	CreditLedgerEntryEntryTypeEnumIncrement         CreditLedgerEntryEntryTypeEnum = "increment"
-	CreditLedgerEntryEntryTypeEnumDecrement         CreditLedgerEntryEntryTypeEnum = "decrement"
-	CreditLedgerEntryEntryTypeEnumExpirationChange  CreditLedgerEntryEntryTypeEnum = "expiration_change"
-	CreditLedgerEntryEntryTypeEnumCreditBlockExpiry CreditLedgerEntryEntryTypeEnum = "credit_block_expiry"
+	CreditLedgerEntryEntryTypeIncrement         CreditLedgerEntryEntryType = "increment"
+	CreditLedgerEntryEntryTypeDecrement         CreditLedgerEntryEntryType = "decrement"
+	CreditLedgerEntryEntryTypeExpirationChange  CreditLedgerEntryEntryType = "expiration_change"
+	CreditLedgerEntryEntryTypeCreditBlockExpiry CreditLedgerEntryEntryType = "credit_block_expiry"
 )
 
-func (e CreditLedgerEntryEntryTypeEnum) ToPointer() *CreditLedgerEntryEntryTypeEnum {
+func (e CreditLedgerEntryEntryType) ToPointer() *CreditLedgerEntryEntryType {
 	return &e
 }
 
-func (e *CreditLedgerEntryEntryTypeEnum) UnmarshalJSON(data []byte) error {
+func (e *CreditLedgerEntryEntryType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -76,10 +76,10 @@ func (e *CreditLedgerEntryEntryTypeEnum) UnmarshalJSON(data []byte) error {
 	case "expiration_change":
 		fallthrough
 	case "credit_block_expiry":
-		*e = CreditLedgerEntryEntryTypeEnum(v)
+		*e = CreditLedgerEntryEntryType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for CreditLedgerEntryEntryTypeEnum: %v", v)
+		return fmt.Errorf("invalid value for CreditLedgerEntryEntryType: %v", v)
 	}
 }
 
@@ -97,10 +97,10 @@ type CreditLedgerEntry struct {
 	Description   string  `json:"description"`
 	EndingBalance float64 `json:"ending_balance"`
 	// Committed entries are older than the ingestion grace period, and cannot change. Pending entries are newer than the grace period and are subject to updates
-	EntryStatus CreditLedgerEntryEntryStatusEnum `json:"entry_status"`
-	EntryType   CreditLedgerEntryEntryTypeEnum   `json:"entry_type"`
-	EventID     *string                          `json:"event_id,omitempty"`
-	ID          string                           `json:"id"`
+	EntryStatus CreditLedgerEntryEntryStatus `json:"entry_status"`
+	EntryType   CreditLedgerEntryEntryType   `json:"entry_type"`
+	EventID     *string                      `json:"event_id,omitempty"`
+	ID          string                       `json:"id"`
 	// The position in which this entry appears in the ledger, starting at 0
 	LedgerSequenceNumber float64 `json:"ledger_sequence_number"`
 	PriceID              *string `json:"price_id,omitempty"`
