@@ -2,7 +2,7 @@
 
 ## Overview
 
-Actions related to API availability.
+The Availability resource represents a customer's availability. Availability is created when a customer's invoice is paid, and is updated when a customer's transaction is refunded.
 
 ### Available Operations
 
@@ -28,7 +28,7 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            BearerAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
         }),
     )
 
@@ -38,7 +38,7 @@ func main() {
         log.Fatal(err)
     }
 
-    if res.GetPing200ApplicationJSONObject != nil {
+    if res.Ping200ApplicationJSONObject != nil {
         // handle response
     }
 }

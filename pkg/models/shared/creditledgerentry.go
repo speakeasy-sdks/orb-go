@@ -83,12 +83,12 @@ func (e *CreditLedgerEntryEntryType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// CreditLedgerEntry - A credit ledger entry is a single entry in the customer balance ledger. More details about working with real-time balances are [here](../docs/Credits.md).
+// CreditLedgerEntry - A credit ledger entry is a single entry in the customer balance ledger. More details about working with real-time balances are [here](../guides/product-catalog/prepurchase).
 //
 // To support late and out-of-order event reporting, ledger entries are marked as either __committed_ or _pending_. Committed entries are finalized and will not change. Pending entries can be updated up until the event reporting grace period.
 type CreditLedgerEntry struct {
-	// Number of credits that were impacted
-	Amount    float64   `json:"amount"`
+	// Number of credits that were impacted. Required on creation for increment and decrement entries.
+	Amount    *float64  `json:"amount,omitempty"`
 	CreatedAt time.Time `json:"created_at"`
 	// Credit block that the entry affected
 	CreditBlock CreditLedgerEntryCreditBlock `json:"credit_block"`
@@ -103,6 +103,10 @@ type CreditLedgerEntry struct {
 	ID          string                       `json:"id"`
 	// The position in which this entry appears in the ledger, starting at 0
 	LedgerSequenceNumber float64 `json:"ledger_sequence_number"`
-	PriceID              *string `json:"price_id,omitempty"`
-	StartingBalance      float64 `json:"starting_balance"`
+	// User-specified metadata dictionary that's specified when adding a ledger entry. This contains key/value pairs if metadata is specified, but otherwise is an empty dictionary.
+	Metadata map[string]interface{} `json:"metadata"`
+	// In the case of an expiration change ledger entry, this represents the expiration time of the new block.
+	NewBlockExpiryDate *string `json:"new_block_expiry_date,omitempty"`
+	PriceID            *string `json:"price_id,omitempty"`
+	StartingBalance    float64 `json:"starting_balance"`
 }

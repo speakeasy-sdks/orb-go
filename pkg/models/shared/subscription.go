@@ -8,6 +8,21 @@ import (
 	"time"
 )
 
+type SubscriptionFixedFeeQuantitySchedule struct {
+	EndDate   *time.Time `json:"end_date,omitempty"`
+	PriceID   *string    `json:"price_id,omitempty"`
+	Quantity  *float64   `json:"quantity,omitempty"`
+	StartDate *time.Time `json:"start_date,omitempty"`
+}
+
+type SubscriptionRedeemedCoupon struct {
+	CouponID *string `json:"coupon_id,omitempty"`
+	// The effective end time for the coupon, after which point  it'll no longer apply to invoices for this subscription.
+	EndDate *time.Time `json:"end_date,omitempty"`
+	// The effective start time of this coupon - that is, when its corresponding discount starts applying.
+	StartDate *time.Time `json:"start_date,omitempty"`
+}
+
 type SubscriptionStatus string
 
 const (
@@ -47,24 +62,37 @@ func (e *SubscriptionStatus) UnmarshalJSON(data []byte) error {
 // Depending on the plan configuration, any _flat_ recurring fees will be billed either at the beginning (in-advance) or end (in-arrears) of each billing cycle. Plans default to **in-advance billing**. Usage-based fees are billed in arrears as usage is accumulated. In the normal course of events, you can expect an invoice to contain usage-based charges for the previous period, and a recurring fee for the following period.
 type Subscription struct {
 	// The current plan phase that is active, only if the subscription's plan has phases.
-	ActivePlanPhaseOrder *float64  `json:"active_plan_phase_order,omitempty"`
-	CreatedAt            time.Time `json:"created_at"`
+	ActivePlanPhaseOrder *float64 `json:"active_plan_phase_order,omitempty"`
+	// Determines whether issued invoices for this subscription will automatically be charged with the saved payment method on the due date. This property defaults to the plan's behavior.
+	AutoCollection *bool `json:"auto_collection,omitempty"`
+	// The day of the month on which the billing cycle is anchored. If the maximum number of days in a month is greater than this value, the last day of the month is the billing cycle day (e.g. billing_cycle_day=31 for April means the billing period begins on the 30th.
+	BillingCycleDay float64   `json:"billing_cycle_day"`
+	CreatedAt       time.Time `json:"created_at"`
 	// The end of the current billing period. This is an exclusive timestamp, such that the instant returned is not part of the billing period. Set to null for subscriptions that are not currently active.
 	CurrentBillingPeriodEndDate *time.Time `json:"current_billing_period_end_date,omitempty"`
 	// The start of the current billing period. This is an inclusive timestamp; the instant returned is exactly the beginning of the billing period. Set to null if the subscription is not currently active.
 	CurrentBillingPeriodStartDate *time.Time `json:"current_billing_period_start_date,omitempty"`
 	// A customer is a buyer of your products, and the other party to the billing relationship.
 	//
-	// In Orb, customers are assigned system generated identifiers automatically, but it's often desirable to have these match existing identifiers in your system. To avoid having to denormalize Orb ID information, you can pass in an `external_customer_id` with your own identifier. See [Customer ID Aliases](../docs/Customer-ID-Aliases.md) for further information about how these aliases work in Orb.
+	// In Orb, customers are assigned system generated identifiers automatically, but it's often desirable to have these match existing identifiers in your system. To avoid having to denormalize Orb ID information, you can pass in an `external_customer_id` with your own identifier. See [Customer ID Aliases](../guides/events-and-metrics/customer-aliases) for further information about how these aliases work in Orb.
 	//
 	// In addition to having an identifier in your system, a customer may exist in a payment provider solution like Stripe. Use the `payment_provider_id` and the `payment_provider` enum field to express this mapping.
 	//
-	// A customer also has a timezone (from the standard [IANA timezone database](https://www.iana.org/time-zones)), which defaults to your account's timezone. See [Timezone localization](../docs/Timezone-localization.md) for information on what this timezone parameter influences within Orb.
+	// A customer also has a timezone (from the standard [IANA timezone database](https://www.iana.org/time-zones)), which defaults to your account's timezone. See [Timezone localization](../guides/product-catalog/) for information on what this timezone parameter influences within Orb.
 	Customer Customer `json:"customer"`
+	// Determines the default memo on this subscriptions' invoices. Note that if this is not provided, it is determined by the plan configuration.
+	DefaultInvoiceMemo *string `json:"default_invoice_memo,omitempty"`
 	// The date Orb stops billing for this subscription.
 	EndDate time.Time `json:"end_date"`
-	ID      string    `json:"id"`
-	Plan    Plan      `json:"plan"`
+	// List of all fixed fee quantities associated with this subscription, with their start and end dates. This list contains the initial quantity along with quantity changes.
+	FixedFeeQuantitySchedule []SubscriptionFixedFeeQuantitySchedule `json:"fixed_fee_quantity_schedule"`
+	ID                       string                                 `json:"id"`
+	// User specified key-value pairs. If no metadata was specified at subscription creation time, this defaults to an empty dictionary.
+	Metadata map[string]interface{} `json:"metadata"`
+	// Determines the difference between the invoice issue date for subscription invoices as the date that they are due. A value of "0" here represents that the invoice is due on issue, whereas a value of 30 represents that the customer has a month to pay the invoice.
+	NetTerms       *int64                      `json:"net_terms,omitempty"`
+	Plan           Plan                        `json:"plan"`
+	RedeemedCoupon *SubscriptionRedeemedCoupon `json:"redeemed_coupon,omitempty"`
 	// The date Orb starts billing for this subscription.
 	StartDate time.Time          `json:"start_date"`
 	Status    SubscriptionStatus `json:"status"`

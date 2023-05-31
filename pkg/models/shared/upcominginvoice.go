@@ -77,11 +77,13 @@ type UpcomingInvoiceLineItemsSubLineItems struct {
 
 type UpcomingInvoiceLineItems struct {
 	// The final amount after any discounts or minimums.
-	Amount string `json:"amount"`
+	Amount   string   `json:"amount"`
+	Discount Discount `json:"discount"`
 	// The end date of the range of time applied for this line item's price.
 	EndDate time.Time `json:"end_date"`
 	// For configured prices that are split by a grouping key, this will be populated with the key and a value. The `amount` and `subtotal` will be the values for this particular grouping.
 	Grouping UpcomingInvoiceLineItemsGrouping `json:"grouping"`
+	Minimum  MinimumAmount                    `json:"minimum"`
 	// The name of the price associated with this line item.
 	Name     string  `json:"name"`
 	Quantity float64 `json:"quantity"`
@@ -110,8 +112,12 @@ type UpcomingInvoice struct {
 	Currency string `json:"currency"`
 	// The customer receiving this invoice.
 	Customer UpcomingInvoiceCustomer `json:"customer"`
+	Discount Discount                `json:"discount"`
+	// A URL for the invoice portal.
+	HostedInvoiceURL string `json:"hosted_invoice_url"`
 	// The breakdown of prices in this invoice.
 	LineItems []UpcomingInvoiceLineItems `json:"line_items"`
+	Minimum   MinimumAmount              `json:"minimum"`
 	// The associated subscription for this invoice.
 	Subscription UpcomingInvoiceSubscription `json:"subscription"`
 	// The total before any discounts and minimums are applied.

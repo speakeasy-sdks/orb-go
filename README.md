@@ -28,47 +28,22 @@ import(
 	"context"
 	"log"
 	"Orb"
-	"Orb/pkg/models/operations"
 )
 
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            BearerAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
         }),
     )
 
     ctx := context.Background()
-    res, err := s.Customer.Create(ctx, operations.PostCustomersRequestBody{
-        BillingAddress: &operations.PostCustomersRequestBodyBillingAddress{
-            City: sdk.String("Laruecester"),
-            Country: sdk.String("US"),
-            Line1: sdk.String("quibusdam"),
-            Line2: sdk.String("unde"),
-            PostalCode: sdk.String("58466-3428"),
-            State: sdk.String("ipsa"),
-        },
-        Currency: sdk.String("delectus"),
-        Email: "Geraldine_Kreiger52@gmail.com",
-        ExternalCustomerID: sdk.String("iusto"),
-        Name: "Charlie Walsh II",
-        PaymentProvider: operations.PostCustomersRequestBodyPaymentProviderQuickbooks.ToPointer(),
-        PaymentProviderID: sdk.String("deserunt"),
-        ShippingAddress: &operations.PostCustomersRequestBodyShippingAddress{
-            City: sdk.String("West Ritaworth"),
-            Country: sdk.String("US"),
-            Line1: sdk.String("quo"),
-            Line2: sdk.String("odit"),
-            PostalCode: sdk.String("89478-4576"),
-            State: sdk.String("dicta"),
-        },
-        Timezone: sdk.String("Etc/UTC"),
-    })
+    res, err := s.Availability.Ping(ctx)
     if err != nil {
         log.Fatal(err)
     }
 
-    if res.Customer != nil {
+    if res.Ping200ApplicationJSONObject != nil {
         // handle response
     }
 }
@@ -83,56 +58,82 @@ func main() {
 
 * [Ping](docs/availability/README.md#ping) - Check availability
 
-### [Credits](docs/credits/README.md)
+### [Coupon](docs/coupon/README.md)
 
-* [Get](docs/credits/README.md#get) - Add credit ledger entry
-* [GetCredits](docs/credits/README.md#getcredits) - Retrieve credit balance
-* [GetCreditsLedger](docs/credits/README.md#getcreditsledger) - View credits ledger
+* [Archive](docs/coupon/README.md#archive) - Archive a coupon
+* [Create](docs/coupon/README.md#create) - Create a coupon
+* [Fetch](docs/coupon/README.md#fetch) - Retrieve a coupon
+* [List](docs/coupon/README.md#list) - List coupons
+* [ListSubscriptions](docs/coupon/README.md#listsubscriptions) - List subscriptions for a coupon
+
+### [Credit](docs/credit/README.md)
+
+* [AddByExternalID](docs/credit/README.md#addbyexternalid) - Add credit ledger entry by external customer ID
+* [Create](docs/credit/README.md#create) - Add credit ledger entry
+* [Fetch](docs/credit/README.md#fetch) - Retrieve credit balance
+* [FetchByExternalID](docs/credit/README.md#fetchbyexternalid) - Retrieve credit balance by external customer ID
+* [FetchLedger](docs/credit/README.md#fetchledger) - View credits ledger
+* [FetchLedgerByExternalID](docs/credit/README.md#fetchledgerbyexternalid) - View credits ledger by external customer ID
+
+### [CreditNote](docs/creditnote/README.md)
+
+* [List](docs/creditnote/README.md#list) - List credit notes
 
 ### [Customer](docs/customer/README.md)
 
+* [Amend](docs/customer/README.md#amend) - Amend customer usage
+* [AmendByExternalID](docs/customer/README.md#amendbyexternalid) - Amend customer usage by external ID
 * [Create](docs/customer/README.md#create) - Create customer
-* [Get](docs/customer/README.md#get) - Retrieve a customer
-* [GetBalance](docs/customer/README.md#getbalance) - Get customer balance transactions
-* [GetByExternalID](docs/customer/README.md#getbyexternalid) - Retrieve a customer by external ID
-* [GetCosts](docs/customer/README.md#getcosts) - View customer costs
-* [GetCostsByExternalID](docs/customer/README.md#getcostsbyexternalid) - View customer costs by external customer ID
+* [CreateTransaction](docs/customer/README.md#createtransaction) - Create a customer balance transaction
+* [Delete](docs/customer/README.md#delete) - Delete a customer
+* [Fetch](docs/customer/README.md#fetch) - Retrieve a customer
+* [FetchByExternalID](docs/customer/README.md#fetchbyexternalid) - Retrieve a customer by external ID
+* [FetchCosts](docs/customer/README.md#fetchcosts) - View customer costs
+* [FetchCostsByExternalID](docs/customer/README.md#fetchcostsbyexternalid) - View customer costs by external customer ID
+* [FetchTransactions](docs/customer/README.md#fetchtransactions) - Get customer balance transactions
 * [List](docs/customer/README.md#list) - List customers
-* [Update](docs/customer/README.md#update) - Update customer
 * [UpdateByExternalID](docs/customer/README.md#updatebyexternalid) - Update a customer by external ID
-* [UpdateUsage](docs/customer/README.md#updateusage) - Amend customer usage
-* [UpdateUsageByExternalID](docs/customer/README.md#updateusagebyexternalid) - Amend customer usage by external ID
+* [UpdateCustomer](docs/customer/README.md#updatecustomer) - Update customer
 
 ### [Event](docs/event/README.md)
 
-* [Deprecate](docs/event/README.md#deprecate) - Deprecate single event
+* [Amend](docs/event/README.md#amend) - Amend single event
+* [CloseBackfill](docs/event/README.md#closebackfill) - Close a backfill
+* [Create](docs/event/README.md#create) - Create a backfill
+* [DeprecateEvent](docs/event/README.md#deprecateevent) - Deprecate single event
 * [Ingest](docs/event/README.md#ingest) - Ingest events
+* [ListBackfills](docs/event/README.md#listbackfills) - List backfills
+* [RevertBackfill](docs/event/README.md#revertbackfill) - Revert a backfill
 * [Search](docs/event/README.md#search) - Search events
-* [Update](docs/event/README.md#update) - Amend single event
 
 ### [Invoice](docs/invoice/README.md)
 
-* [Get](docs/invoice/README.md#get) - Retrieve an Invoice
-* [GetUpcoming](docs/invoice/README.md#getupcoming) - Retrieve upcoming invoice
+* [Create](docs/invoice/README.md#create) - Create invoice line item
+* [Fetch](docs/invoice/README.md#fetch) - Retrieve an Invoice
+* [FetchUpcoming](docs/invoice/README.md#fetchupcoming) - Retrieve upcoming invoice
 * [List](docs/invoice/README.md#list) - List invoices
+* [Void](docs/invoice/README.md#void) - Void an invoice
 
 ### [Plan](docs/plan/README.md)
 
-* [Get](docs/plan/README.md#get) - Retrieve a plan
+* [Fetch](docs/plan/README.md#fetch) - Retrieve a plan
 * [GetByExternalID](docs/plan/README.md#getbyexternalid) - Retrieve a plan by external plan ID
 * [List](docs/plan/README.md#list) - List plans
 
 ### [Subscription](docs/subscription/README.md)
 
 * [Cancel](docs/subscription/README.md#cancel) - Cancel subscription
-* [ChangeSchedule](docs/subscription/README.md#changeschedule) - Schedule plan change
 * [Create](docs/subscription/README.md#create) - Create subscription
-* [Get](docs/subscription/README.md#get) - Retrieve a subscription
-* [GetCost](docs/subscription/README.md#getcost) - View subscription costs
-* [GetSchedule](docs/subscription/README.md#getschedule) - View subscription schedule
-* [GetUsage](docs/subscription/README.md#getusage) - View subscription usage
+* [Create](docs/subscription/README.md#create) - Create subscription
+* [Fetch](docs/subscription/README.md#fetch) - Retrieve a subscription
+* [FetchCosts](docs/subscription/README.md#fetchcosts) - View subscription costs
+* [FetchSchedule](docs/subscription/README.md#fetchschedule) - View subscription schedule
+* [FetchUsage](docs/subscription/README.md#fetchusage) - View subscription usage
 * [List](docs/subscription/README.md#list) - List subscriptions
-* [Unschedule](docs/subscription/README.md#unschedule) - Unschedule pending plan changes
+* [SchedulePlanChange](docs/subscription/README.md#scheduleplanchange) - Schedule plan change
+* [UnscheduleCancellation](docs/subscription/README.md#unschedulecancellation) - Unschedule pending cancellation
+* [UnschedulePlanChange](docs/subscription/README.md#unscheduleplanchange) - Unschedule pending plan changes
+* [UpdateFixedFeeQuantity](docs/subscription/README.md#updatefixedfeequantity) - Update fixed fee quantity
 <!-- End SDK Available Operations -->
 
 ### Maturity

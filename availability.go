@@ -5,13 +5,15 @@ package sdk
 import (
 	"Orb/pkg/models/operations"
 	"Orb/pkg/utils"
+	"bytes"
 	"context"
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 )
 
-// availability - Actions related to API availability.
+// availability - The Availability resource represents a customer's availability. Availability is created when a customer's invoice is paid, and is updated when a customer's transaction is refunded.
 type availability struct {
 	defaultClient  HTTPClient
 	securityClient HTTPClient
@@ -36,7 +38,7 @@ func newAvailability(defaultClient, securityClient HTTPClient, serverURL, langua
 // This endpoint allows you to test your connection to the Orb API and check the validity of your API key, passed in the `Authorization` header. This is particularly useful for checking that your environment is set up properly, and is a great choice for connectors and integrations.
 //
 // This API does not have any side-effects or return any Orb resources.
-func (s *availability) Ping(ctx context.Context) (*operations.GetPingResponse, error) {
+func (s *availability) Ping(ctx context.Context) (*operations.PingResponse, error) {
 	baseURL := s.serverURL
 	url := strings.TrimSuffix(baseURL, "/") + "/ping"
 
@@ -56,11 +58,17 @@ func (s *availability) Ping(ctx context.Context) (*operations.GetPingResponse, e
 	if httpRes == nil {
 		return nil, fmt.Errorf("error sending request: no response")
 	}
-	defer httpRes.Body.Close()
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
 
 	contentType := httpRes.Header.Get("Content-Type")
 
-	res := &operations.GetPingResponse{
+	res := &operations.PingResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: contentType,
 		RawResponse: httpRes,
@@ -69,12 +77,12 @@ func (s *availability) Ping(ctx context.Context) (*operations.GetPingResponse, e
 	case httpRes.StatusCode == 200:
 		switch {
 		case utils.MatchContentType(contentType, `application/json`):
-			var out *operations.GetPing200ApplicationJSON
-			if err := utils.UnmarshalJsonFromResponseBody(httpRes.Body, &out); err != nil {
+			var out *operations.Ping200ApplicationJSON
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
 				return nil, err
 			}
 
-			res.GetPing200ApplicationJSONObject = out
+			res.Ping200ApplicationJSONObject = out
 		}
 	}
 

@@ -1,14 +1,14 @@
 configVersion: 1.0.0
 management:
-  docChecksum: 7dcd1bb0903bbc5deea5fbbd3a2ec5b0
+  docChecksum: c745009093cf88882dcc029a356f0b00
   docVersion: "1.0"
-  speakeasyVersion: 1.35.0
-  generationVersion: 2.31.0
+  speakeasyVersion: 1.39.0
+  generationVersion: 2.32.7
 generation:
   sdkClassName: SDK
   singleTagPerOp: false
   telemetryEnabled: false
 go:
-  version: 0.8.0
+  version: 0.9.0
   maxMethodParams: 0
   packageName: Orb

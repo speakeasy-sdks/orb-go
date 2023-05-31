@@ -365,16 +365,16 @@ type Price struct {
 	Cadence    *PriceCadence    `json:"cadence,omitempty"`
 	CreatedAt  *time.Time       `json:"created_at,omitempty"`
 	// An ISO 4217 currency string for this plan's prices.
-	Currency string                 `json:"currency"`
-	Discount map[string]interface{} `json:"discount"`
+	Currency string   `json:"currency"`
+	Discount Discount `json:"discount"`
 	// If the Price represents a fixed cost, this represents the quantity of units applied. Mutually exclusive with billable_metric.
 	FixedPriceQuantity *float64 `json:"fixed_price_quantity,omitempty"`
 	ID                 *string  `json:"id,omitempty"`
 	// Provided when model_type is `matrix`
-	MatrixConfig *PriceMatrixConfig     `json:"matrix_config,omitempty"`
-	Minimum      map[string]interface{} `json:"minimum"`
-	ModelType    *PriceModelType        `json:"model_type,omitempty"`
-	Name         *string                `json:"name,omitempty"`
+	MatrixConfig *PriceMatrixConfig `json:"matrix_config,omitempty"`
+	Minimum      MinimumAmount      `json:"minimum"`
+	ModelType    *PriceModelType    `json:"model_type,omitempty"`
+	Name         *string            `json:"name,omitempty"`
 	// Provided when model_type is `package`
 	PackageConfig *PricePackageConfig `json:"package_config,omitempty"`
 	// The phase order which includes this price, only applicable to a plan with phases.

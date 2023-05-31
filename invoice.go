@@ -6,13 +6,15 @@ import (
 	"Orb/pkg/models/operations"
 	"Orb/pkg/models/shared"
 	"Orb/pkg/utils"
+	"bytes"
 	"context"
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 )
 
-// invoice - Actions related to invoice management.
+// invoice - The Invoice resource represents an invoice that has been generated for a customer. Invoices are generated when a customer's billing interval has elapsed, and are updated when a customer's invoice is paid.
 type invoice struct {
 	defaultClient  HTTPClient
 	securityClient HTTPClient
@@ -33,9 +35,69 @@ func newInvoice(defaultClient, securityClient HTTPClient, serverURL, language, s
 	}
 }
 
-// Get - Retrieve an Invoice
+// Create - Create invoice line item
+// This creates a one-off fixed fee [Invoice line item](../reference/Orb-API.json/components/schemas/Invoice-line-item) on an [Invoice](../reference/Orb-API.json/components/schemas/Invoice). This can only be done for invoices that are in a `draft` status.
+func (s *invoice) Create(ctx context.Context, request operations.CreateInvoiceLineItemRequestBody) (*operations.CreateInvoiceLineItemResponse, error) {
+	baseURL := s.serverURL
+	url := strings.TrimSuffix(baseURL, "/") + "/invoice_line_items"
+
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "Request", "json")
+	if err != nil {
+		return nil, fmt.Errorf("error serializing request body: %w", err)
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "POST", url, bodyReader)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
+
+	req.Header.Set("Content-Type", reqContentType)
+
+	client := s.securityClient
+
+	httpRes, err := client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("error sending request: %w", err)
+	}
+	if httpRes == nil {
+		return nil, fmt.Errorf("error sending request: no response")
+	}
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
+
+	contentType := httpRes.Header.Get("Content-Type")
+
+	res := &operations.CreateInvoiceLineItemResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: contentType,
+		RawResponse: httpRes,
+	}
+	switch {
+	case httpRes.StatusCode == 201:
+		switch {
+		case utils.MatchContentType(contentType, `application/json`):
+			var out *shared.InvoiceLineItem
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+				return nil, err
+			}
+
+			res.InvoiceLineItem = out
+		}
+	}
+
+	return res, nil
+}
+
+// Fetch - Retrieve an Invoice
 // This endpoint is used to fetch an [`Invoice`](../reference/Orb-API.json/components/schemas/Invoice) given an identifier.
-func (s *invoice) Get(ctx context.Context, request operations.GetInvoiceInvoiceIDRequest) (*operations.GetInvoiceInvoiceIDResponse, error) {
+func (s *invoice) Fetch(ctx context.Context, request operations.FetchInvoiceRequest) (*operations.FetchInvoiceResponse, error) {
 	baseURL := s.serverURL
 	url, err := utils.GenerateURL(ctx, baseURL, "/invoices/{invoice_id}", request, nil)
 	if err != nil {
@@ -58,11 +120,17 @@ func (s *invoice) Get(ctx context.Context, request operations.GetInvoiceInvoiceI
 	if httpRes == nil {
 		return nil, fmt.Errorf("error sending request: no response")
 	}
-	defer httpRes.Body.Close()
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
 
 	contentType := httpRes.Header.Get("Content-Type")
 
-	res := &operations.GetInvoiceInvoiceIDResponse{
+	res := &operations.FetchInvoiceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: contentType,
 		RawResponse: httpRes,
@@ -72,7 +140,7 @@ func (s *invoice) Get(ctx context.Context, request operations.GetInvoiceInvoiceI
 		switch {
 		case utils.MatchContentType(contentType, `application/json`):
 			var out *shared.Invoice
-			if err := utils.UnmarshalJsonFromResponseBody(httpRes.Body, &out); err != nil {
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
 				return nil, err
 			}
 
@@ -83,9 +151,9 @@ func (s *invoice) Get(ctx context.Context, request operations.GetInvoiceInvoiceI
 	return res, nil
 }
 
-// GetUpcoming - Retrieve upcoming invoice
-// This endpoint can be used to fetch the [`UpcomingInvoice`](../reference/Orb-API.json/components/schemas/Upcoming%20Invoice) for the current billing period given a subscription.
-func (s *invoice) GetUpcoming(ctx context.Context, request operations.GetInvoicesUpcomingRequest) (*operations.GetInvoicesUpcomingResponse, error) {
+// FetchUpcoming - Retrieve upcoming invoice
+// This endpoint can be used to fetch the [`Upcoming Invoice`](../reference/Orb-API.json/components/schemas/UpcomingInvoice) for the current billing period given a subscription.
+func (s *invoice) FetchUpcoming(ctx context.Context, request operations.FetchUpcomingInvoiceRequest) (*operations.FetchUpcomingInvoiceResponse, error) {
 	baseURL := s.serverURL
 	url := strings.TrimSuffix(baseURL, "/") + "/invoices/upcoming"
 
@@ -109,11 +177,17 @@ func (s *invoice) GetUpcoming(ctx context.Context, request operations.GetInvoice
 	if httpRes == nil {
 		return nil, fmt.Errorf("error sending request: no response")
 	}
-	defer httpRes.Body.Close()
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
 
 	contentType := httpRes.Header.Get("Content-Type")
 
-	res := &operations.GetInvoicesUpcomingResponse{
+	res := &operations.FetchUpcomingInvoiceResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: contentType,
 		RawResponse: httpRes,
@@ -123,7 +197,7 @@ func (s *invoice) GetUpcoming(ctx context.Context, request operations.GetInvoice
 		switch {
 		case utils.MatchContentType(contentType, `application/json`):
 			var out *shared.UpcomingInvoice
-			if err := utils.UnmarshalJsonFromResponseBody(httpRes.Body, &out); err != nil {
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
 				return nil, err
 			}
 
@@ -137,7 +211,9 @@ func (s *invoice) GetUpcoming(ctx context.Context, request operations.GetInvoice
 // List - List invoices
 // This endpoint returns a list of all [`Invoice`](../reference/Orb-API.json/components/schemas/Invoice)s for an account in a list format.
 //
-// The list of invoices is ordered starting from the most recently issued invoice date. The response also includes `pagination_metadata`, which lets the caller retrieve the next page of results if they exist.
+// The list of invoices is ordered starting from the most recently issued invoice date. The response also includes [`pagination_metadata`](../api/pagination), which lets the caller retrieve the next page of results if they exist.
+//
+// By default, this only returns invoices that are `issued`, `paid`, or `synced`.
 func (s *invoice) List(ctx context.Context, request operations.ListInvoicesRequest) (*operations.ListInvoicesResponse, error) {
 	baseURL := s.serverURL
 	url := strings.TrimSuffix(baseURL, "/") + "/invoices"
@@ -162,7 +238,13 @@ func (s *invoice) List(ctx context.Context, request operations.ListInvoicesReque
 	if httpRes == nil {
 		return nil, fmt.Errorf("error sending request: no response")
 	}
-	defer httpRes.Body.Close()
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
 
 	contentType := httpRes.Header.Get("Content-Type")
 
@@ -176,12 +258,71 @@ func (s *invoice) List(ctx context.Context, request operations.ListInvoicesReque
 		switch {
 		case utils.MatchContentType(contentType, `application/json`):
 			var out *operations.ListInvoices200ApplicationJSON
-			if err := utils.UnmarshalJsonFromResponseBody(httpRes.Body, &out); err != nil {
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
 				return nil, err
 			}
 
 			res.ListInvoices200ApplicationJSONObject = out
 		}
+	}
+
+	return res, nil
+}
+
+// Void - Void an invoice
+// This endpoint allows an invoice's status to be set the `void` status. This can only be done to invoices that are in the `issued` status.
+//
+// If the associated invoice has used the customer balance to change the amount due, the customer balance operation will be reverted. For example, if the invoice used $10 of customer balance, that amount will be added back to the customer balance upon voiding.
+func (s *invoice) Void(ctx context.Context, request operations.PostInvoicesInvoiceIDVoidRequest) (*operations.PostInvoicesInvoiceIDVoidResponse, error) {
+	baseURL := s.serverURL
+	url, err := utils.GenerateURL(ctx, baseURL, "/invoices/{invoice_id}/void", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "POST", url, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
+
+	client := s.securityClient
+
+	httpRes, err := client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("error sending request: %w", err)
+	}
+	if httpRes == nil {
+		return nil, fmt.Errorf("error sending request: no response")
+	}
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
+
+	contentType := httpRes.Header.Get("Content-Type")
+
+	res := &operations.PostInvoicesInvoiceIDVoidResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: contentType,
+		RawResponse: httpRes,
+	}
+	switch {
+	case httpRes.StatusCode == 201:
+		switch {
+		case utils.MatchContentType(contentType, `application/json`):
+			var out *shared.Invoice
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+				return nil, err
+			}
+
+			res.Invoice = out
+		}
+	case httpRes.StatusCode == 400:
 	}
 
 	return res, nil

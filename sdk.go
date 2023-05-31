@@ -12,7 +12,7 @@ import (
 // ServerList contains the list of servers available to the SDK
 var ServerList = []string{
 	// Production server
-	"https://api.billwithorb.com/v1",
+	"https://api.withorb.com/v1",
 }
 
 // HTTPClient provides an interface for suplying the SDK with a custom HTTP client
@@ -45,19 +45,23 @@ func Float64(f float64) *float64 { return &f }
 // 2. **Reliably real time**: Orb's event-based APIs, such as event ingestion are designed to handle extremely high throughput and scale with concurrent load. Orb also provides a real-time event-level credits ledger and a highly performant webhooks architecture.
 // 3. **Flexibility at the forefront**: Features like timezone localization and the ability to amend historical usage show the flexible nature of the platform.
 type SDK struct {
-	// Availability - Actions related to API availability.
+	// Availability - The Availability resource represents a customer's availability. Availability is created when a customer's invoice is paid, and is updated when a customer's transaction is refunded.
 	Availability *availability
-	// Credits - Actions related to credit management.
-	Credits *credits
-	// Customer - Actions related to customer management.
+	// Coupon - The Coupon resource represents a discount that can be applied to a customer's invoice. Coupons can be applied to a customer's invoice either by the customer or by the Orb API.
+	Coupon *coupon
+	// Credit - The Credits resource represents a customer's credits. Credits are created when a customer's invoice is paid, and are updated when a customer's transaction is refunded.
+	Credit *credit
+	// CreditNote - The Credit Note resource represents a credit note that has been generated for a customer. Credit Notes are generated when a customer's billing interval has elapsed, and are updated when a customer's invoice is paid.
+	CreditNote *creditNote
+	// Customer - The Customer resource represents a customer of your service. Customers are created when a customer is created in your service, and are updated when a customer's information is updated in your service.
 	Customer *customer
-	// Event - Actions related to event management.
+	// Event - The Event resource represents an event that has been created for a customer. Events are created when a customer's invoice is paid, and are updated when a customer's transaction is refunded.
 	Event *event
-	// Invoice - Actions related to invoice management.
+	// Invoice - The Invoice resource represents an invoice that has been generated for a customer. Invoices are generated when a customer's billing interval has elapsed, and are updated when a customer's invoice is paid.
 	Invoice *invoice
-	// Plan - Actions related to plan management.
+	// Plan - The Plan resource represents a plan that can be subscribed to by a customer. Plans define the amount of credits that a customer will receive, the price of the plan, and the billing interval.
 	Plan *plan
-	// Subscription - Actions related to subscription mangement.
+	// Subscription - The Subscription resource represents a customer's subscription to a plan. Subscriptions are created when a customer subscribes to a plan, and are updated when a customer's plan is changed.
 	Subscription *subscription
 
 	// Non-idiomatic field names below are to namespace fields from the fields names above to avoid name conflicts
@@ -108,8 +112,8 @@ func WithSecurity(security shared.Security) SDKOption {
 func New(opts ...SDKOption) *SDK {
 	sdk := &SDK{
 		_language:   "go",
-		_sdkVersion: "0.8.0",
-		_genVersion: "2.31.0",
+		_sdkVersion: "0.9.0",
+		_genVersion: "2.32.7",
 	}
 	for _, opt := range opts {
 		opt(sdk)
@@ -140,7 +144,25 @@ func New(opts ...SDKOption) *SDK {
 		sdk._genVersion,
 	)
 
-	sdk.Credits = newCredits(
+	sdk.Coupon = newCoupon(
+		sdk._defaultClient,
+		sdk._securityClient,
+		sdk._serverURL,
+		sdk._language,
+		sdk._sdkVersion,
+		sdk._genVersion,
+	)
+
+	sdk.Credit = newCredit(
+		sdk._defaultClient,
+		sdk._securityClient,
+		sdk._serverURL,
+		sdk._language,
+		sdk._sdkVersion,
+		sdk._genVersion,
+	)
+
+	sdk.CreditNote = newCreditNote(
 		sdk._defaultClient,
 		sdk._securityClient,
 		sdk._serverURL,

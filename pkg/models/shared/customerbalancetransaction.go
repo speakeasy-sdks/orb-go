@@ -39,10 +39,43 @@ func (e *CustomerBalanceTransactionAction) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// CustomerBalanceTransactionCreditNote - The Credit note associated with this transaction. This may appear as the result of a credit note being applied to an invoice and balance is added back to the customer balance or it is being reapplied to the invoice.
+type CustomerBalanceTransactionCreditNote struct {
+	// The id of the Credit note
+	ID string `json:"id"`
+}
+
 // CustomerBalanceTransactionInvoice - The Invoice associated with this transaction
 type CustomerBalanceTransactionInvoice struct {
 	// The Invoice id
 	ID string `json:"id"`
+}
+
+type CustomerBalanceTransactionType string
+
+const (
+	CustomerBalanceTransactionTypeIncrement CustomerBalanceTransactionType = "increment"
+	CustomerBalanceTransactionTypeDecrement CustomerBalanceTransactionType = "decrement"
+)
+
+func (e CustomerBalanceTransactionType) ToPointer() *CustomerBalanceTransactionType {
+	return &e
+}
+
+func (e *CustomerBalanceTransactionType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "increment":
+		fallthrough
+	case "decrement":
+		*e = CustomerBalanceTransactionType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CustomerBalanceTransactionType: %v", v)
+	}
 }
 
 // CustomerBalanceTransaction - A single change to the customer balance. All amounts are in the customer's currency.
@@ -53,6 +86,8 @@ type CustomerBalanceTransaction struct {
 	Amount string `json:"amount"`
 	// The creation time of this transaction.
 	CreatedAt time.Time `json:"created_at"`
+	// The Credit note associated with this transaction. This may appear as the result of a credit note being applied to an invoice and balance is added back to the customer balance or it is being reapplied to the invoice.
+	CreditNote *CustomerBalanceTransactionCreditNote `json:"credit_note,omitempty"`
 	// An optional description provided for manual customer balance adjustments.
 	Description string `json:"description"`
 	// The new value of the customer's balance prior to the transaction, in the customer's currency.
@@ -62,5 +97,6 @@ type CustomerBalanceTransaction struct {
 	// The Invoice associated with this transaction
 	Invoice CustomerBalanceTransactionInvoice `json:"invoice"`
 	// The original value of the customer's balance prior to the transaction, in the customer's currency.
-	StartingBalance string `json:"starting_balance"`
+	StartingBalance string                         `json:"starting_balance"`
+	Type            CustomerBalanceTransactionType `json:"type"`
 }

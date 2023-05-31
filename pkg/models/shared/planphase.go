@@ -40,14 +40,14 @@ func (e *PlanPhaseDurationUnit) UnmarshalJSON(data []byte) error {
 
 // PlanPhase - A plan can optionally consist of plan phases, which represents a pricing configuration that's only active for the length of time specified by `duration` and `duration_unit`. All plans must have an evergreen phase, which is the last phase and active indefinitely.
 type PlanPhase struct {
-	Description *string                `json:"description,omitempty"`
-	Discount    map[string]interface{} `json:"discount"`
+	Description *string  `json:"description,omitempty"`
+	Discount    Discount `json:"discount"`
 	// How many terms of length `duration_unit` this phase is active for. If null, this phase is evergreen and active indefinitely
 	Duration *int64 `json:"duration,omitempty"`
 	// Term for this plan, which is the maximum cadence among all component prices
-	DurationUnit PlanPhaseDurationUnit  `json:"duration_unit"`
-	Minimum      map[string]interface{} `json:"minimum"`
-	Name         *string                `json:"name,omitempty"`
+	DurationUnit PlanPhaseDurationUnit `json:"duration_unit"`
+	Minimum      MinimumAmount         `json:"minimum"`
+	Name         *string               `json:"name,omitempty"`
 	// Determines the ordering of the phase in a plan's lifecycle. 1 = first phase.
 	Order *int64 `json:"order,omitempty"`
 }

@@ -14,8 +14,8 @@ type ListSubscriptionsRequest struct {
 
 // ListSubscriptions200ApplicationJSON - OK
 type ListSubscriptions200ApplicationJSON struct {
-	Data               []shared.Subscription  `json:"data,omitempty"`
-	PaginationMetadata map[string]interface{} `json:"pagination_metadata,omitempty"`
+	Data               []shared.Subscription      `json:"data,omitempty"`
+	PaginationMetadata *shared.PaginationMetadata `json:"pagination_metadata,omitempty"`
 }
 
 type ListSubscriptionsResponse struct {

@@ -8,110 +8,38 @@ import (
 	"time"
 )
 
+// InvoiceAutoCollection - Information about payment auto-collection for this invoice.
+type InvoiceAutoCollection struct {
+	// If the invoice is scheduled for auto-collection, this field will reflect when the next attempt will occur. If dunning has been exhausted, or auto-collection is not enabled for this invoice, this field will be `null`.
+	NextAttemptAt *time.Time `json:"next_attempt_at,omitempty"`
+	// If Orb has ever attempted payment auto-collection for this invoice, this field will reflect when that attempt occurred. In conjunction with `next_attempt_at`, this can be used to tell whether the invoice is currently in dunning (that is, `previously_attempted_at` is non-null, and `next_attempt_time` is non-null), or if dunning has been exhausted (`previously_attempted_at` is non-null, but `next_attempt_time` is null).
+	PreviouslyAttemptedAt *time.Time `json:"previously_attempted_at,omitempty"`
+}
+
+type InvoiceCreditNotes struct {
+	CreditNoteNumber *string    `json:"credit_note_number,omitempty"`
+	ID               *string    `json:"id,omitempty"`
+	Reason           *string    `json:"reason,omitempty"`
+	Total            *string    `json:"total,omitempty"`
+	Type             *string    `json:"type,omitempty"`
+	VoidedAt         *time.Time `json:"voided_at,omitempty"`
+}
+
 // InvoiceCustomer - The customer receiving this invoice.
 type InvoiceCustomer struct {
 	ExternalCustomerID string `json:"external_customer_id"`
 	ID                 string `json:"id"`
 }
 
-// InvoiceLineItemsGrouping - For configured prices that are split by a grouping key, this will be populated with the key and a value. The `amount` and `subtotal` will be the values for this particular grouping.
-type InvoiceLineItemsGrouping struct {
-	Key   string `json:"key"`
-	Value string `json:"value"`
-}
-
-// InvoiceLineItemsSubLineItemsMatrixConfig - Only available if `type` is `matrix`. Contains the values of the matrix that this `sub_line_item` represents.
-type InvoiceLineItemsSubLineItemsMatrixConfig struct {
-	// The ordered dimension values for this line item.
-	DimensionValues []string `json:"dimension_values"`
-}
-
-// InvoiceLineItemsSubLineItemsTierConfig - Only available if `type` is `tier`. Contains the range of units in this tier and the unit amount.
-type InvoiceLineItemsSubLineItemsTierConfig struct {
-	FirstUnit  float64 `json:"first_unit"`
-	LastUnit   float64 `json:"last_unit"`
-	UnitAmount string  `json:"unit_amount"`
-}
-
-// InvoiceLineItemsSubLineItemsType - An identifier for a sub line item that is specific to a pricing model.
-type InvoiceLineItemsSubLineItemsType string
-
-const (
-	InvoiceLineItemsSubLineItemsTypeMatrix InvoiceLineItemsSubLineItemsType = "matrix"
-	InvoiceLineItemsSubLineItemsTypeTier   InvoiceLineItemsSubLineItemsType = "tier"
-)
-
-func (e InvoiceLineItemsSubLineItemsType) ToPointer() *InvoiceLineItemsSubLineItemsType {
-	return &e
-}
-
-func (e *InvoiceLineItemsSubLineItemsType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "matrix":
-		fallthrough
-	case "tier":
-		*e = InvoiceLineItemsSubLineItemsType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for InvoiceLineItemsSubLineItemsType: %v", v)
-	}
-}
-
-type InvoiceLineItemsSubLineItems struct {
-	// The total amount for this sub line item.
-	Amount string `json:"amount"`
-	// Only available if `type` is `matrix`. Contains the values of the matrix that this `sub_line_item` represents.
-	MatrixConfig *InvoiceLineItemsSubLineItemsMatrixConfig `json:"matrix_config,omitempty"`
-	Name         string                                    `json:"name"`
-	Quantity     float64                                   `json:"quantity"`
-	// Only available if `type` is `tier`. Contains the range of units in this tier and the unit amount.
-	TierConfig *InvoiceLineItemsSubLineItemsTierConfig `json:"tier_config,omitempty"`
-	// An identifier for a sub line item that is specific to a pricing model.
-	Type InvoiceLineItemsSubLineItemsType `json:"type"`
-}
-
-type InvoiceLineItemsTaxAmounts struct {
-	// The amount of additional tax incurred by this tax rate.
-	Amount string `json:"amount"`
-	// The human-readable description of the applied tax rate.
-	TaxRateDescription string `json:"tax_rate_description"`
-	// The tax rate percentage, out of 100.
-	TaxRatePercentage string `json:"tax_rate_percentage"`
-}
-
-type InvoiceLineItems struct {
-	// The final amount after any discounts or minimums.
-	Amount   string                 `json:"amount"`
-	Discount map[string]interface{} `json:"discount"`
-	// The end date of the range of time applied for this line item's price.
-	EndDate time.Time `json:"end_date"`
-	// For configured prices that are split by a grouping key, this will be populated with the key and a value. The `amount` and `subtotal` will be the values for this particular grouping.
-	Grouping InvoiceLineItemsGrouping `json:"grouping"`
-	Minimum  map[string]interface{}   `json:"minimum"`
-	// The name of the price associated with this line item.
-	Name     string  `json:"name"`
-	Quantity float64 `json:"quantity"`
-	// The start date of the range of time applied for this line item's price.
-	StartDate time.Time `json:"start_date"`
-	// For complex pricing structures, the line item can be broken down further in `sub_line_items`.
-	SubLineItems []InvoiceLineItemsSubLineItems `json:"sub_line_items"`
-	// The line amount before any line item-specific discounts or minimums.
-	Subtotal string `json:"subtotal"`
-	// An array of tax rates and their incurred tax amounts. Empty if no tax integration is configured.
-	TaxAmounts []InvoiceLineItemsTaxAmounts `json:"tax_amounts"`
-}
-
-// InvoiceStatus - The status of this invoice as known to Orb. Invoices that have been issued for past billing periods are marked `"issued"`. Invoices will be marked `"paid"` upon confirmation of successful automatic payment collection by Orb. Invoices synced to an external billing provider (such as Bill.com, QuickBooks, or Stripe Invoicing) will be marked as `"synced"`.
+// InvoiceStatus - The status of this invoice as known to Orb. Invoices start in `"draft"` state for a given billing period, and are automatically transitioned to `"issued"` when that billing period ends. Invoices will be marked `"paid"` upon confirmation of successful automatic payment collection by Orb. Invoices may be manually voided; those will be in the terminal `"void"` state. Invoices synced to an external billing provider (such as Bill.com, QuickBooks, or Stripe Invoicing) will be marked as `"synced"`.
 type InvoiceStatus string
 
 const (
 	InvoiceStatusIssued InvoiceStatus = "issued"
 	InvoiceStatusPaid   InvoiceStatus = "paid"
 	InvoiceStatusSynced InvoiceStatus = "synced"
+	InvoiceStatusVoid   InvoiceStatus = "void"
+	InvoiceStatusDraft  InvoiceStatus = "draft"
 )
 
 func (e InvoiceStatus) ToPointer() *InvoiceStatus {
@@ -129,6 +57,10 @@ func (e *InvoiceStatus) UnmarshalJSON(data []byte) error {
 	case "paid":
 		fallthrough
 	case "synced":
+		fallthrough
+	case "void":
+		fallthrough
+	case "draft":
 		*e = InvoiceStatus(v)
 		return nil
 	default:
@@ -145,31 +77,143 @@ type InvoiceSubscription struct {
 type Invoice struct {
 	// This is the final amount required to be charged to the customer and reflects the application of the customer balance to the `total` of the invoice.
 	AmountDue string `json:"amount_due"`
+	// Information about payment auto-collection for this invoice.
+	AutoCollection *InvoiceAutoCollection `json:"auto_collection,omitempty"`
 	// The creation time of the resource in Orb.
 	CreatedAt time.Time `json:"created_at"`
+	// A list of credit notes associated with the invoice
+	CreditNotes []InvoiceCreditNotes `json:"credit_notes,omitempty"`
 	// An ISO 4217 currency string or `credits`
 	Currency string `json:"currency"`
 	// The customer receiving this invoice.
 	Customer InvoiceCustomer `json:"customer"`
 	// A list of Customer balance transactions that may be associated with this invoice.
 	CustomerBalanceTransactions []CustomerBalanceTransaction `json:"customer_balance_transactions"`
-	Discount                    map[string]interface{}       `json:"discount"`
+	// Tax IDs are commonly required to be displayed on customer invoices, which are added to the headers of invoices.
+	//
+	//
+	// ### Supported Tax ID Countries and Types
+	//
+	//
+	// | Country        | Type         | Description                                 |
+	// |----------------|--------------|---------------------------------------------|
+	// | Australia      | `au_abn`     | Australian Business Number (AU ABN)	        |
+	// | Australia      | `au_arn`     | Australian Taxation Office Reference Number |
+	// | Austria        | `eu_vat`     | European VAT number                         |
+	// | Belgium        | `eu_vat`     | European VAT number                         |
+	// | Brazil         | `br_cnpj`    | Brazilian CNPJ number                       |
+	// | Brazil         | `br_cpf`     | Brazilian CPF number	                       |
+	// | Bulgaria       | `bg_uic`     | Bulgaria Unified Identification Code        |
+	// | Bulgaria       | `eu_vat`     | European VAT number                         |
+	// | Canada         | `ca_bn`      | Canadian BN                                 |
+	// | Canada         | `ca_gst_hst` | Canadian GST/HST number                     |
+	// | Canada         | `ca_pst_bc`  | Canadian PST number (British Columbia)      |
+	// | Canada         | `ca_pst_mb`  | Canadian PST number (Manitoba)              |
+	// | Canada         | `ca_pst_sk`  | Canadian PST number (Saskatchewan)          |
+	// | Canada         | `ca_qst`     | Canadian QST number (Québec)                |
+	// | Chile          | `cl_tin`     | Chilean TIN                                 |
+	// | Croatia        | `eu_vat`     | European VAT number                         |
+	// | Cyprus         | `eu_vat`     | European VAT number                         |
+	// | Czech Republic | `eu_vat`     | European VAT number                         |
+	// | Denmark        | `eu_vat`     | European VAT number                         |
+	// | Egypt          | `eg_tin`     | Egyptian Tax Identification Number	         |
+	// | Estonia   | `eu_vat`     | European VAT number   |
+	// | EU        | `eu_oss_vat` | European One Stop Shop VAT number for non-Union scheme                                                   |
+	// | Finland   | `eu_vat`     | European VAT number                                                                                      |
+	// | France    | `eu_vat`     | European VAT number                                                                                      |
+	// | Georgia   | `ge_vat`     | Georgian VAT                                                                                             |
+	// | Germany   | `eu_vat`     | European VAT number                                                                                      |
+	// | Greece    | `eu_vat`     | European VAT number                                                                                      |
+	// | Hong Kong | `hk_br`      | Hong Kong BR number                                                                                      |
+	// | Hungary   | `eu_vat`     | European VAT number                                                                                      |
+	// | Hungary   | `hu_tin`     | Hungary tax number (adószám)	                                                                            |
+	// | Iceland   | `is_vat`     | Icelandic VAT                                                                                            |
+	// | India     | `in_gst`     | Indian GST number                                                                                        |
+	// | Indonesia | `id_npwp`    | Indonesian NPWP number                                                                                   |
+	// | Ireland   | `eu_vat`     | European VAT number                                                                                      |
+	// | Israel    | `il_vat`     | Israel VAT                                                                                               |
+	// | Italy     | `eu_vat`     | European VAT number                                                                                      |
+	// | Japan     | `jp_cn`      | Japanese Corporate Number (*Hōjin Bangō*)                                                                |
+	// | Japan     | `jp_rn`      | Japanese Registered Foreign Businesses' Registration Number (*Tōroku Kokugai Jigyōsha no Tōroku Bangō*)	 |
+	// | Japan     | `jp_trn`     | Japanese Tax Registration Number (*Tōroku Bangō*)	                                                       |
+	// | Kenya     | `ke_pin`     | Kenya Revenue Authority Personal Identification Number                                                   |
+	// | Latvia    | `eu_vat`     | European VAT number                                                                                  |
+	// | Liechtenstein | `li_uid`  | Liechtensteinian UID number           |
+	// | Lithuania     | `eu_vat`  | European VAT number	                  |
+	// | Luxembourg    | `eu_vat`  | European VAT number	                  |
+	// | Malaysia      | `my_frp`  | Malaysian FRP number                  |
+	// | Malaysia      | `my_itn`  | Malaysian ITN                         |
+	// | Malaysia      | `my_sst`  | Malaysian SST number                  |
+	// | Malta         | `eu_vat ` | European VAT number                   |
+	// | Mexico        | `mx_rfc`  | Mexican RFC number                    |
+	// | Netherlands   | `eu_vat`  | European VAT number	                  |
+	// | New Zealand   | `nz_gst`  | New Zealand GST number	               |
+	// | Norway        | `no_vat`  | Norwegian VAT number                  |
+	// | Philippines   | `ph_tin	` | Philippines Tax Identification Number |
+	// | Poland        | `eu_vat`  | European VAT number                   |
+	// | Portugal      | `eu_vat`  | European VAT number                   |
+	// | Romania       | `eu_vat`  | European VAT number                   |
+	// | Russia        | `ru_inn`  | Russian INN                           |
+	// | Russia        | `ru_kpp`  | Russian KPP                           |
+	// | Saudi Arabia  | `sg_gst`  | Singaporean GST                       |
+	// | Singapore     | `sg_uen`  | Singaporean UEN	                      |
+	// | Slovakia      | `eu_vat`  | European VAT number                   |
+	// | Slovenia      | `eu_vat`  | European VAT number                   |
+	// | Slovenia             | `si_tin` | Slovenia tax number (davčna številka)	             |
+	// | South Africa	        | `za_vat` | South African VAT number                           |
+	// | South Korea          | `kr_brn` | Korean BRN                                         |
+	// | Spain                | `es_cif` | Spanish NIF number (previously Spanish CIF number) |
+	// | Spain                | `eu_vat` | European VAT number	                               |
+	// | Sweden               | `eu_vat` | European VAT number                                |
+	// | Switzerland          | `ch_vat` | Switzerland VAT number	                            |
+	// | Taiwan               | `tw_vat` | Taiwanese VAT	                                     |
+	// | Thailand             | `th_vat` | Thai VAT                                           |
+	// | Turkey               | `tr_tin` | Turkish Tax Identification Number                  |
+	// | Ukraine              | `ua_vat` | Ukrainian VAT                                      |
+	// | United Arab Emirates | `ae_trn` | United Arab Emirates TRN	                          |
+	// | United Kingdom       | `eu_vat` | Northern Ireland VAT number                        |
+	// | United Kingdom       | `gb_vat` | United Kingdom VAT number                          |
+	// | United States        | `us_ein` | United States EIN                                  |
+	//
+	//
+	CustomerTaxID *CustomerTaxID `json:"customer_tax_id,omitempty"`
+	Discount      Discount       `json:"discount"`
 	// When the invoice payment is due.
 	DueDate time.Time `json:"due_date"`
-	ID      string    `json:"id"`
+	// A URL for the invoice portal.
+	HostedInvoiceURL *string `json:"hosted_invoice_url,omitempty"`
+	ID               string  `json:"id"`
 	// Issue date of the invoice
 	InvoiceDate time.Time `json:"invoice_date"`
 	// The link to download the PDF representation of the `Invoice`.
 	InvoicePdf string `json:"invoice_pdf"`
+	// If the invoice failed to issue, this will be the last time it failed to issue (even if it is now in a different state.)
+	IssueFailedAt *time.Time `json:"issue_failed_at,omitempty"`
+	// If the invoice has been issued, this will be the time it transitioned to `issued` (even if it is now in a different state.)
+	IssuedAt *time.Time `json:"issued_at,omitempty"`
 	// The breakdown of prices in this invoice.
-	LineItems []InvoiceLineItems     `json:"line_items"`
-	Minimum   map[string]interface{} `json:"minimum"`
-	// The status of this invoice as known to Orb. Invoices that have been issued for past billing periods are marked `"issued"`. Invoices will be marked `"paid"` upon confirmation of successful automatic payment collection by Orb. Invoices synced to an external billing provider (such as Bill.com, QuickBooks, or Stripe Invoicing) will be marked as `"synced"`.
-	Status *InvoiceStatus `json:"status,omitempty"`
+	LineItems []InvoiceLineItem `json:"line_items"`
+	// Free-form text which is available on the invoice PDF and the Orb invoice portal.
+	Memo    *string       `json:"memo,omitempty"`
+	Minimum MinimumAmount `json:"minimum"`
+	// If the invoice has a status of `paid`, this gives a timestamp when the invoice was paid.
+	PaidAt *time.Time `json:"paid_at,omitempty"`
+	// If payment was attempted on this invoice but failed, this will be the time of the most recent attempt.
+	PaymentFailedAt *time.Time `json:"payment_failed_at,omitempty"`
+	// If payment was attempted on this invoice, this will be the start time of the most recent attempt. This field is especially useful for delayed-notification payment mechanisms (like bank transfers), where payment can take 3 days or more.
+	PaymentStartedAt *time.Time `json:"payment_started_at,omitempty"`
+	// If the invoice is in draft, this timestamp will reflect when the invoice is scheduled to be issued.
+	ScheduledIssueAt *time.Time `json:"scheduled_issue_at,omitempty"`
+	// The status of this invoice as known to Orb. Invoices start in `"draft"` state for a given billing period, and are automatically transitioned to `"issued"` when that billing period ends. Invoices will be marked `"paid"` upon confirmation of successful automatic payment collection by Orb. Invoices may be manually voided; those will be in the terminal `"void"` state. Invoices synced to an external billing provider (such as Bill.com, QuickBooks, or Stripe Invoicing) will be marked as `"synced"`.
+	Status InvoiceStatus `json:"status"`
 	// The associated subscription for this invoice.
 	Subscription InvoiceSubscription `json:"subscription"`
 	// The total before any discounts and minimums are applied.
 	Subtotal string `json:"subtotal"`
+	// If the invoice failed to sync, this will be the last time an external invoicing provider sync was attempted. This field will always be `null` for invoices using Orb Invoicing.
+	SyncFailedAt *time.Time `json:"sync_failed_at,omitempty"`
 	// The total after any minimums, discounts, and taxes have been applied.
 	Total string `json:"total"`
+	// If the invoice has a status of `void`, this gives a timestamp when the invoice was voided.
+	VoidedAt *time.Time `json:"voided_at,omitempty"`
 }

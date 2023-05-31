@@ -6,13 +6,15 @@ import (
 	"Orb/pkg/models/operations"
 	"Orb/pkg/models/shared"
 	"Orb/pkg/utils"
+	"bytes"
 	"context"
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 )
 
-// plan - Actions related to plan management.
+// plan - The Plan resource represents a plan that can be subscribed to by a customer. Plans define the amount of credits that a customer will receive, the price of the plan, and the billing interval.
 type plan struct {
 	defaultClient  HTTPClient
 	securityClient HTTPClient
@@ -33,7 +35,7 @@ func newPlan(defaultClient, securityClient HTTPClient, serverURL, language, sdkV
 	}
 }
 
-// Get - Retrieve a plan
+// Fetch - Retrieve a plan
 // This endpoint is used to fetch [plan](../reference/Orb-API.json/components/schemas/Plan) details given a plan identifier. It returns information about the prices included in the plan and their configuration, as well as the product that the plan is attached to.
 //
 // ## Serialized prices
@@ -41,7 +43,7 @@ func newPlan(defaultClient, securityClient HTTPClient, serverURL, language, sdkV
 //
 // ## Phases
 // Orb supports plan phases, also known as contract ramps. For plans with phases, the serialized prices refer to all prices across all phases.
-func (s *plan) Get(ctx context.Context, request operations.GetPlansPlanIDRequest) (*operations.GetPlansPlanIDResponse, error) {
+func (s *plan) Fetch(ctx context.Context, request operations.GetPlansPlanIDRequest) (*operations.GetPlansPlanIDResponse, error) {
 	baseURL := s.serverURL
 	url, err := utils.GenerateURL(ctx, baseURL, "/plans/{plan_id}", request, nil)
 	if err != nil {
@@ -64,7 +66,13 @@ func (s *plan) Get(ctx context.Context, request operations.GetPlansPlanIDRequest
 	if httpRes == nil {
 		return nil, fmt.Errorf("error sending request: no response")
 	}
-	defer httpRes.Body.Close()
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
 
 	contentType := httpRes.Header.Get("Content-Type")
 
@@ -78,7 +86,7 @@ func (s *plan) Get(ctx context.Context, request operations.GetPlansPlanIDRequest
 		switch {
 		case utils.MatchContentType(contentType, `application/json`):
 			var out *shared.Plan
-			if err := utils.UnmarshalJsonFromResponseBody(httpRes.Body, &out); err != nil {
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
 				return nil, err
 			}
 
@@ -110,7 +118,7 @@ func (s *plan) GetByExternalID(ctx context.Context, request operations.GetPlansE
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
-	req.Header.Set("Accept", "*/*")
+	req.Header.Set("Accept", "application/json")
 	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
 
 	req.Header.Set("Content-Type", reqContentType)
@@ -124,7 +132,13 @@ func (s *plan) GetByExternalID(ctx context.Context, request operations.GetPlansE
 	if httpRes == nil {
 		return nil, fmt.Errorf("error sending request: no response")
 	}
-	defer httpRes.Body.Close()
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
 
 	contentType := httpRes.Header.Get("Content-Type")
 
@@ -135,6 +149,15 @@ func (s *plan) GetByExternalID(ctx context.Context, request operations.GetPlansE
 	}
 	switch {
 	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(contentType, `application/json`):
+			var out *shared.Plan
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+				return nil, err
+			}
+
+			res.Plan = out
+		}
 	}
 
 	return res, nil
@@ -143,24 +166,17 @@ func (s *plan) GetByExternalID(ctx context.Context, request operations.GetPlansE
 // List - List plans
 // This endpoint returns a list of all [plans](../reference/Orb-API.json/components/schemas/Plan) for an account in a list format.
 //
-// The list of plans is ordered starting from the most recently created plan. The response also includes [`pagination_metadata`](../reference/Orb-API.json/components/schemas/Pagination-metadata), which lets the caller retrieve the next page of results if they exist. More information about pagination can be found in the [Pagination-metadata schema](../reference/Orb-API.json/components/schemas/Pagination-metadata).
-func (s *plan) List(ctx context.Context, request operations.ListPlansRequestBody) (*operations.ListPlansResponse, error) {
+// The list of plans is ordered starting from the most recently created plan. The response also includes [`pagination_metadata`](../api/pagination), which lets the caller retrieve the next page of results if they exist.
+func (s *plan) List(ctx context.Context) (*operations.ListPlansResponse, error) {
 	baseURL := s.serverURL
 	url := strings.TrimSuffix(baseURL, "/") + "/plans"
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "Request", "json")
-	if err != nil {
-		return nil, fmt.Errorf("error serializing request body: %w", err)
-	}
-
-	req, err := http.NewRequestWithContext(ctx, "GET", url, bodyReader)
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
-	req.Header.Set("Accept", "*/*")
+	req.Header.Set("Accept", "application/json")
 	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
-
-	req.Header.Set("Content-Type", reqContentType)
 
 	client := s.securityClient
 
@@ -171,7 +187,13 @@ func (s *plan) List(ctx context.Context, request operations.ListPlansRequestBody
 	if httpRes == nil {
 		return nil, fmt.Errorf("error sending request: no response")
 	}
-	defer httpRes.Body.Close()
+
+	rawBody, err := io.ReadAll(httpRes.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+	httpRes.Body.Close()
+	httpRes.Body = io.NopCloser(bytes.NewBuffer(rawBody))
 
 	contentType := httpRes.Header.Get("Content-Type")
 
@@ -182,6 +204,15 @@ func (s *plan) List(ctx context.Context, request operations.ListPlansRequestBody
 	}
 	switch {
 	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(contentType, `application/json`):
+			var out *operations.ListPlans200ApplicationJSON
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out); err != nil {
+				return nil, err
+			}
+
+			res.ListPlans200ApplicationJSONObject = out
+		}
 	}
 
 	return res, nil

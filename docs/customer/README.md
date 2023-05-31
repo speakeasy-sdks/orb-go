@@ -2,30 +2,80 @@
 
 ## Overview
 
-Actions related to customer management.
+The Customer resource represents a customer of your service. Customers are created when a customer is created in your service, and are updated when a customer's information is updated in your service.
 
 ### Available Operations
 
+* [Amend](#amend) - Amend customer usage
+* [AmendByExternalID](#amendbyexternalid) - Amend customer usage by external ID
 * [Create](#create) - Create customer
-* [Get](#get) - Retrieve a customer
-* [GetBalance](#getbalance) - Get customer balance transactions
-* [GetByExternalID](#getbyexternalid) - Retrieve a customer by external ID
-* [GetCosts](#getcosts) - View customer costs
-* [GetCostsByExternalID](#getcostsbyexternalid) - View customer costs by external customer ID
+* [CreateTransaction](#createtransaction) - Create a customer balance transaction
+* [Delete](#delete) - Delete a customer
+* [Fetch](#fetch) - Retrieve a customer
+* [FetchByExternalID](#fetchbyexternalid) - Retrieve a customer by external ID
+* [FetchCosts](#fetchcosts) - View customer costs
+* [FetchCostsByExternalID](#fetchcostsbyexternalid) - View customer costs by external customer ID
+* [FetchTransactions](#fetchtransactions) - Get customer balance transactions
 * [List](#list) - List customers
-* [Update](#update) - Update customer
 * [UpdateByExternalID](#updatebyexternalid) - Update a customer by external ID
-* [UpdateUsage](#updateusage) - Amend customer usage
-* [UpdateUsageByExternalID](#updateusagebyexternalid) - Amend customer usage by external ID
+* [UpdateCustomer](#updatecustomer) - Update customer
 
-## Create
+## Amend
 
-This operation is used to create an Orb customer, who is party to the core billing relationship. See [Customer](../reference/Orb-API.json/components/schemas/Customer) for an overview of the customer resource.
+This endpoint is used to amend usage within a timeframe for a customer that has an active subscription.
 
-This endpoint is critical in the following Orb functionality:
-* Automated charges can be configured by setting `payment_provider` and `payment_provider_id` to automatically issue invoices
-* [Customer ID Aliases](../docs/Customer-ID-Aliases.md) can be configured by setting `external_customer_id`
-* [Timezone localization](../docs/Timezone-localization.md) can be configured on a per-customer basis by setting the `timezone` parameter
+This endpoint will mark _all_ existing events within `[timeframe_start, timeframe_end)` as _ignored_  for billing  purposes, and Orb will only use the _new_ events passed in the body of this request as the source of truth for that timeframe moving forwards. Note that a given time period can be amended any number of times, so events can be overwritten in subsequent calls to this endpoint.
+
+This is a powerful and audit-safe mechanism to retroactively change usage data in cases where you need to:
+- decrease historical usage consumption because of degraded service availability in your systems
+- account for gaps from your usage reporting mechanism
+- make point-in-time fixes for specific event records, while retaining the original time of usage and associated metadata
+
+This amendment API is designed with two explicit goals:
+1. Amendments are **always audit-safe**. The amendment process will still retain original events in the timeframe, though they will be ignored for billing calculations. For auditing and data fidelity purposes, Orb never overwrites or permanently deletes ingested usage data.
+2. Amendments always preserve data **consistency**. In other words, either an amendment is fully processed by the system (and the new events for the timeframe are honored rather than the existing ones) or the amendment request fails. To maintain this important property, Orb prevents _partial event ingestion_ on this endpoint.
+
+
+## Response semantics
+ - Either all events are ingested successfully, or all fail to ingest (returning a `4xx` or `5xx` response code).
+- Any event that fails schema validation will lead to a `4xx` response. In this case, to maintain data consistency, Orb will not ingest any events and will also not deprecate existing events in the time period.
+- You can assume that the amendment is successful on receipt of a `2xx` response.While a successful response from this endpoint indicates that the new events have been ingested, updating usage totals happens asynchronously and may be delayed by a few minutes. 
+
+As emphasized above, Orb will never show an inconsistent state (e.g. in invoice previews or dashboards); either it will show the existing state (before the amendment) or the new state (with new events in the requested timeframe).
+
+
+## Sample request body
+
+```json
+{
+	"events": [{
+		"event_name": "payment_processed",
+		"timestamp": "2022-03-24T07:15:00Z",
+		"properties": {
+			"amount": 100
+		}
+	}, {
+		"event_name": "payment_failed",
+		"timestamp": "2022-03-24T07:15:00Z",
+		"properties": {
+			"amount": 100
+		}
+	}]
+}
+```
+
+## Request Validation
+- The `timestamp` of each event reported must fall within the bounds of `timeframe_start` and `timeframe_end`. As with ingestion, all timestamps must be sent in ISO8601 format with UTC timezone offset.
+
+- Orb **does not accept an `idempotency_key`** with each event in this endpoint, since the entirety of the event list must be ingested to ensure consistency. On retryable errors, you should retry the request in its entirety, and assume that the amendment operation has not succeeded until receipt of a `2xx`.
+
+- Both `timeframe_start` and `timeframe_end` must be timestamps in the past. Furthermore, Orb will generally validate that the `timeframe_start` and `timeframe_end` fall within the customer's _current_ subscription billing period. However, Orb does allow amendments while in the grace period of the previous billing period; in this instance, the timeframe can start before the current period.
+
+
+## API Limits
+Note that Orb does not currently enforce a hard rate-limit for API usage or a maximum request payload size. Similar to the event ingestion API, this API is architected for high-throughput ingestion. It is also safe to _programmatically_ call this endpoint if your system can automatically detect a need for historical amendment.
+
+In order to overwrite timeframes with a very large number of events, we suggest using multiple calls with small adjacent (e.g. every hour) timeframes.
 
 ### Example Usage
 
@@ -37,38 +87,172 @@ import(
 	"log"
 	"Orb"
 	"Orb/pkg/models/operations"
+	"Orb/pkg/types"
 )
 
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            BearerAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
         }),
     )
 
     ctx := context.Background()
-    res, err := s.Customer.Create(ctx, operations.PostCustomersRequestBody{
-        BillingAddress: &operations.PostCustomersRequestBodyBillingAddress{
-            City: sdk.String("East Ona"),
-            Country: sdk.String("US"),
-            Line1: sdk.String("cum"),
-            Line2: sdk.String("esse"),
-            PostalCode: sdk.String("51036"),
-            State: sdk.String("sed"),
+    res, err := s.Customer.Amend(ctx, operations.AmendUsageRequest{
+        RequestBody: &operations.AmendUsageRequestBody{
+            Events: []AmendUsageRequestBodyEvents{
+                operations.AmendUsageRequestBodyEvents{
+                    EventName: "ipsa",
+                    Properties: map[string]interface{}{
+                        "est": "mollitia",
+                        "laborum": "dolores",
+                        "dolorem": "corporis",
+                        "explicabo": "nobis",
+                    },
+                    Timestamp: "enim",
+                },
+            },
         },
-        Currency: sdk.String("iste"),
-        Email: "Lexie_Howe68@gmail.com",
-        ExternalCustomerID: sdk.String("in"),
-        Name: "Sheryl Kertzmann",
-        PaymentProvider: operations.PostCustomersRequestBodyPaymentProviderQuickbooks.ToPointer(),
-        PaymentProviderID: sdk.String("ipsa"),
-        ShippingAddress: &operations.PostCustomersRequestBodyShippingAddress{
-            City: sdk.String("Parma"),
+        CustomerID: "omnis",
+        TimeframeEnd: types.MustTimeFromString("2022-05-11T17:46:20Z"),
+        TimeframeStart: types.MustTimeFromString("2022-05-11T17:46:20Z"),
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    if res.AmendUsage200ApplicationJSONObject != nil {
+        // handle response
+    }
+}
+```
+
+## AmendByExternalID
+
+This endpoint's resource and semantics exactly mirror [Amend customer usage](amend-usage) but operates on an [external customer ID](../guides/events-and-metrics/customer-aliases) rather than an Orb issued identifier.
+
+### Example Usage
+
+```go
+package main
+
+import(
+	"context"
+	"log"
+	"Orb"
+	"Orb/pkg/models/operations"
+	"Orb/pkg/types"
+)
+
+func main() {
+    s := sdk.New(
+        sdk.WithSecurity(shared.Security{
+            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+        }),
+    )
+
+    ctx := context.Background()
+    res, err := s.Customer.AmendByExternalID(ctx, operations.AmendUsageExternalCustomerIDRequest{
+        RequestBody: &operations.AmendUsageExternalCustomerIDRequestBody{
+            Events: []AmendUsageExternalCustomerIDRequestBodyEvents{
+                operations.AmendUsageExternalCustomerIDRequestBodyEvents{
+                    EventName: "minima",
+                    Properties: map[string]interface{}{
+                        "accusantium": "iure",
+                        "culpa": "doloribus",
+                        "sapiente": "architecto",
+                    },
+                    Timestamp: "mollitia",
+                },
+                operations.AmendUsageExternalCustomerIDRequestBodyEvents{
+                    EventName: "dolorem",
+                    Properties: map[string]interface{}{
+                        "consequuntur": "repellat",
+                        "mollitia": "occaecati",
+                        "numquam": "commodi",
+                    },
+                    Timestamp: "quam",
+                },
+            },
+        },
+        ExternalCustomerID: "molestiae",
+        TimeframeEnd: types.MustTimeFromString("2022-05-11T17:46:20Z"),
+        TimeframeStart: types.MustTimeFromString("2022-05-11T17:46:20Z"),
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    if res.AmendUsageExternalCustomerID200ApplicationJSONObject != nil {
+        // handle response
+    }
+}
+```
+
+## Create
+
+This operation is used to create an Orb customer, who is party to the core billing relationship. See [Customer](../reference/Orb-API.json/components/schemas/Customer) for an overview of the customer resource.
+
+This endpoint is critical in the following Orb functionality:
+* Automated charges can be configured by setting `payment_provider` and `payment_provider_id` to automatically issue invoices
+* [Customer ID Aliases](../guides/events-and-metrics/customer-aliases) can be configured by setting `external_customer_id`
+* [Timezone localization](../guides/product-catalog/timezones) can be configured on a per-customer basis by setting the `timezone` parameter
+
+### Example Usage
+
+```go
+package main
+
+import(
+	"context"
+	"log"
+	"Orb"
+	"Orb/pkg/models/operations"
+	"Orb/pkg/models/shared"
+)
+
+func main() {
+    s := sdk.New(
+        sdk.WithSecurity(shared.Security{
+            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+        }),
+    )
+
+    ctx := context.Background()
+    res, err := s.Customer.Create(ctx, operations.CreateCustomerRequestBody{
+        AutoCollection: sdk.Bool(false),
+        BillingAddress: &shared.BillingAddress{
+            City: sdk.String("New Carmelo"),
             Country: sdk.String("US"),
-            Line1: sdk.String("mollitia"),
-            Line2: sdk.String("laborum"),
-            PostalCode: sdk.String("23173"),
-            State: sdk.String("omnis"),
+            Line1: sdk.String("quis"),
+            Line2: sdk.String("vitae"),
+            PostalCode: sdk.String("63171-9368"),
+            State: sdk.String("aut"),
+        },
+        Currency: sdk.String("quasi"),
+        Email: "Rodrigo97@yahoo.com",
+        ExternalCustomerID: sdk.String("voluptatibus"),
+        Metadata: map[string]interface{}{
+            "nihil": "praesentium",
+            "voluptatibus": "ipsa",
+            "omnis": "voluptate",
+            "cum": "perferendis",
+        },
+        Name: "Bessie Grady II",
+        PaymentProvider: operations.CreateCustomerRequestBodyPaymentProviderBillCom.ToPointer(),
+        PaymentProviderID: sdk.String("iusto"),
+        ShippingAddress: &shared.ShippingAddress{
+            City: sdk.String("Lake Emilieside"),
+            Country: sdk.String("US"),
+            Line1: sdk.String("commodi"),
+            Line2: sdk.String("repudiandae"),
+            PostalCode: sdk.String("26558"),
+            State: sdk.String("modi"),
+        },
+        TaxID: &shared.CustomerTaxID{
+            Country: "Lithuania",
+            Type: "rem",
+            Value: "voluptates",
         },
         Timezone: sdk.String("Etc/UTC"),
     })
@@ -82,12 +266,94 @@ func main() {
 }
 ```
 
-## Get
+## CreateTransaction
 
-This endpoint is used to fetch customer details given an identifier.
+Creates an immutable balance transaction that updates the customer's balance and returns back the newly created [transaction](../reference/Orb-API.json/components/schemas/Customer-balance-transaction).
+
+### Example Usage
+
+```go
+package main
+
+import(
+	"context"
+	"log"
+	"Orb"
+	"Orb/pkg/models/operations"
+)
+
+func main() {
+    s := sdk.New(
+        sdk.WithSecurity(shared.Security{
+            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+        }),
+    )
+
+    ctx := context.Background()
+    res, err := s.Customer.CreateTransaction(ctx, operations.PostCustomersCustomerIDBalanceTransactionsRequest{
+        RequestBody: &operations.PostCustomersCustomerIDBalanceTransactionsRequestBody{
+            Amount: "1.00",
+            Description: sdk.String("quasi"),
+            Type: operations.PostCustomersCustomerIDBalanceTransactionsRequestBodyTypeDecrement,
+        },
+        CustomerID: "sint",
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    if res.CustomerBalanceTransaction != nil {
+        // handle response
+    }
+}
+```
+
+## Delete
+
+This performs a deletion of this customer, its subscriptions, and its invoices. This operation is irreversible. Note that this is a _soft_ deletion, but the data will be inaccessible through the API and Orb dashboard. For hard-deletion, please reach out to the Orb team directly.
+
+**Note**: This operation happens asynchronously and can be expected to take a few minutes to propagate to related resources. However, querying for the customer on subsequent GET requests while deletion is in process will reflect its deletion with a `deleted: true` property. Once the customer deletion has been fully processed, the customer will not be returned in the API.
+
+### Example Usage
+
+```go
+package main
+
+import(
+	"context"
+	"log"
+	"Orb"
+	"Orb/pkg/models/operations"
+)
+
+func main() {
+    s := sdk.New(
+        sdk.WithSecurity(shared.Security{
+            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+        }),
+    )
+
+    ctx := context.Background()
+    res, err := s.Customer.Delete(ctx, operations.DeleteCustomerRequest{
+        CustomerID: "veritatis",
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    if res.StatusCode == http.StatusOK {
+        // handle response
+    }
+}
+```
+
+## Fetch
+
+This endpoint is used to fetch customer details given an identifier. If the `Customer` is in the process of being deleted, only the properties `id` and `deleted: true` will be returned.
 
 See the [Customer resource](Orb-API.json/components/schemas/Customer) for a full discussion of the Customer model.
 
+
 ### Example Usage
 
 ```go
@@ -103,13 +369,13 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            BearerAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
         }),
     )
 
     ctx := context.Background()
-    res, err := s.Customer.Get(ctx, operations.GetCustomersCustomerIDRequest{
-        CustomerID: "nemo",
+    res, err := s.Customer.Fetch(ctx, operations.FetchCustomerRequest{
+        CustomerID: "itaque",
     })
     if err != nil {
         log.Fatal(err)
@@ -121,21 +387,11 @@ func main() {
 }
 ```
 
-## GetBalance
+## FetchByExternalID
 
-# The customer balance
+This endpoint is used to fetch customer details given an `external_customer_id` (see [Customer ID Aliases](../guides/events-and-metrics/customer-aliases)).
 
-The customer balance is an amount in the customer's currency, which Orb automatically applies to subsequent invoices. This balance can be adjusted manually via Orb's webapp on the customer details page. You can use this balance to provide a fixed mid-period credit to the customer. Commonly, this is done due to system downtime/SLA violation, or an adhoc adjustment discussed with the customer.
-
-If the balance is a positive value at the time of invoicing, it represents that the customer has credit that should be used to offset the amount due on the next issued invoice. In this case, Orb will automatically reduce the next invoice by the balance amount, and roll over any remaining balance if the invoice is fully discounted.
-
-If the balance is a negative value at the time of invoicing, Orb will increase the invoice's amount due with a positive adjustment, and reset the balance to 0.
-
-This endpoint retrieves all customer balance transactions in reverse chronological order for a single customer, providing a complete audit trail of all adjustments and invoice applications.
-
-## Eligibility
-
-The customer balance can only be applied to invoices or adjusted manually if invoices are not synced to a separate invoicing provider. If a payment gateway such as Stripe is used, the balance will be applied to the invoice before forwarding payment to the gateway.
+Note that the resource and semantics of this endpoint exactly mirror [Get Customer](fetch-customer).
 
 ### Example Usage
 
@@ -152,52 +408,13 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            BearerAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
         }),
     )
 
     ctx := context.Background()
-    res, err := s.Customer.GetBalance(ctx, operations.GetCustomersCustomerIDBalanceTransactionsRequest{
-        CustomerID: "minima",
-    })
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    if res.GetCustomersCustomerIDBalanceTransactions200ApplicationJSONObject != nil {
-        // handle response
-    }
-}
-```
-
-## GetByExternalID
-
-This endpoint is used to fetch customer details given an `external_customer_id` (see [Customer ID Aliases](../docs/Customer-ID-Aliases.md)).
-
-Note that the resource and semantics of this endpoint exactly mirror [Get Customer](Orb-API.json/paths/~1customers/get).
-
-### Example Usage
-
-```go
-package main
-
-import(
-	"context"
-	"log"
-	"Orb"
-	"Orb/pkg/models/operations"
-)
-
-func main() {
-    s := sdk.New(
-        sdk.WithSecurity(shared.Security{
-            BearerAuth: "YOUR_BEARER_TOKEN_HERE",
-        }),
-    )
-
-    ctx := context.Background()
-    res, err := s.Customer.GetByExternalID(ctx, operations.GetCustomersExternalCustomerIDExternalCustomerIDRequest{
-        ExternalCustomerID: "excepturi",
+    res, err := s.Customer.FetchByExternalID(ctx, operations.FetchCustomerExternalIDRequest{
+        ExternalCustomerID: "incidunt",
     })
     if err != nil {
         log.Fatal(err)
@@ -209,14 +426,14 @@ func main() {
 }
 ```
 
-## GetCosts
+## FetchCosts
 
-This endpoint is used to fetch a day-by-day snapshot of a customer's costs in Orb, calculated by applying pricing information to the underlying usage (see the [subscription usage endpoint](../reference/Orb-API.json/paths/~1subscriptions~1{subscription_id}~1usage/get) to fetch usage per metric, in usage units rather than a currency). 
+This endpoint is used to fetch a day-by-day snapshot of a customer's costs in Orb, calculated by applying pricing information to the underlying usage (see the [subscription usage endpoint](gcription-usage) to fetch usage per metric, in usage units rather than a currency). 
 
 This endpoint can be leveraged for internal tooling and to provide a more transparent billing experience for your end users:
 
 1. Understand the cost breakdown per line item historically and in real-time for the current billing period. 
-2. Provide customer visibility into how different services are contributing to the overall invoice with a per-day timeseries (as compared to the [upcoming invoice](../reference/Orb-API.json/paths/~1invoices~1upcoming/get) resource, which represents a snapshot for the current period).
+2. Provide customer visibility into how different services are contributing to the overall invoice with a per-day timeseries (as compared to the [upcoming invoice](fetch-upcoming-invoice) resource, which represents a snapshot for the current period).
 3. Assess how minimums and discounts affect your customers by teasing apart costs directly as a result of usage, as opposed to minimums and discounts at the plan and price level.
 4. Gain insight into key customer health metrics, such as the percent utilization of the minimum committed spend.
 
@@ -295,31 +512,31 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            BearerAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
         }),
     )
 
     ctx := context.Background()
-    res, err := s.Customer.GetCosts(ctx, operations.GetCustomerCostsRequest{
-        CustomerID: "accusantium",
-        GroupBy: sdk.String("iure"),
+    res, err := s.Customer.FetchCosts(ctx, operations.FetchCustomerCostsRequest{
+        CustomerID: "enim",
+        GroupBy: sdk.String("consequatur"),
         TimeframeEnd: sdk.String("2022-03-01T05:00:00Z"),
         TimeframeStart: types.MustTimeFromString("2022-02-01T05:00:00Z"),
-        ViewMode: operations.GetCustomerCostsViewModeCumulative.ToPointer(),
+        ViewMode: operations.FetchCustomerCostsViewModeCumulative.ToPointer(),
     })
     if err != nil {
         log.Fatal(err)
     }
 
-    if res.GetCustomerCosts200ApplicationJSONObject != nil {
+    if res.FetchCustomerCosts200ApplicationJSONObject != nil {
         // handle response
     }
 }
 ```
 
-## GetCostsByExternalID
+## FetchCostsByExternalID
 
-This endpoint's resource and semantics exactly mirror [View customer costs](../reference/Orb-API.json/paths/~1customers~1{customer_id}~1costs/get) but operates on an [external customer ID](../docs/Customer-ID-Aliases.md) rather than an Orb issued identifier.
+This endpoint's resource and semantics exactly mirror [View customer costs](fetch-customer-costs) but operates on an [external customer ID](../guides/events-and-metrics/customer-aliases) rather than an Orb issued identifier.
 
 ### Example Usage
 
@@ -337,23 +554,72 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            BearerAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
         }),
     )
 
     ctx := context.Background()
-    res, err := s.Customer.GetCostsByExternalID(ctx, operations.GetExternalCustomerCostsRequest{
-        ExternalCustomerID: "doloribus",
-        GroupBy: sdk.String("sapiente"),
+    res, err := s.Customer.FetchCostsByExternalID(ctx, operations.FetchCustomerCostsExternalIDRequest{
+        ExternalCustomerID: "quibusdam",
+        GroupBy: sdk.String("explicabo"),
         TimeframeEnd: sdk.String("2022-03-01T05:00:00Z"),
         TimeframeStart: types.MustTimeFromString("2022-02-01T05:00:00Z"),
-        ViewMode: operations.GetExternalCustomerCostsViewModePeriodic.ToPointer(),
+        ViewMode: operations.FetchCustomerCostsExternalIDViewModeCumulative.ToPointer(),
     })
     if err != nil {
         log.Fatal(err)
     }
 
-    if res.GetExternalCustomerCosts200ApplicationJSONObject != nil {
+    if res.FetchCustomerCostsExternalID200ApplicationJSONObject != nil {
+        // handle response
+    }
+}
+```
+
+## FetchTransactions
+
+# The customer balance
+
+The customer balance is an amount in the customer's currency, which Orb automatically applies to subsequent invoices. This balance can be adjusted manually via Orb's webapp on the customer details page. You can use this balance to provide a fixed mid-period credit to the customer. Commonly, this is done due to system downtime/SLA violation, or an adhoc adjustment discussed with the customer.
+
+If the balance is a positive value at the time of invoicing, it represents that the customer has credit that should be used to offset the amount due on the next issued invoice. In this case, Orb will automatically reduce the next invoice by the balance amount, and roll over any remaining balance if the invoice is fully discounted.
+
+If the balance is a negative value at the time of invoicing, Orb will increase the invoice's amount due with a positive adjustment, and reset the balance to 0.
+
+This endpoint retrieves all customer balance transactions in reverse chronological order for a single customer, providing a complete audit trail of all adjustments and invoice applications.
+
+## Eligibility
+
+The customer balance can only be applied to invoices or adjusted manually if invoices are not synced to a separate invoicing provider. If a payment gateway such as Stripe is used, the balance will be applied to the invoice before forwarding payment to the gateway.
+
+### Example Usage
+
+```go
+package main
+
+import(
+	"context"
+	"log"
+	"Orb"
+	"Orb/pkg/models/operations"
+)
+
+func main() {
+    s := sdk.New(
+        sdk.WithSecurity(shared.Security{
+            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+        }),
+    )
+
+    ctx := context.Background()
+    res, err := s.Customer.FetchTransactions(ctx, operations.ListBalanceTransactionsRequest{
+        CustomerID: "distinctio",
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    if res.ListBalanceTransactions200ApplicationJSONObject != nil {
         // handle response
     }
 }
@@ -363,7 +629,7 @@ func main() {
 
 
 
-This endpoint returns a list of all customers for an account. The list of customers is ordered starting from the most recently created customer. This endpoint follows Orb's [standardized pagination format](../docs/Pagination.md).
+This endpoint returns a list of all customers for an account. The list of customers is ordered starting from the most recently created customer. This endpoint follows Orb's [standardized pagination format](../api/pagination).
 
 See [Customer](../reference/Orb-API.json/components/schemas/Customer) for an overview of the customer model.
 
@@ -381,7 +647,7 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            BearerAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
         }),
     )
 
@@ -397,9 +663,71 @@ func main() {
 }
 ```
 
-## Update
+## UpdateByExternalID
 
-This endpoint can be used to update the `payment_provider`, `payment_provider_id`, `name`, `email`, `shipping_address`, and `billing_address` of an existing customer.
+This endpoint is used to update customer details given an `external_customer_id` (see [Customer ID Aliases](../guides/events-and-metrics/customer-aliases)).
+
+Note that the resource and semantics of this endpoint exactly mirror [Update Customer](update-customer).
+
+### Example Usage
+
+```go
+package main
+
+import(
+	"context"
+	"log"
+	"Orb"
+	"Orb/pkg/models/operations"
+	"Orb/pkg/models/shared"
+)
+
+func main() {
+    s := sdk.New(
+        sdk.WithSecurity(shared.Security{
+            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+        }),
+    )
+
+    ctx := context.Background()
+    res, err := s.Customer.UpdateByExternalID(ctx, operations.UpdateCustomerExternalIDRequest{
+        RequestBody: &operations.UpdateCustomerExternalIDRequestBody{
+            BillingAddress: &shared.BillingAddress{
+                City: sdk.String("Enterprise"),
+                Country: sdk.String("US"),
+                Line1: sdk.String("modi"),
+                Line2: sdk.String("qui"),
+                PostalCode: sdk.String("55018"),
+                State: sdk.String("ipsam"),
+            },
+            Email: sdk.String("Caden.Pagac@gmail.com"),
+            Name: sdk.String("Geoffrey Green"),
+            PaymentProvider: operations.UpdateCustomerExternalIDRequestBodyPaymentProviderStripeCharge.ToPointer(),
+            PaymentProviderID: sdk.String("eligendi"),
+            ShippingAddress: &shared.ShippingAddress{
+                City: sdk.String("Gracestead"),
+                Country: sdk.String("US"),
+                Line1: sdk.String("necessitatibus"),
+                Line2: sdk.String("sint"),
+                PostalCode: sdk.String("28964-4896"),
+                State: sdk.String("dicta"),
+            },
+        },
+        ExternalCustomerID: "magnam",
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    if res.Customer != nil {
+        // handle response
+    }
+}
+```
+
+## UpdateCustomer
+
+This endpoint can be used to update the `payment_provider`, `payment_provider_id`, `name`, `email`, `email_delivery`, `auto_collection`, `shipping_address`, and `billing_address` of an existing customer.
 
 Other fields on a customer are currently immutable.
 
@@ -413,288 +741,58 @@ import(
 	"log"
 	"Orb"
 	"Orb/pkg/models/operations"
+	"Orb/pkg/models/shared"
 )
 
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            BearerAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
         }),
     )
 
     ctx := context.Background()
-    res, err := s.Customer.Update(ctx, operations.PutCustomersCustomerIDRequest{
-        RequestBody: &operations.PutCustomersCustomerIDRequestBody{
-            BillingAddress: &operations.PutCustomersCustomerIDRequestBodyBillingAddress{
-                City: sdk.String("Durganfurt"),
+    res, err := s.Customer.UpdateCustomer(ctx, operations.UpdateCustomerRequest{
+        RequestBody: &operations.UpdateCustomerRequestBody{
+            AutoCollection: sdk.Bool(false),
+            BillingAddress: &shared.BillingAddress{
+                City: sdk.String("Schulistview"),
                 Country: sdk.String("US"),
-                Line1: sdk.String("consequuntur"),
-                Line2: sdk.String("repellat"),
-                PostalCode: sdk.String("52444-2613"),
-                State: sdk.String("vitae"),
+                Line1: sdk.String("aliquid"),
+                Line2: sdk.String("laborum"),
+                PostalCode: sdk.String("25389-6576"),
+                State: sdk.String("blanditiis"),
             },
-            Email: sdk.String("Madison77@hotmail.com"),
-            Name: sdk.String("Mandy Hills"),
-            PaymentProvider: operations.PutCustomersCustomerIDRequestBodyPaymentProviderStripeInvoice.ToPointer(),
-            PaymentProviderID: sdk.String("quasi"),
-            ShippingAddress: &operations.PutCustomersCustomerIDRequestBodyShippingAddress{
-                City: sdk.String("Smithamchester"),
+            Email: sdk.String("Verlie.Feeney@yahoo.com"),
+            EmailDelivery: sdk.Bool(false),
+            Metadata: map[string]interface{}{
+                "natus": "omnis",
+                "molestiae": "perferendis",
+            },
+            Name: sdk.String("Megan Rau"),
+            PaymentProvider: operations.UpdateCustomerRequestBodyPaymentProviderQuickbooks.ToPointer(),
+            PaymentProviderID: sdk.String("suscipit"),
+            ShippingAddress: &shared.ShippingAddress{
+                City: sdk.String("Rohanview"),
                 Country: sdk.String("US"),
-                Line1: sdk.String("quasi"),
-                Line2: sdk.String("reiciendis"),
-                PostalCode: sdk.String("84590-6470"),
-                State: sdk.String("doloremque"),
+                Line1: sdk.String("vero"),
+                Line2: sdk.String("aspernatur"),
+                PostalCode: sdk.String("20535"),
+                State: sdk.String("quos"),
+            },
+            TaxID: &shared.CustomerTaxID{
+                Country: "Micronesia",
+                Type: "accusantium",
+                Value: "mollitia",
             },
         },
-        CustomerID: "reprehenderit",
+        CustomerID: "reiciendis",
     })
     if err != nil {
         log.Fatal(err)
     }
 
     if res.Customer != nil {
-        // handle response
-    }
-}
-```
-
-## UpdateByExternalID
-
-This endpoint is used to update customer details given an `external_customer_id` (see [Customer ID Aliases](../docs/Customer-ID-Aliases.md)).
-
-Note that the resource and semantics of this endpoint exactly mirror [Update Customer](Orb-API.json/paths/~1customers~1{customer_id}/put).
-
-### Example Usage
-
-```go
-package main
-
-import(
-	"context"
-	"log"
-	"Orb"
-	"Orb/pkg/models/operations"
-)
-
-func main() {
-    s := sdk.New(
-        sdk.WithSecurity(shared.Security{
-            BearerAuth: "YOUR_BEARER_TOKEN_HERE",
-        }),
-    )
-
-    ctx := context.Background()
-    res, err := s.Customer.UpdateByExternalID(ctx, operations.PutCustomersExternalCustomerIDExternalCustomerIDRequest{
-        RequestBody: &operations.PutCustomersExternalCustomerIDExternalCustomerIDRequestBody{
-            BillingAddress: &operations.PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyBillingAddress{
-                City: sdk.String("Fort Blanche"),
-                Country: sdk.String("US"),
-                Line1: sdk.String("corporis"),
-                Line2: sdk.String("dolore"),
-                PostalCode: sdk.String("16384"),
-                State: sdk.String("repudiandae"),
-            },
-            Email: sdk.String("Curt_Pouros@gmail.com"),
-            Name: sdk.String("Joel Lang"),
-            PaymentProvider: operations.PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyPaymentProviderQuickbooks.ToPointer(),
-            PaymentProviderID: sdk.String("repudiandae"),
-            ShippingAddress: &operations.PutCustomersExternalCustomerIDExternalCustomerIDRequestBodyShippingAddress{
-                City: sdk.String("Arnoldoshire"),
-                Country: sdk.String("US"),
-                Line1: sdk.String("incidunt"),
-                Line2: sdk.String("enim"),
-                PostalCode: sdk.String("68167"),
-                State: sdk.String("quibusdam"),
-            },
-        },
-        ExternalCustomerID: "labore",
-    })
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    if res.Customer != nil {
-        // handle response
-    }
-}
-```
-
-## UpdateUsage
-
-This endpoint is used to amend usage within a timeframe for a customer that has an active subscription.
-
-This endpoint will mark _all_ existing events within `[timeframe_start, timeframe_end)` as _ignored_  for billing  purposes, and Orb will only use the _new_ events passed in the body of this request as the source of truth for that timeframe moving forwards. Note that a given time period can be amended any number of times, so events can be overwritten in subsequent calls to this endpoint.
-
-This is a powerful and audit-safe mechanism to retroactively change usage data in cases where you need to:
-- decrease historical usage consumption because of degraded service availability in your systems
-- account for gaps from your usage reporting mechanism
-- make point-in-time fixes for specific event records, while retaining the original time of usage and associated metadata
-
-This amendment API is designed with two explicit goals:
-1. Amendments are **always audit-safe**. The amendment process will still retain original events in the timeframe, though they will be ignored for billing calculations. For auditing and data fidelity purposes, Orb never overwrites or permanently deletes ingested usage data.
-2. Amendments always preserve data **consistency**. In other words, either an amendment is fully processed by the system (and the new events for the timeframe are honored rather than the existing ones) or the amendment request fails. To maintain this important property, Orb prevents _partial event ingestion_ on this endpoint.
-
-
-## Response semantics
- - Either all events are ingested successfully, or all fail to ingest (returning a `4xx` or `5xx` response code).
-- Any event that fails schema validation will lead to a `4xx` response. In this case, to maintain data consistency, Orb will not ingest any events and will also not deprecate existing events in the time period.
-- You can assume that the amendment is successful on receipt of a `2xx` response.While a successful response from this endpoint indicates that the new events have been ingested, updating usage totals happens asynchronously and may be delayed by a few minutes. 
-
-As emphasized above, Orb will never show an inconsistent state (e.g. in invoice previews or dashboards); either it will show the existing state (before the amendment) or the new state (with new events in the requested timeframe).
-
-
-## Sample request body
-
-```json
-{
-	"events": [{
-		"event_name": "payment_processed",
-		"timestamp": "2022-03-24T07:15:00Z",
-		"properties": {
-			"amount": 100
-		}
-	}, {
-		"event_name": "payment_failed",
-		"timestamp": "2022-03-24T07:15:00Z",
-		"properties": {
-			"amount": 100
-		}
-	}]
-}
-```
-
-## Request Validation
-- The `timestamp` of each event reported must fall within the bounds of `timeframe_start` and `timeframe_end`. As with ingestion, all timestamps must be sent in ISO8601 format with UTC timezone offset.
-
-- Orb **does not accept an `idempotency_key`** with each event in this endpoint, since the entirety of the event list must be ingested to ensure consistency. On retryable errors, you should retry the request in its entirety, and assume that the amendment operation has not succeeded until receipt of a `2xx`.
-
-- Both `timeframe_start` and `timeframe_end` must be timestamps in the past. Furthermore, Orb will generally validate that the `timeframe_start` and `timeframe_end` fall within the customer's _current_ subscription billing period. However, Orb does allow amendments while in the grace period of the previous billing period; in this instance, the timeframe can start before the current period.
-
-
-## API Limits
-Note that Orb does not currently enforce a hard rate-limit for API usage or a maximum request payload size. Similar to the event ingestion API, this API is architected for high-throughput ingestion. It is also safe to _programmatically_ call this endpoint if your system can automatically detect a need for historical amendment.
-
-In order to overwrite timeframes with a very large number of events, we suggest using multiple calls with small adjacent (e.g. every hour) timeframes.
-
-### Example Usage
-
-```go
-package main
-
-import(
-	"context"
-	"log"
-	"Orb"
-	"Orb/pkg/models/operations"
-	"Orb/pkg/types"
-)
-
-func main() {
-    s := sdk.New(
-        sdk.WithSecurity(shared.Security{
-            BearerAuth: "YOUR_BEARER_TOKEN_HERE",
-        }),
-    )
-
-    ctx := context.Background()
-    res, err := s.Customer.UpdateUsage(ctx, operations.PatchCustomersCustomerIDUsageRequest{
-        RequestBody: &operations.PatchCustomersCustomerIDUsageRequestBody{
-            Events: []PatchCustomersCustomerIDUsageRequestBodyEvents{
-                operations.PatchCustomersCustomerIDUsageRequestBodyEvents{
-                    EventName: "qui",
-                    Properties: map[string]interface{}{
-                        "cupiditate": "quos",
-                        "perferendis": "magni",
-                    },
-                    Timestamp: "assumenda",
-                },
-                operations.PatchCustomersCustomerIDUsageRequestBodyEvents{
-                    EventName: "ipsam",
-                    Properties: map[string]interface{}{
-                        "fugit": "dolorum",
-                    },
-                    Timestamp: "excepturi",
-                },
-            },
-        },
-        CustomerID: "tempora",
-        TimeframeEnd: types.MustTimeFromString("2022-05-11T17:46:20Z"),
-        TimeframeStart: types.MustTimeFromString("2022-05-11T17:46:20Z"),
-    })
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    if res.PatchCustomersCustomerIDUsage200ApplicationJSONObject != nil {
-        // handle response
-    }
-}
-```
-
-## UpdateUsageByExternalID
-
-This endpoint's resource and semantics exactly mirror [Amend customer usage](../reference/Orb-API.json/paths/~1customers~1{customer_id}~1usage/patch) but operates on an [external customer ID](see (../docs/Customer-ID-Aliases.md)) rather than an Orb issued identifier.
-
-### Example Usage
-
-```go
-package main
-
-import(
-	"context"
-	"log"
-	"Orb"
-	"Orb/pkg/models/operations"
-	"Orb/pkg/types"
-)
-
-func main() {
-    s := sdk.New(
-        sdk.WithSecurity(shared.Security{
-            BearerAuth: "YOUR_BEARER_TOKEN_HERE",
-        }),
-    )
-
-    ctx := context.Background()
-    res, err := s.Customer.UpdateUsageByExternalID(ctx, operations.PatchExternalCustomersCustomerIDUsageRequest{
-        RequestBody: &operations.PatchExternalCustomersCustomerIDUsageRequestBody{
-            Events: []PatchExternalCustomersCustomerIDUsageRequestBodyEvents{
-                operations.PatchExternalCustomersCustomerIDUsageRequestBodyEvents{
-                    EventName: "tempore",
-                    Properties: map[string]interface{}{
-                        "delectus": "eum",
-                        "non": "eligendi",
-                    },
-                    Timestamp: "sint",
-                },
-                operations.PatchExternalCustomersCustomerIDUsageRequestBodyEvents{
-                    EventName: "aliquid",
-                    Properties: map[string]interface{}{
-                        "necessitatibus": "sint",
-                        "officia": "dolor",
-                        "debitis": "a",
-                    },
-                    Timestamp: "dolorum",
-                },
-                operations.PatchExternalCustomersCustomerIDUsageRequestBodyEvents{
-                    EventName: "in",
-                    Properties: map[string]interface{}{
-                        "illum": "maiores",
-                        "rerum": "dicta",
-                    },
-                    Timestamp: "magnam",
-                },
-            },
-        },
-        ExternalCustomerID: "cumque",
-        TimeframeEnd: types.MustTimeFromString("2022-05-11T17:46:20Z"),
-        TimeframeStart: types.MustTimeFromString("2022-05-11T17:46:20Z"),
-    })
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    if res.PatchExternalCustomersCustomerIDUsage200ApplicationJSONObject != nil {
         // handle response
     }
 }

@@ -8,6 +8,13 @@ import (
 	"time"
 )
 
+// PlanBasePlan - The parent plan if the given plan was created by overriding one or more of the parent's prices
+type PlanBasePlan struct {
+	ExternalPlanID *string `json:"external_plan_id,omitempty"`
+	ID             *string `json:"id,omitempty"`
+	Name           *string `json:"name,omitempty"`
+}
+
 type PlanProduct struct {
 	CreatedAt time.Time `json:"created_at"`
 	ID        string    `json:"id"`
@@ -45,21 +52,27 @@ type PlanTrialConfig struct {
 
 // Plan - OK
 type Plan struct {
+	// The parent plan if the given plan was created by overriding one or more of the parent's prices
+	BasePlan *PlanBasePlan `json:"base_plan,omitempty"`
 	// The parent plan id if the given plan was created by overriding one or more of the parent's prices
 	BasePlanID *string   `json:"base_plan_id,omitempty"`
 	CreatedAt  time.Time `json:"created_at"`
 	// An ISO 4217 currency string or custom pricing unit (`credits`) for this plan's prices.
-	Currency    string                 `json:"currency"`
-	Description string                 `json:"description"`
-	Discount    map[string]interface{} `json:"discount"`
+	Currency string `json:"currency"`
+	// The default memo text on the invoices corresponding to subscriptions on this plan. Note that each subscription may configure its own memo.
+	DefaultInvoiceMemo *string  `json:"default_invoice_memo,omitempty"`
+	Description        string   `json:"description"`
+	Discount           Discount `json:"discount"`
 	// An optional user-defined ID for this plan resource, used throughout the system as an alias for this Plan. Use this field to identify a plan by an existing identifier in your system.
 	ExternalPlanID *string `json:"external_plan_id,omitempty"`
 	ID             string  `json:"id"`
 	// An ISO 4217 currency string for which this plan is billed in. Matches `currency` unless `currency` is a custom pricing unit.
-	InvoicingCurrency string                 `json:"invoicing_currency"`
-	Minimum           map[string]interface{} `json:"minimum"`
-	Name              string                 `json:"name"`
-	PlanPhases        []PlanPhase            `json:"plan_phases,omitempty"`
+	InvoicingCurrency string        `json:"invoicing_currency"`
+	Minimum           MinimumAmount `json:"minimum"`
+	Name              string        `json:"name"`
+	// Determines the difference between the invoice issue date and the due date. A value of "0" here signifies that invoices are due on issue, whereas a value of "30" means that the customer has a month to pay the invoice before its overdue. Note that individual subscriptions or invoices may set a different net terms configuration.
+	NetTerms   *int64      `json:"net_terms,omitempty"`
+	PlanPhases []PlanPhase `json:"plan_phases,omitempty"`
 	// Prices for this plan. If the plan has phases, this includes prices across all phases of the plan.
 	Prices      []Price          `json:"prices"`
 	Product     PlanProduct      `json:"product"`

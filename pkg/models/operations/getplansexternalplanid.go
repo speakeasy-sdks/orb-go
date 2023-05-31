@@ -14,6 +14,8 @@ type GetPlansExternalPlanIDRequest struct {
 
 type GetPlansExternalPlanIDResponse struct {
 	ContentType string
+	// OK
+	Plan        *shared.Plan
 	StatusCode  int
 	RawResponse *http.Response
 }

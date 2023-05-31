@@ -7,13 +7,16 @@ import (
 	"net/http"
 )
 
-type ListPlansRequestBody struct {
-	Data               []shared.Plan          `json:"data,omitempty"`
-	PaginationMetadata map[string]interface{} `json:"pagination_metadata,omitempty"`
+// ListPlans200ApplicationJSON - OK
+type ListPlans200ApplicationJSON struct {
+	Data               []shared.Plan              `json:"data,omitempty"`
+	PaginationMetadata *shared.PaginationMetadata `json:"pagination_metadata,omitempty"`
 }
 
 type ListPlansResponse struct {
 	ContentType string
 	StatusCode  int
 	RawResponse *http.Response
+	// OK
+	ListPlans200ApplicationJSONObject *ListPlans200ApplicationJSON
 }

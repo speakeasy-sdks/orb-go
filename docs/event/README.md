@@ -2,16 +2,173 @@
 
 ## Overview
 
-Actions related to event management.
+The Event resource represents an event that has been created for a customer. Events are created when a customer's invoice is paid, and are updated when a customer's transaction is refunded.
 
 ### Available Operations
 
-* [Deprecate](#deprecate) - Deprecate single event
+* [Amend](#amend) - Amend single event
+* [CloseBackfill](#closebackfill) - Close a backfill
+* [Create](#create) - Create a backfill
+* [DeprecateEvent](#deprecateevent) - Deprecate single event
 * [Ingest](#ingest) - Ingest events
+* [ListBackfills](#listbackfills) - List backfills
+* [RevertBackfill](#revertbackfill) - Revert a backfill
 * [Search](#search) - Search events
-* [Update](#update) - Amend single event
 
-## Deprecate
+## Amend
+
+This endpoint is used to amend a single usage event with a given `event_id`. `event_id` refers to the `idempotency_key` passed in during ingestion. The event will maintain its existing `event_id` after the amendment.
+
+This endpoint will mark the existing event as ignored, and Orb will only use the new event passed in the body of this request as the source of truth for that `event_id`. Note that a single event can be amended any number of times, so the same event can be overwritten in subsequent calls to this endpoint, or overwritten using the [Amend customer usage](amend-usage) endpoint. Only a single event with a given `event_id` will be considered the source of truth at any given time.
+
+This is a powerful and audit-safe mechanism to retroactively update a single event in cases where you need to:
+* update an event with new metadata as you iterate on your pricing model
+* update an event based on the result of an external API call (ex. call to a payment gateway succeeded or failed)
+
+This amendment API is always audit-safe. The process will still retain the original event, though it will be ignored for billing calculations. For auditing and data fidelity purposes, Orb never overwrites or permanently deletes ingested usage data.
+
+## Request validation
+* The `timestamp` of the new event must match the `timestamp` of the existing event already ingested. As with ingestion, all timestamps must be sent in ISO8601 format with UTC timezone offset.
+* The `customer_id` or `external_customer_id` of the new event must match the `customer_id` or `external_customer_id` of the existing event already ingested. Exactly one of `customer_id` and `external_customer_id` should be specified, and similar to ingestion, the ID must identify a Customer resource within Orb. Unlike ingestion, for event amendment, we strictly enforce that the Customer must be in the Orb system, even during the initial integration period. We do not allow updating the `Customer` an event is associated with.
+* Orb does not accept an `idempotency_key` with the event in this endpoint, since this request is by design idempotent. On retryable errors, you should retry the request and assume the amendment operation has not succeeded until receipt of a 2xx. 
+* The event's `timestamp` must fall within the customer's current subscription's billing period, or within the grace period of the customer's current subscription's previous billing period.
+
+### Example Usage
+
+```go
+package main
+
+import(
+	"context"
+	"log"
+	"Orb"
+	"Orb/pkg/models/operations"
+	"Orb/pkg/types"
+)
+
+func main() {
+    s := sdk.New(
+        sdk.WithSecurity(shared.Security{
+            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+        }),
+    )
+
+    ctx := context.Background()
+    res, err := s.Event.Amend(ctx, operations.AmendEventRequest{
+        RequestBody: &operations.AmendEventRequestBody{
+            CustomerID: sdk.String("mollitia"),
+            EventName: "ad",
+            ExternalCustomerID: sdk.String("eum"),
+            Properties: map[string]interface{}{
+                "necessitatibus": "odit",
+            },
+            Timestamp: types.MustTimeFromString("2020-12-09T16:09:53Z"),
+        },
+        EventID: "fQp2wSmK7CF9oPcu",
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    if res.AmendEvent200ApplicationJSONObject != nil {
+        // handle response
+    }
+}
+```
+
+## CloseBackfill
+
+Closing a backfill makes the updated usage visible in Orb. Upon closing a backfill, Orb will asynchronously reflect the updated usage in invoice amounts and usage graphs. Once all of the updates are complete, the backfill's status will transition to `reflected`.
+
+
+
+### Example Usage
+
+```go
+package main
+
+import(
+	"context"
+	"log"
+	"Orb"
+	"Orb/pkg/models/operations"
+)
+
+func main() {
+    s := sdk.New(
+        sdk.WithSecurity(shared.Security{
+            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+        }),
+    )
+
+    ctx := context.Background()
+    res, err := s.Event.CloseBackfill(ctx, operations.CloseBackfillRequest{
+        BackfillID: "nemo",
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    if res.Backfill != nil {
+        // handle response
+    }
+}
+```
+
+## Create
+
+Creating the backfill enables adding or replacing past events, even those that are older than the ingestion grace period. Performing a backfill in Orb involves 3 steps:
+
+1. Create the backfill, specifying its parameters.
+2. [Ingest](ingest) usage events, referencing the backfill (query parameter `backfill_id`).
+3. [Close](close-backfill) the backfill, propagating the update in past usage throughout Orb.
+
+Changes from a backfill are not reflected until the backfill is closed, so you won’t need to worry about your customers seeing partially updated usage data. Backfills are also reversible, so you’ll be able to revert a backfill if you’ve made a mistake.
+
+This endpoint will return a backfill object, which contains an `id`. That `id` can then be used as the `backfill_id` query parameter to the event ingestion endpoint to associate ingested events with this backfill. The effects (e.g. updated usage graphs) of this backfill will not take place until the backfill is closed.
+
+If the `replace_existing_events` is `true`, existing events in the backfill's timeframe will be replaced with the newly ingested events associated with the backfill. If `false`, newly ingested events will be added to the existing events.
+
+### Example Usage
+
+```go
+package main
+
+import(
+	"context"
+	"log"
+	"Orb"
+	"Orb/pkg/models/operations"
+	"Orb/pkg/types"
+)
+
+func main() {
+    s := sdk.New(
+        sdk.WithSecurity(shared.Security{
+            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+        }),
+    )
+
+    ctx := context.Background()
+    res, err := s.Event.Create(ctx, operations.CreateBackfillRequestBody{
+        CloseTime: types.MustTimeFromString("2022-07-25T21:49:23.340Z"),
+        CustomerID: sdk.String("doloribus"),
+        ExternalCustomerID: sdk.String("debitis"),
+        ReplaceExistingEvents: false,
+        TimeframeEnd: types.MustTimeFromString("2022-03-12T17:44:26.081Z"),
+        TimeframeStart: types.MustTimeFromString("2021-08-05T03:52:18.835Z"),
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    if res.Backfill != nil {
+        // handle response
+    }
+}
+```
+
+## DeprecateEvent
 
 This endpoint is used to deprecate a single usage event with a given `event_id`. `event_id` refers to the `idempotency_key` passed in during ingestion. 
 
@@ -21,7 +178,7 @@ This is a powerful and audit-safe mechanism to retroactively deprecate a single 
 * no longer bill for an event that was improperly reported
 * no longer bill for an event based on the result of an external API call (ex. call to a payment gateway failed and the user should not be billed)
 
-If you want to only change specific properties of an event, but keep the event as part of the billing calculation, use the [Amend single event](../reference/Orb-API.json/paths/~1events~1{event_id}/put) endpoint instead.
+If you want to only change specific properties of an event, but keep the event as part of the billing calculation, use the [Amend single event](amend-event) endpoint instead.
 
 This API is always audit-safe. The process will still retain the deprecated event, though it will be ignored for billing calculations. For auditing and data fidelity purposes, Orb never overwrites or permanently deletes ingested usage data.
 
@@ -45,19 +202,19 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            BearerAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
         }),
     )
 
     ctx := context.Background()
-    res, err := s.Event.Deprecate(ctx, operations.PutDeprecateEventsEventIDRequest{
+    res, err := s.Event.DeprecateEvent(ctx, operations.DeprecateEventRequest{
         EventID: "fQp2wSmK7CF9oPcu",
     })
     if err != nil {
         log.Fatal(err)
     }
 
-    if res.PutDeprecateEventsEventID200ApplicationJSONObject != nil {
+    if res.DeprecateEvent200ApplicationJSONObject != nil {
         // handle response
     }
 }
@@ -218,68 +375,121 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            BearerAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
         }),
     )
 
     ctx := context.Background()
-    res, err := s.Event.Ingest(ctx, operations.PostIngestRequest{
-        RequestBody: &operations.PostIngestRequestBody{
-            Events: []PostIngestRequestBodyEvents{
-                operations.PostIngestRequestBodyEvents{
-                    CustomerID: sdk.String("ea"),
-                    EventName: "aliquid",
-                    ExternalCustomerID: sdk.String("laborum"),
-                    IdempotencyKey: "accusamus",
+    res, err := s.Event.Ingest(ctx, operations.IngestRequest{
+        RequestBody: &operations.IngestRequestBody{
+            Events: []IngestRequestBodyEvents{
+                operations.IngestRequestBodyEvents{
+                    CustomerID: sdk.String("architecto"),
+                    EventName: "architecto",
+                    ExternalCustomerID: sdk.String("repudiandae"),
+                    IdempotencyKey: "ullam",
                     Properties: map[string]interface{}{
-                        "occaecati": "enim",
+                        "nihil": "repellat",
+                        "quibusdam": "sed",
+                        "saepe": "pariatur",
                     },
                     Timestamp: "2020-12-09T16:09:53Z",
                 },
-                operations.PostIngestRequestBodyEvents{
-                    CustomerID: sdk.String("accusamus"),
-                    EventName: "delectus",
-                    ExternalCustomerID: sdk.String("quidem"),
-                    IdempotencyKey: "provident",
+                operations.IngestRequestBodyEvents{
+                    CustomerID: sdk.String("accusantium"),
+                    EventName: "consequuntur",
+                    ExternalCustomerID: sdk.String("praesentium"),
+                    IdempotencyKey: "natus",
                     Properties: map[string]interface{}{
-                        "id": "blanditiis",
-                        "deleniti": "sapiente",
-                        "amet": "deserunt",
-                    },
-                    Timestamp: "2020-12-09T16:09:53Z",
-                },
-                operations.PostIngestRequestBodyEvents{
-                    CustomerID: sdk.String("nisi"),
-                    EventName: "vel",
-                    ExternalCustomerID: sdk.String("natus"),
-                    IdempotencyKey: "omnis",
-                    Properties: map[string]interface{}{
-                        "perferendis": "nihil",
-                        "magnam": "distinctio",
-                    },
-                    Timestamp: "2020-12-09T16:09:53Z",
-                },
-                operations.PostIngestRequestBodyEvents{
-                    CustomerID: sdk.String("id"),
-                    EventName: "labore",
-                    ExternalCustomerID: sdk.String("labore"),
-                    IdempotencyKey: "suscipit",
-                    Properties: map[string]interface{}{
-                        "nobis": "eum",
-                        "vero": "aspernatur",
-                        "architecto": "magnam",
+                        "sunt": "quo",
                     },
                     Timestamp: "2020-12-09T16:09:53Z",
                 },
             },
         },
-        Debug: operations.PostIngestDebugTrue.ToPointer(),
+        BackfillID: sdk.String("illum"),
+        Debug: operations.IngestDebugFalse.ToPointer(),
     })
     if err != nil {
         log.Fatal(err)
     }
 
-    if res.PostIngest200ApplicationJSONObject != nil {
+    if res.Ingest200ApplicationJSONObject != nil {
+        // handle response
+    }
+}
+```
+
+## ListBackfills
+
+This endpoint returns a list of all [backfills](../reference/Orb-API.json/components/schemas/Backfill) in a list format. 
+
+The list of backfills is ordered starting from the most recently created backfill. The response also includes [`pagination_metadata`](../api/pagination), which lets the caller retrieve the next page of results if they exist. More information about pagination can be found in the [Pagination-metadata schema](../reference/Orb-API.json/components/schemas/Pagination-metadata).
+
+### Example Usage
+
+```go
+package main
+
+import(
+	"context"
+	"log"
+	"Orb"
+)
+
+func main() {
+    s := sdk.New(
+        sdk.WithSecurity(shared.Security{
+            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+        }),
+    )
+
+    ctx := context.Background()
+    res, err := s.Event.ListBackfills(ctx)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    if res.ListBackfills200ApplicationJSONObject != nil {
+        // handle response
+    }
+}
+```
+
+## RevertBackfill
+
+Reverting a backfill undoes all the effects of closing the backfill. If the backfill is reflected, the status will transition to `pending_revert` while the effects of the backfill are undone. Once all effects are undone, the backfill will transition to `reverted`.
+
+If a backfill is reverted before its closed, no usage will be updated as a result of the backfill and it will immediately transition to `reverted`.
+
+### Example Usage
+
+```go
+package main
+
+import(
+	"context"
+	"log"
+	"Orb"
+	"Orb/pkg/models/operations"
+)
+
+func main() {
+    s := sdk.New(
+        sdk.WithSecurity(shared.Security{
+            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+        }),
+    )
+
+    ctx := context.Background()
+    res, err := s.Event.RevertBackfill(ctx, operations.RevertBackfillRequest{
+        BackfillID: "maxime",
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    if res.Backfill != nil {
         // handle response
     }
 }
@@ -287,13 +497,13 @@ func main() {
 
 ## Search
 
-This endpoint returns a filtered set of events for an account in a paginated list format. 
+This endpoint returns a filtered set of events for an account in a [paginated list format](../api/pagination). 
 
 Note that this is a `POST` endpoint rather than a `GET` endpoint because it employs a JSON body for search criteria rather than query parameters, allowing for a more flexible search syntax.
 
 Note that a search criteria _must_ be specified. Currently, Orb supports the following criteria:
 - `event_ids`: This is an explicit array of IDs to filter by. Note that an event's ID is the `idempotency_key` that was originally used for ingestion.
-- `invoice_id`: This is an issued Orb invoice ID (see also [List Invoices](../reference/Orb-API.json/paths/~1invoices/get)). Orb will fetch all events that were used to calculate the invoice. In the common case, this will be a list of events whose `timestamp` property falls within the billing period specified by the invoice.
+- `invoice_id`: This is an issued Orb invoice ID (see also [List Invoices](list-invoices)). Orb will fetch all events that were used to calculate the invoice. In the common case, this will be a list of events whose `timestamp` property falls within the billing period specified by the invoice.
 
 By default, Orb does not return _deprecated_ events in this endpoint.
 
@@ -314,87 +524,23 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            BearerAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
         }),
     )
 
     ctx := context.Background()
-    res, err := s.Event.Search(ctx, operations.PostEventsSearchRequestBody{
+    res, err := s.Event.Search(ctx, operations.SearchEventsRequestBody{
         EventIds: []string{
-            "ullam",
-            "provident",
-            "quos",
+            "excepturi",
+            "odit",
         },
-        InvoiceID: sdk.String("sint"),
+        InvoiceID: sdk.String("ea"),
     })
     if err != nil {
         log.Fatal(err)
     }
 
-    if res.PostEventsSearch200ApplicationJSONObject != nil {
-        // handle response
-    }
-}
-```
-
-## Update
-
-This endpoint is used to amend a single usage event with a given `event_id`. `event_id` refers to the `idempotency_key` passed in during ingestion. The event will maintain its existing `event_id` after the amendment.
-
-This endpoint will mark the existing event as ignored, and Orb will only use the new event passed in the body of this request as the source of truth for that `event_id`. Note that a single event can be amended any number of times, so the same event can be overwritten in subsequent calls to this endpoint, or overwritten using the [Amend customer usage](../reference/Orb-API.json/paths/~1customers~1{customer_id}~1usage/patch) endpoint. Only a single event with a given `event_id` will be considered the source of truth at any given time.
-
-This is a powerful and audit-safe mechanism to retroactively update a single event in cases where you need to:
-* update an event with new metadata as you iterate on your pricing model
-* update an event based on the result of an external API call (ex. call to a payment gateway succeeded or failed)
-
-This amendment API is always audit-safe. The process will still retain the original event, though it will be ignored for billing calculations. For auditing and data fidelity purposes, Orb never overwrites or permanently deletes ingested usage data.
-
-## Request validation
-* The `timestamp` of the new event must match the `timestamp` of the existing event already ingested. As with ingestion, all timestamps must be sent in ISO8601 format with UTC timezone offset.
-* The `customer_id` or `external_customer_id` of the new event must match the `customer_id` or `external_customer_id` of the existing event already ingested. Exactly one of `customer_id` and `external_customer_id` should be specified, and similar to ingestion, the ID must identify a Customer resource within Orb. Unlike ingestion, for event amendment, we strictly enforce that the Customer must be in the Orb system, even during the initial integration period. We do not allow updating the `Customer` an event is associated with.
-* Orb does not accept an `idempotency_key` with the event in this endpoint, since this request is by design idempotent. On retryable errors, you should retry the request and assume the amendment operation has not succeeded until receipt of a 2xx. 
-* The event's `timestamp` must fall within the customer's current subscription's billing period, or within the grace period of the customer's current subscription's previous billing period.
-
-### Example Usage
-
-```go
-package main
-
-import(
-	"context"
-	"log"
-	"Orb"
-	"Orb/pkg/models/operations"
-	"Orb/pkg/types"
-)
-
-func main() {
-    s := sdk.New(
-        sdk.WithSecurity(shared.Security{
-            BearerAuth: "YOUR_BEARER_TOKEN_HERE",
-        }),
-    )
-
-    ctx := context.Background()
-    res, err := s.Event.Update(ctx, operations.PutEventsEventIDRequest{
-        RequestBody: &operations.PutEventsEventIDRequestBody{
-            CustomerID: sdk.String("accusantium"),
-            EventName: "mollitia",
-            ExternalCustomerID: sdk.String("reiciendis"),
-            Properties: map[string]interface{}{
-                "ad": "eum",
-                "dolor": "necessitatibus",
-                "odit": "nemo",
-            },
-            Timestamp: types.MustTimeFromString("2020-12-09T16:09:53Z"),
-        },
-        EventID: "fQp2wSmK7CF9oPcu",
-    })
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    if res.PutEventsEventID200ApplicationJSONObject != nil {
+    if res.SearchEvents200ApplicationJSONObject != nil {
         // handle response
     }
 }
