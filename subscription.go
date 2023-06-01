@@ -494,11 +494,11 @@ func (s *subscription) Cancel(ctx context.Context, request operations.CancelSubs
 //	}
 //
 // ```
-func (s *subscription) Create(ctx context.Context, request operations.CreateSubscriptionApplicationJSON) (*operations.CreateSubscriptionJSONResponse, error) {
+func (s *subscription) Create(ctx context.Context, request []byte) (*operations.CreateSubscriptionRawResponse, error) {
 	baseURL := s.serverURL
 	url := strings.TrimSuffix(baseURL, "/") + "/subscriptions"
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "Request", "json")
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "Request", "raw")
 	if err != nil {
 		return nil, fmt.Errorf("error serializing request body: %w", err)
 	}
@@ -531,7 +531,7 @@ func (s *subscription) Create(ctx context.Context, request operations.CreateSubs
 
 	contentType := httpRes.Header.Get("Content-Type")
 
-	res := &operations.CreateSubscriptionJSONResponse{
+	res := &operations.CreateSubscriptionRawResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: contentType,
 		RawResponse: httpRes,
@@ -929,11 +929,11 @@ func (s *subscription) Create(ctx context.Context, request operations.CreateSubs
 //	}
 //
 // ```
-func (s *subscription) Create(ctx context.Context, request []byte) (*operations.CreateSubscriptionRawResponse, error) {
+func (s *subscription) Create(ctx context.Context, request operations.CreateSubscriptionApplicationJSON) (*operations.CreateSubscriptionJSONResponse, error) {
 	baseURL := s.serverURL
 	url := strings.TrimSuffix(baseURL, "/") + "/subscriptions"
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "Request", "raw")
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "Request", "json")
 	if err != nil {
 		return nil, fmt.Errorf("error serializing request body: %w", err)
 	}
@@ -966,7 +966,7 @@ func (s *subscription) Create(ctx context.Context, request []byte) (*operations.
 
 	contentType := httpRes.Header.Get("Content-Type")
 
-	res := &operations.CreateSubscriptionRawResponse{
+	res := &operations.CreateSubscriptionJSONResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: contentType,
 		RawResponse: httpRes,
