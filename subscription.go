@@ -16,22 +16,12 @@ import (
 
 // subscription - The Subscription resource represents a customer's subscription to a plan. Subscriptions are created when a customer subscribes to a plan, and are updated when a customer's plan is changed.
 type subscription struct {
-	defaultClient  HTTPClient
-	securityClient HTTPClient
-	serverURL      string
-	language       string
-	sdkVersion     string
-	genVersion     string
+	sdkConfiguration sdkConfiguration
 }
 
-func newSubscription(defaultClient, securityClient HTTPClient, serverURL, language, sdkVersion, genVersion string) *subscription {
+func newSubscription(sdkConfig sdkConfiguration) *subscription {
 	return &subscription{
-		defaultClient:  defaultClient,
-		securityClient: securityClient,
-		serverURL:      serverURL,
-		language:       language,
-		sdkVersion:     sdkVersion,
-		genVersion:     genVersion,
+		sdkConfiguration: sdkConfig,
 	}
 }
 
@@ -57,7 +47,7 @@ func newSubscription(defaultClient, securityClient HTTPClient, serverURL, langua
 // ## Backdated cancellations
 // Orb allows you to cancel a subscription in the past as long as there are no paid invoices between the `requested_date` and the current time. If the cancellation is after the latest issued invoice, Orb will generate a balance refund for the current period. If the cancellation is before the most recently issued invoice, Orb will void the intervening invoice and generate a new one based on the new dates for the subscription. See the section on [cancellation behaviors](../guides/product-catalog/subscription-management).
 func (s *subscription) Cancel(ctx context.Context, request operations.CancelSubscriptionRequest) (*operations.CancelSubscriptionResponse, error) {
-	baseURL := s.serverURL
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/subscriptions/{subscription_id}/cancel", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -73,11 +63,11 @@ func (s *subscription) Cancel(ctx context.Context, request operations.CancelSubs
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion))
 
 	req.Header.Set("Content-Type", reqContentType)
 
-	client := s.securityClient
+	client := s.sdkConfiguration.SecurityClient
 
 	httpRes, err := client.Do(req)
 	if err != nil {
@@ -494,11 +484,11 @@ func (s *subscription) Cancel(ctx context.Context, request operations.CancelSubs
 //	}
 //
 // ```
-func (s *subscription) Create(ctx context.Context, request []byte) (*operations.CreateSubscriptionRawResponse, error) {
-	baseURL := s.serverURL
+func (s *subscription) Create(ctx context.Context, request operations.CreateSubscriptionApplicationJSON) (*operations.CreateSubscriptionJSONResponse, error) {
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url := strings.TrimSuffix(baseURL, "/") + "/subscriptions"
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "Request", "raw")
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "Request", "json")
 	if err != nil {
 		return nil, fmt.Errorf("error serializing request body: %w", err)
 	}
@@ -508,11 +498,11 @@ func (s *subscription) Create(ctx context.Context, request []byte) (*operations.
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion))
 
 	req.Header.Set("Content-Type", reqContentType)
 
-	client := s.securityClient
+	client := s.sdkConfiguration.SecurityClient
 
 	httpRes, err := client.Do(req)
 	if err != nil {
@@ -531,7 +521,7 @@ func (s *subscription) Create(ctx context.Context, request []byte) (*operations.
 
 	contentType := httpRes.Header.Get("Content-Type")
 
-	res := &operations.CreateSubscriptionRawResponse{
+	res := &operations.CreateSubscriptionJSONResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: contentType,
 		RawResponse: httpRes,
@@ -929,11 +919,11 @@ func (s *subscription) Create(ctx context.Context, request []byte) (*operations.
 //	}
 //
 // ```
-func (s *subscription) Create(ctx context.Context, request operations.CreateSubscriptionApplicationJSON) (*operations.CreateSubscriptionJSONResponse, error) {
-	baseURL := s.serverURL
+func (s *subscription) Create(ctx context.Context, request []byte) (*operations.CreateSubscriptionRawResponse, error) {
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url := strings.TrimSuffix(baseURL, "/") + "/subscriptions"
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "Request", "json")
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, "Request", "raw")
 	if err != nil {
 		return nil, fmt.Errorf("error serializing request body: %w", err)
 	}
@@ -943,11 +933,11 @@ func (s *subscription) Create(ctx context.Context, request operations.CreateSubs
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion))
 
 	req.Header.Set("Content-Type", reqContentType)
 
-	client := s.securityClient
+	client := s.sdkConfiguration.SecurityClient
 
 	httpRes, err := client.Do(req)
 	if err != nil {
@@ -966,7 +956,7 @@ func (s *subscription) Create(ctx context.Context, request operations.CreateSubs
 
 	contentType := httpRes.Header.Get("Content-Type")
 
-	res := &operations.CreateSubscriptionJSONResponse{
+	res := &operations.CreateSubscriptionRawResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: contentType,
 		RawResponse: httpRes,
@@ -990,7 +980,7 @@ func (s *subscription) Create(ctx context.Context, request operations.CreateSubs
 // Fetch - Retrieve a subscription
 // This endpoint is used to fetch a [Subscription](../reference/Orb-API.json/components/schemas/Subscription) given an identifier.
 func (s *subscription) Fetch(ctx context.Context, request operations.FetchSubscriptionRequest) (*operations.FetchSubscriptionResponse, error) {
-	baseURL := s.serverURL
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/subscriptions/{subscription_id}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -1001,9 +991,9 @@ func (s *subscription) Fetch(ctx context.Context, request operations.FetchSubscr
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion))
 
-	client := s.securityClient
+	client := s.sdkConfiguration.SecurityClient
 
 	httpRes, err := client.Do(req)
 	if err != nil {
@@ -1048,7 +1038,7 @@ func (s *subscription) Fetch(ctx context.Context, request operations.FetchSubscr
 //
 // The semantics of this endpoint exactly mirror those of [fetching a customer's costs](fetch-customer-costs). Use this endpoint to limit your analysis of costs to a specific subscription for the customer (e.g. to de-aggregate costs when a customer's subscription has started and stopped on the same day).
 func (s *subscription) FetchCosts(ctx context.Context, request operations.FetchSubscriptionCostsRequest) (*operations.FetchSubscriptionCostsResponse, error) {
-	baseURL := s.serverURL
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/subscriptions/{subscription_id}/costs", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -1059,13 +1049,13 @@ func (s *subscription) FetchCosts(ctx context.Context, request operations.FetchS
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion))
 
 	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	client := s.securityClient
+	client := s.sdkConfiguration.SecurityClient
 
 	httpRes, err := client.Do(req)
 	if err != nil {
@@ -1108,7 +1098,7 @@ func (s *subscription) FetchCosts(ctx context.Context, request operations.FetchS
 // FetchSchedule - View subscription schedule
 // This endpoint returns a [paginated](../api/pagination) list of all plans associated with a subscription along with their start and end dates. This list contains the subscription's initial plan along with past and future plan changes.
 func (s *subscription) FetchSchedule(ctx context.Context, request operations.FetchSubscriptionScheduleRequest) (*operations.FetchSubscriptionScheduleResponse, error) {
-	baseURL := s.serverURL
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/subscriptions/{subscription_id}/schedule", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -1119,9 +1109,9 @@ func (s *subscription) FetchSchedule(ctx context.Context, request operations.Fet
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion))
 
-	client := s.securityClient
+	client := s.sdkConfiguration.SecurityClient
 
 	httpRes, err := client.Do(req)
 	if err != nil {
@@ -1289,7 +1279,7 @@ func (s *subscription) FetchSchedule(ctx context.Context, request operations.Fet
 // - `second_dimension_key`: `provider`
 // - `second_dimension_value`: `aws`
 func (s *subscription) FetchUsage(ctx context.Context, request operations.FetchSubscriptionUsageRequest) (*operations.FetchSubscriptionUsageResponse, error) {
-	baseURL := s.serverURL
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/subscriptions/{subscription_id}/usage", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -1300,13 +1290,13 @@ func (s *subscription) FetchUsage(ctx context.Context, request operations.FetchS
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion))
 
 	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	client := s.securityClient
+	client := s.sdkConfiguration.SecurityClient
 
 	httpRes, err := client.Do(req)
 	if err != nil {
@@ -1351,7 +1341,7 @@ func (s *subscription) FetchUsage(ctx context.Context, request operations.FetchS
 //
 // Subscriptions can be filtered to a single customer by passing in the `customer_id` query parameter or the `external_customer_id` query parameter.
 func (s *subscription) List(ctx context.Context, request operations.ListSubscriptionsRequest) (*operations.ListSubscriptionsResponse, error) {
-	baseURL := s.serverURL
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url := strings.TrimSuffix(baseURL, "/") + "/subscriptions"
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
@@ -1359,13 +1349,13 @@ func (s *subscription) List(ctx context.Context, request operations.ListSubscrip
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion))
 
 	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
-	client := s.securityClient
+	client := s.sdkConfiguration.SecurityClient
 
 	httpRes, err := client.Do(req)
 	if err != nil {
@@ -1426,7 +1416,7 @@ func (s *subscription) List(ctx context.Context, request operations.ListSubscrip
 // ## Prorations for in-advance fees
 // By default, Orb calculates the prorated difference in any fixed fees when making a plan change, adjusting the customer balance as needed. For details on this behavior, [Subscription management](../guides/product-catalog/subscription-management).
 func (s *subscription) SchedulePlanChange(ctx context.Context, request operations.SchedulePlanChangeRequest) (*operations.SchedulePlanChangeResponse, error) {
-	baseURL := s.serverURL
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/subscriptions/{subscription_id}/schedule_plan_change", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -1442,11 +1432,11 @@ func (s *subscription) SchedulePlanChange(ctx context.Context, request operation
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion))
 
 	req.Header.Set("Content-Type", reqContentType)
 
-	client := s.securityClient
+	client := s.sdkConfiguration.SecurityClient
 
 	httpRes, err := client.Do(req)
 	if err != nil {
@@ -1491,7 +1481,7 @@ func (s *subscription) SchedulePlanChange(ctx context.Context, request operation
 //
 // To be eligible, the subscription must currently be active and have a future cancellation ("Auto-renew turned off"). This operation will turn on auto-renew, ensuring that the subscription does not end at the currently scheduled cancellation time.
 func (s *subscription) UnscheduleCancellation(ctx context.Context, request operations.UnscheduleCancellationRequest) (*operations.UnscheduleCancellationResponse, error) {
-	baseURL := s.serverURL
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/subscriptions/{subscription_id}/unschedule_cancellation", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -1502,9 +1492,9 @@ func (s *subscription) UnscheduleCancellation(ctx context.Context, request opera
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion))
 
-	client := s.securityClient
+	client := s.sdkConfiguration.SecurityClient
 
 	httpRes, err := client.Do(req)
 	if err != nil {
@@ -1547,7 +1537,7 @@ func (s *subscription) UnscheduleCancellation(ctx context.Context, request opera
 // UnschedulePlanChange - Unschedule pending plan changes
 // This endpoint can be used to unschedule any pending plan changes on an existing subscription.
 func (s *subscription) UnschedulePlanChange(ctx context.Context, request operations.UnschedulePlanChangeRequest) (*operations.UnschedulePlanChangeResponse, error) {
-	baseURL := s.serverURL
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/subscriptions/{subscription_id}/unschedule_pending_plan_changes", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -1558,9 +1548,9 @@ func (s *subscription) UnschedulePlanChange(ctx context.Context, request operati
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion))
 
-	client := s.securityClient
+	client := s.sdkConfiguration.SecurityClient
 
 	httpRes, err := client.Do(req)
 	if err != nil {
@@ -1609,7 +1599,7 @@ func (s *subscription) UnschedulePlanChange(ctx context.Context, request operati
 //
 // If the fee is an in-advance fixed fee, it will also issue an immediate invoice for the difference for the remainder of the billing period.
 func (s *subscription) UpdateFixedFeeQuantity(ctx context.Context, request operations.UpdateFixedFeeQuantityRequest) (*operations.UpdateFixedFeeQuantityResponse, error) {
-	baseURL := s.serverURL
+	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
 	url, err := utils.GenerateURL(ctx, baseURL, "/subscriptions/{subscription_id}/update_fixed_fee_quantity", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
@@ -1625,11 +1615,11 @@ func (s *subscription) UpdateFixedFeeQuantity(ctx context.Context, request opera
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.language, s.sdkVersion, s.genVersion))
+	req.Header.Set("user-agent", fmt.Sprintf("speakeasy-sdk/%s %s %s", s.sdkConfiguration.Language, s.sdkConfiguration.SDKVersion, s.sdkConfiguration.GenVersion))
 
 	req.Header.Set("Content-Type", reqContentType)
 
-	client := s.securityClient
+	client := s.sdkConfiguration.SecurityClient
 
 	httpRes, err := client.Do(req)
 	if err != nil {

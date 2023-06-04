@@ -436,6 +436,9 @@ import(
 	"context"
 	"log"
 	"Orb"
+	"Orb/pkg/models/operations"
+	"Orb/pkg/models/shared"
+	"Orb/pkg/types"
 )
 
 func main() {
@@ -446,7 +449,65 @@ func main() {
     )
 
     ctx := context.Background()
-    res, err := s.Subscription.Create(ctx, []byte("tempora"))
+    res, err := s.Subscription.Create(ctx, operations.CreateSubscriptionApplicationJSON{
+        AlignBillingWithSubscriptionStartDate: sdk.Bool(false),
+        AutoCollection: sdk.Bool(false),
+        CouponRedemptionCode: sdk.String("tempora"),
+        CustomerID: sdk.String("97DPcZE9hxsbb9Y9"),
+        DefaultInvoiceMemo: sdk.String("tempora"),
+        ExternalCustomerID: sdk.String("voluptate"),
+        ExternalMarketplace: operations.CreateSubscriptionApplicationJSONExternalMarketplaceGoogle.ToPointer(),
+        ExternalMarketplaceReportingID: sdk.String("project_number:983410661111"),
+        ExternalPlanID: sdk.String("reiciendis"),
+        Metadata: map[string]interface{}{
+            "sit": "non",
+            "officiis": "praesentium",
+        },
+        MinimumAmount: sdk.String("1.23"),
+        NetTerms: sdk.Int64(708609),
+        PhaseOverrides: []CreateSubscriptionApplicationJSONPhaseOverrides{
+            operations.CreateSubscriptionApplicationJSONPhaseOverrides{
+                Discount: &shared.Discount{
+                    AmountDiscount: sdk.String("incidunt"),
+                    AppliesToPriceIds: []string{
+                        "debitis",
+                        "rem",
+                    },
+                    DiscountType: shared.DiscountDiscountTypePercentage,
+                    PercentageDiscount: sdk.Float64(0.15),
+                    TrialAmountDiscount: sdk.String("sit"),
+                    UsageDiscount: sdk.Float64(7505.95),
+                },
+                MinimumAmount: sdk.String("error"),
+                Order: sdk.Float64(3335.07),
+            },
+            operations.CreateSubscriptionApplicationJSONPhaseOverrides{
+                Discount: &shared.Discount{
+                    AmountDiscount: sdk.String("minima"),
+                    AppliesToPriceIds: []string{
+                        "reiciendis",
+                        "nulla",
+                        "magni",
+                        "aperiam",
+                    },
+                    DiscountType: shared.DiscountDiscountTypePercentage,
+                    PercentageDiscount: sdk.Float64(0.15),
+                    TrialAmountDiscount: sdk.String("saepe"),
+                    UsageDiscount: sdk.Float64(2536.42),
+                },
+                MinimumAmount: sdk.String("veniam"),
+                Order: sdk.Float64(4461.35),
+            },
+        },
+        PlanID: sdk.String("ZMwNQefe7J3ecf7W"),
+        PriceOverrides: []CreateSubscriptionApplicationJSONPriceOverrides{
+            operations.CreateSubscriptionApplicationJSONPriceOverrides{},
+            operations.CreateSubscriptionApplicationJSONPriceOverrides{},
+            operations.CreateSubscriptionApplicationJSONPriceOverrides{},
+            operations.CreateSubscriptionApplicationJSONPriceOverrides{},
+        },
+        StartDate: types.MustDateFromString("2022-01-01"),
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -812,9 +873,6 @@ import(
 	"context"
 	"log"
 	"Orb"
-	"Orb/pkg/models/operations"
-	"Orb/pkg/models/shared"
-	"Orb/pkg/types"
 )
 
 func main() {
@@ -825,76 +883,7 @@ func main() {
     )
 
     ctx := context.Background()
-    res, err := s.Subscription.Create(ctx, operations.CreateSubscriptionApplicationJSON{
-        AlignBillingWithSubscriptionStartDate: sdk.Bool(false),
-        AutoCollection: sdk.Bool(false),
-        CouponRedemptionCode: sdk.String("tempora"),
-        CustomerID: sdk.String("97DPcZE9hxsbb9Y9"),
-        DefaultInvoiceMemo: sdk.String("voluptate"),
-        ExternalCustomerID: sdk.String("reiciendis"),
-        ExternalMarketplace: operations.CreateSubscriptionApplicationJSONExternalMarketplaceGoogle.ToPointer(),
-        ExternalMarketplaceReportingID: sdk.String("project_number:983410661111"),
-        ExternalPlanID: sdk.String("ex"),
-        Metadata: map[string]interface{}{
-            "non": "officiis",
-        },
-        MinimumAmount: sdk.String("1.23"),
-        NetTerms: sdk.Int64(505866),
-        PhaseOverrides: []CreateSubscriptionApplicationJSONPhaseOverrides{
-            operations.CreateSubscriptionApplicationJSONPhaseOverrides{
-                Discount: &shared.Discount{
-                    AmountDiscount: sdk.String("quaerat"),
-                    AppliesToPriceIds: []string{
-                        "ipsam",
-                        "debitis",
-                    },
-                    DiscountType: shared.DiscountDiscountTypePercentage,
-                    PercentageDiscount: sdk.Float64(0.15),
-                    TrialAmountDiscount: sdk.String("rem"),
-                    UsageDiscount: sdk.Float64(265.22),
-                },
-                MinimumAmount: sdk.String("nobis"),
-                Order: sdk.Float64(6256.37),
-            },
-            operations.CreateSubscriptionApplicationJSONPhaseOverrides{
-                Discount: &shared.Discount{
-                    AmountDiscount: sdk.String("veniam"),
-                    AppliesToPriceIds: []string{
-                        "recusandae",
-                        "reiciendis",
-                    },
-                    DiscountType: shared.DiscountDiscountTypePercentage,
-                    PercentageDiscount: sdk.Float64(0.15),
-                    TrialAmountDiscount: sdk.String("nulla"),
-                    UsageDiscount: sdk.Float64(1685.76),
-                },
-                MinimumAmount: sdk.String("aperiam"),
-                Order: sdk.Float64(9014.83),
-            },
-            operations.CreateSubscriptionApplicationJSONPhaseOverrides{
-                Discount: &shared.Discount{
-                    AmountDiscount: sdk.String("numquam"),
-                    AppliesToPriceIds: []string{
-                        "in",
-                        "officiis",
-                    },
-                    DiscountType: shared.DiscountDiscountTypePercentage,
-                    PercentageDiscount: sdk.Float64(0.15),
-                    TrialAmountDiscount: sdk.String("beatae"),
-                    UsageDiscount: sdk.Float64(5124.52),
-                },
-                MinimumAmount: sdk.String("exercitationem"),
-                Order: sdk.Float64(5106.29),
-            },
-        },
-        PlanID: sdk.String("ZMwNQefe7J3ecf7W"),
-        PriceOverrides: []CreateSubscriptionApplicationJSONPriceOverrides{
-            operations.CreateSubscriptionApplicationJSONPriceOverrides{},
-            operations.CreateSubscriptionApplicationJSONPriceOverrides{},
-            operations.CreateSubscriptionApplicationJSONPriceOverrides{},
-        },
-        StartDate: types.MustDateFromString("2022-01-01"),
-    })
+    res, err := s.Subscription.Create(ctx, []byte("beatae"))
     if err != nil {
         log.Fatal(err)
     }
@@ -930,7 +919,7 @@ func main() {
 
     ctx := context.Background()
     res, err := s.Subscription.Fetch(ctx, operations.FetchSubscriptionRequest{
-        SubscriptionID: "laboriosam",
+        SubscriptionID: "laudantium",
     })
     if err != nil {
         log.Fatal(err)
@@ -971,11 +960,11 @@ func main() {
 
     ctx := context.Background()
     res, err := s.Subscription.FetchCosts(ctx, operations.FetchSubscriptionCostsRequest{
-        GroupBy: sdk.String("dolorum"),
-        SubscriptionID: "voluptatum",
+        GroupBy: sdk.String("exercitationem"),
+        SubscriptionID: "praesentium",
         TimeframeEnd: types.MustTimeFromString("2022-02-02T05:00:00Z"),
         TimeframeStart: types.MustTimeFromString("2022-02-02T05:00:00Z"),
-        ViewMode: sdk.String("error"),
+        ViewMode: sdk.String("cum"),
     })
     if err != nil {
         log.Fatal(err)
@@ -1012,7 +1001,7 @@ func main() {
 
     ctx := context.Background()
     res, err := s.Subscription.FetchSchedule(ctx, operations.FetchSubscriptionScheduleRequest{
-        SubscriptionID: "hic",
+        SubscriptionID: "laboriosam",
     })
     if err != nil {
         log.Fatal(err)
@@ -1171,10 +1160,10 @@ func main() {
 
     ctx := context.Background()
     res, err := s.Subscription.FetchUsage(ctx, operations.FetchSubscriptionUsageRequest{
-        BillableMetricID: sdk.String("expedita"),
+        BillableMetricID: sdk.String("dolorum"),
         Granularity: operations.FetchSubscriptionUsageGranularityDay.ToPointer(),
-        GroupBy: sdk.String("debitis"),
-        SubscriptionID: "neque",
+        GroupBy: sdk.String("voluptatum"),
+        SubscriptionID: "error",
         TimeframeEnd: types.MustTimeFromString("2022-02-02T05:00:00Z"),
         TimeframeStart: types.MustTimeFromString("2022-02-02T05:00:00Z"),
         ViewMode: operations.FetchSubscriptionUsageViewModeCumulative.ToPointer(),
@@ -1216,8 +1205,8 @@ func main() {
 
     ctx := context.Background()
     res, err := s.Subscription.List(ctx, operations.ListSubscriptionsRequest{
-        CustomerID: sdk.String("nostrum"),
-        ExternalCustomerID: sdk.String("officia"),
+        CustomerID: sdk.String("expedita"),
+        ExternalCustomerID: sdk.String("debitis"),
     })
     if err != nil {
         log.Fatal(err)
@@ -1276,19 +1265,17 @@ func main() {
         RequestBody: &operations.SchedulePlanChangeRequestBody{
             AlignBillingWithPlanChangeDate: sdk.Bool(false),
             ChangeDate: types.MustTimeFromString("2017-07-21T17:32:28Z"),
-            ChangeOption: operations.SchedulePlanChangeRequestBodyChangeOptionImmediate,
-            CouponRedemptionCode: sdk.String("corrupti"),
+            ChangeOption: operations.SchedulePlanChangeRequestBodyChangeOptionRequestedDate,
+            CouponRedemptionCode: sdk.String("dolorum"),
             ExternalPlanID: sdk.String("ZMwNQefe7J3ecf7W"),
             MinimumAmount: sdk.String("1.23"),
             PlanID: sdk.String("ZMwNQefe7J3ecf7W"),
             PriceOverrides: []SchedulePlanChangeRequestBodyPriceOverrides{
                 operations.SchedulePlanChangeRequestBodyPriceOverrides{},
                 operations.SchedulePlanChangeRequestBodyPriceOverrides{},
-                operations.SchedulePlanChangeRequestBodyPriceOverrides{},
-                operations.SchedulePlanChangeRequestBodyPriceOverrides{},
             },
         },
-        SubscriptionID: "tempora",
+        SubscriptionID: "officia",
     })
     if err != nil {
         log.Fatal(err)
@@ -1327,7 +1314,7 @@ func main() {
 
     ctx := context.Background()
     res, err := s.Subscription.UnscheduleCancellation(ctx, operations.UnscheduleCancellationRequest{
-        SubscriptionID: "atque",
+        SubscriptionID: "dolorum",
     })
     if err != nil {
         log.Fatal(err)
@@ -1364,7 +1351,7 @@ func main() {
 
     ctx := context.Background()
     res, err := s.Subscription.UnschedulePlanChange(ctx, operations.UnschedulePlanChangeRequest{
-        SubscriptionID: "fugit",
+        SubscriptionID: "corrupti",
     })
     if err != nil {
         log.Fatal(err)
@@ -1411,10 +1398,10 @@ func main() {
         RequestBody: &operations.UpdateFixedFeeQuantityRequestBody{
             ChangeOption: operations.UpdateFixedFeeQuantityRequestBodyChangeOptionEffectiveDate.ToPointer(),
             EffectiveDate: types.MustDateFromString(""2022-12-21""),
-            PriceID: "ut",
-            Quantity: 8563.03,
+            PriceID: "accusamus",
+            Quantity: 2726.83,
         },
-        SubscriptionID: "voluptatem",
+        SubscriptionID: "atque",
     })
     if err != nil {
         log.Fatal(err)
