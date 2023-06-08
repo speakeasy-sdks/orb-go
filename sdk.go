@@ -5,6 +5,7 @@ package sdk
 import (
 	"Orb/pkg/models/shared"
 	"Orb/pkg/utils"
+	"fmt"
 	"net/http"
 	"time"
 )
@@ -39,14 +40,15 @@ func Float32(f float32) *float32 { return &f }
 func Float64(f float64) *float64 { return &f }
 
 type sdkConfiguration struct {
-	DefaultClient  HTTPClient
-	SecurityClient HTTPClient
-	Security       *shared.Security
-	ServerURL      string
-	ServerIndex    int
-	Language       string
-	SDKVersion     string
-	GenVersion     string
+	DefaultClient     HTTPClient
+	SecurityClient    HTTPClient
+	Security          *shared.Security
+	ServerURL         string
+	ServerIndex       int
+	Language          string
+	OpenAPIDocVersion string
+	SDKVersion        string
+	GenVersion        string
 }
 
 func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
@@ -57,7 +59,7 @@ func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
 	return ServerList[c.ServerIndex], nil
 }
 
-// SDK - Orb powers usage-based billing for the fastest-growing software companies.
+// SDK - API Reference: Orb powers usage-based billing for the fastest-growing software companies.
 // Orb's API is built with the following principles in mind:
 //
 // 1. **Predictable developer experience**: Where applicable, the Orb API uses industry-standard patterns such as cursor-based pagination and standardized error output. To help with debugging in critical API actions, the API always strives to provide detailed and actionable error messages. Aliases such as external customer IDs aid in fast integration times.
@@ -135,9 +137,10 @@ func WithSecurity(security shared.Security) SDKOption {
 func New(opts ...SDKOption) *SDK {
 	sdk := &SDK{
 		sdkConfiguration: sdkConfiguration{
-			Language:   "go",
-			SDKVersion: "0.11.0",
-			GenVersion: "2.35.3",
+			Language:          "go",
+			OpenAPIDocVersion: "1.0",
+			SDKVersion:        "0.12.0",
+			GenVersion:        "2.37.0",
 		},
 	}
 	for _, opt := range opts {

@@ -66,8 +66,8 @@ pkg/models/operations/getplansplanid.go
 pkg/models/operations/getplansexternalplanid.go
 pkg/models/operations/listplans.go
 pkg/models/operations/cancelsubscription.go
-pkg/models/operations/createsubscriptionjson.go
 pkg/models/operations/createsubscriptionraw.go
+pkg/models/operations/createsubscriptionjson.go
 pkg/models/operations/fetchsubscription.go
 pkg/models/operations/fetchsubscriptioncosts.go
 pkg/models/operations/fetchsubscriptionschedule.go

@@ -59,7 +59,7 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "",
         }),
     )
 
@@ -436,78 +436,17 @@ import(
 	"context"
 	"log"
 	"Orb"
-	"Orb/pkg/models/operations"
-	"Orb/pkg/models/shared"
-	"Orb/pkg/types"
 )
 
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "",
         }),
     )
 
     ctx := context.Background()
-    res, err := s.Subscription.Create(ctx, operations.CreateSubscriptionApplicationJSON{
-        AlignBillingWithSubscriptionStartDate: sdk.Bool(false),
-        AutoCollection: sdk.Bool(false),
-        CouponRedemptionCode: sdk.String("tempora"),
-        CustomerID: sdk.String("97DPcZE9hxsbb9Y9"),
-        DefaultInvoiceMemo: sdk.String("tempora"),
-        ExternalCustomerID: sdk.String("voluptate"),
-        ExternalMarketplace: operations.CreateSubscriptionApplicationJSONExternalMarketplaceGoogle.ToPointer(),
-        ExternalMarketplaceReportingID: sdk.String("project_number:983410661111"),
-        ExternalPlanID: sdk.String("reiciendis"),
-        Metadata: map[string]interface{}{
-            "sit": "non",
-            "officiis": "praesentium",
-        },
-        MinimumAmount: sdk.String("1.23"),
-        NetTerms: sdk.Int64(708609),
-        PhaseOverrides: []CreateSubscriptionApplicationJSONPhaseOverrides{
-            operations.CreateSubscriptionApplicationJSONPhaseOverrides{
-                Discount: &shared.Discount{
-                    AmountDiscount: sdk.String("incidunt"),
-                    AppliesToPriceIds: []string{
-                        "debitis",
-                        "rem",
-                    },
-                    DiscountType: shared.DiscountDiscountTypePercentage,
-                    PercentageDiscount: sdk.Float64(0.15),
-                    TrialAmountDiscount: sdk.String("sit"),
-                    UsageDiscount: sdk.Float64(7505.95),
-                },
-                MinimumAmount: sdk.String("error"),
-                Order: sdk.Float64(3335.07),
-            },
-            operations.CreateSubscriptionApplicationJSONPhaseOverrides{
-                Discount: &shared.Discount{
-                    AmountDiscount: sdk.String("minima"),
-                    AppliesToPriceIds: []string{
-                        "reiciendis",
-                        "nulla",
-                        "magni",
-                        "aperiam",
-                    },
-                    DiscountType: shared.DiscountDiscountTypePercentage,
-                    PercentageDiscount: sdk.Float64(0.15),
-                    TrialAmountDiscount: sdk.String("saepe"),
-                    UsageDiscount: sdk.Float64(2536.42),
-                },
-                MinimumAmount: sdk.String("veniam"),
-                Order: sdk.Float64(4461.35),
-            },
-        },
-        PlanID: sdk.String("ZMwNQefe7J3ecf7W"),
-        PriceOverrides: []CreateSubscriptionApplicationJSONPriceOverrides{
-            operations.CreateSubscriptionApplicationJSONPriceOverrides{},
-            operations.CreateSubscriptionApplicationJSONPriceOverrides{},
-            operations.CreateSubscriptionApplicationJSONPriceOverrides{},
-            operations.CreateSubscriptionApplicationJSONPriceOverrides{},
-        },
-        StartDate: types.MustDateFromString("2022-01-01"),
-    })
+    res, err := s.Subscription.Create(ctx, []byte("tempora"))
     if err != nil {
         log.Fatal(err)
     }
@@ -873,17 +812,89 @@ import(
 	"context"
 	"log"
 	"Orb"
+	"Orb/pkg/models/operations"
+	"Orb/pkg/models/shared"
+	"Orb/pkg/types"
 )
 
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "",
         }),
     )
 
     ctx := context.Background()
-    res, err := s.Subscription.Create(ctx, []byte("beatae"))
+    res, err := s.Subscription.Create(ctx, operations.CreateSubscriptionApplicationJSON{
+        AlignBillingWithSubscriptionStartDate: sdk.Bool(false),
+        AutoCollection: sdk.Bool(false),
+        CouponRedemptionCode: sdk.String("tempora"),
+        CustomerID: sdk.String("97DPcZE9hxsbb9Y9"),
+        DefaultInvoiceMemo: sdk.String("voluptate"),
+        ExternalCustomerID: sdk.String("reiciendis"),
+        ExternalMarketplace: operations.CreateSubscriptionApplicationJSONExternalMarketplaceGoogle.ToPointer(),
+        ExternalMarketplaceReportingID: sdk.String("project_number:983410661111"),
+        ExternalPlanID: sdk.String("ex"),
+        Metadata: map[string]interface{}{
+            "non": "officiis",
+        },
+        MinimumAmount: sdk.String("1.23"),
+        NetTerms: sdk.Int64(0),
+        PhaseOverrides: []CreateSubscriptionApplicationJSONPhaseOverrides{
+            operations.CreateSubscriptionApplicationJSONPhaseOverrides{
+                Discount: &shared.Discount{
+                    AmountDiscount: sdk.String("facilis"),
+                    AppliesToPriceIds: []string{
+                        "incidunt",
+                        "ipsam",
+                    },
+                    DiscountType: shared.DiscountDiscountTypePercentage,
+                    PercentageDiscount: sdk.Float64(0.15),
+                    TrialAmountDiscount: sdk.String("debitis"),
+                    UsageDiscount: sdk.Float64(5249.7),
+                },
+                MinimumAmount: sdk.String("sit"),
+                Order: sdk.Float64(7505.95),
+            },
+            operations.CreateSubscriptionApplicationJSONPhaseOverrides{
+                Discount: &shared.Discount{
+                    AmountDiscount: sdk.String("error"),
+                    AppliesToPriceIds: []string{
+                        "minima",
+                        "recusandae",
+                    },
+                    DiscountType: shared.DiscountDiscountTypePercentage,
+                    PercentageDiscount: sdk.Float64(0.15),
+                    TrialAmountDiscount: sdk.String("reiciendis"),
+                    UsageDiscount: sdk.Float64(8623.19),
+                },
+                MinimumAmount: sdk.String("magni"),
+                Order: sdk.Float64(486.9),
+            },
+            operations.CreateSubscriptionApplicationJSONPhaseOverrides{
+                Discount: &shared.Discount{
+                    AmountDiscount: sdk.String("saepe"),
+                    AppliesToPriceIds: []string{
+                        "veniam",
+                        "in",
+                    },
+                    DiscountType: shared.DiscountDiscountTypePercentage,
+                    PercentageDiscount: sdk.Float64(0.15),
+                    TrialAmountDiscount: sdk.String("officiis"),
+                    UsageDiscount: sdk.Float64(1046.27),
+                },
+                MinimumAmount: sdk.String("laudantium"),
+                Order: sdk.Float64(3484.76),
+            },
+        },
+        PlanID: sdk.String("ZMwNQefe7J3ecf7W"),
+        PriceOverrides: []CreateSubscriptionApplicationJSONPriceOverrides{
+            operations.CreateSubscriptionApplicationJSONPriceOverrides{},
+            operations.CreateSubscriptionApplicationJSONPriceOverrides{},
+            operations.CreateSubscriptionApplicationJSONPriceOverrides{},
+        },
+        StartDate: types.MustDateFromString("2022-01-01"),
+    })
     if err != nil {
         log.Fatal(err)
     }
@@ -913,13 +924,13 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "",
         }),
     )
 
     ctx := context.Background()
     res, err := s.Subscription.Fetch(ctx, operations.FetchSubscriptionRequest{
-        SubscriptionID: "laudantium",
+        SubscriptionID: "cum",
     })
     if err != nil {
         log.Fatal(err)
@@ -954,17 +965,17 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "",
         }),
     )
 
     ctx := context.Background()
     res, err := s.Subscription.FetchCosts(ctx, operations.FetchSubscriptionCostsRequest{
-        GroupBy: sdk.String("exercitationem"),
-        SubscriptionID: "praesentium",
+        GroupBy: sdk.String("laboriosam"),
+        SubscriptionID: "dolorum",
         TimeframeEnd: types.MustTimeFromString("2022-02-02T05:00:00Z"),
         TimeframeStart: types.MustTimeFromString("2022-02-02T05:00:00Z"),
-        ViewMode: sdk.String("cum"),
+        ViewMode: sdk.String("voluptatum"),
     })
     if err != nil {
         log.Fatal(err)
@@ -995,13 +1006,13 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "",
         }),
     )
 
     ctx := context.Background()
     res, err := s.Subscription.FetchSchedule(ctx, operations.FetchSubscriptionScheduleRequest{
-        SubscriptionID: "laboriosam",
+        SubscriptionID: "error",
     })
     if err != nil {
         log.Fatal(err)
@@ -1154,19 +1165,19 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "",
         }),
     )
 
     ctx := context.Background()
     res, err := s.Subscription.FetchUsage(ctx, operations.FetchSubscriptionUsageRequest{
-        BillableMetricID: sdk.String("dolorum"),
+        BillableMetricID: sdk.String("hic"),
         Granularity: operations.FetchSubscriptionUsageGranularityDay.ToPointer(),
-        GroupBy: sdk.String("voluptatum"),
-        SubscriptionID: "error",
+        GroupBy: sdk.String("expedita"),
+        SubscriptionID: "debitis",
         TimeframeEnd: types.MustTimeFromString("2022-02-02T05:00:00Z"),
         TimeframeStart: types.MustTimeFromString("2022-02-02T05:00:00Z"),
-        ViewMode: operations.FetchSubscriptionUsageViewModeCumulative.ToPointer(),
+        ViewMode: operations.FetchSubscriptionUsageViewModePeriodic.ToPointer(),
     })
     if err != nil {
         log.Fatal(err)
@@ -1199,14 +1210,14 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "",
         }),
     )
 
     ctx := context.Background()
     res, err := s.Subscription.List(ctx, operations.ListSubscriptionsRequest{
-        CustomerID: sdk.String("expedita"),
-        ExternalCustomerID: sdk.String("debitis"),
+        CustomerID: sdk.String("dolorum"),
+        ExternalCustomerID: sdk.String("nostrum"),
     })
     if err != nil {
         log.Fatal(err)
@@ -1256,7 +1267,7 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "",
         }),
     )
 
@@ -1265,7 +1276,7 @@ func main() {
         RequestBody: &operations.SchedulePlanChangeRequestBody{
             AlignBillingWithPlanChangeDate: sdk.Bool(false),
             ChangeDate: types.MustTimeFromString("2017-07-21T17:32:28Z"),
-            ChangeOption: operations.SchedulePlanChangeRequestBodyChangeOptionRequestedDate,
+            ChangeOption: operations.SchedulePlanChangeRequestBodyChangeOptionEndOfSubscriptionTerm,
             CouponRedemptionCode: sdk.String("dolorum"),
             ExternalPlanID: sdk.String("ZMwNQefe7J3ecf7W"),
             MinimumAmount: sdk.String("1.23"),
@@ -1273,9 +1284,10 @@ func main() {
             PriceOverrides: []SchedulePlanChangeRequestBodyPriceOverrides{
                 operations.SchedulePlanChangeRequestBodyPriceOverrides{},
                 operations.SchedulePlanChangeRequestBodyPriceOverrides{},
+                operations.SchedulePlanChangeRequestBodyPriceOverrides{},
             },
         },
-        SubscriptionID: "officia",
+        SubscriptionID: "accusamus",
     })
     if err != nil {
         log.Fatal(err)
@@ -1308,13 +1320,13 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "",
         }),
     )
 
     ctx := context.Background()
     res, err := s.Subscription.UnscheduleCancellation(ctx, operations.UnscheduleCancellationRequest{
-        SubscriptionID: "dolorum",
+        SubscriptionID: "tempora",
     })
     if err != nil {
         log.Fatal(err)
@@ -1345,13 +1357,13 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "",
         }),
     )
 
     ctx := context.Background()
     res, err := s.Subscription.UnschedulePlanChange(ctx, operations.UnschedulePlanChangeRequest{
-        SubscriptionID: "corrupti",
+        SubscriptionID: "atque",
     })
     if err != nil {
         log.Fatal(err)
@@ -1389,7 +1401,7 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "",
         }),
     )
 
@@ -1398,10 +1410,10 @@ func main() {
         RequestBody: &operations.UpdateFixedFeeQuantityRequestBody{
             ChangeOption: operations.UpdateFixedFeeQuantityRequestBodyChangeOptionEffectiveDate.ToPointer(),
             EffectiveDate: types.MustDateFromString(""2022-12-21""),
-            PriceID: "accusamus",
-            Quantity: 2726.83,
+            PriceID: "fugit",
+            Quantity: 2826.99,
         },
-        SubscriptionID: "atque",
+        SubscriptionID: "fugiat",
     })
     if err != nil {
         log.Fatal(err)

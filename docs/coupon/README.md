@@ -31,7 +31,7 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "",
         }),
     )
 
@@ -68,7 +68,7 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "",
         }),
     )
 
@@ -121,7 +121,7 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "",
         }),
     )
 
@@ -160,7 +160,7 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "",
         }),
     )
 
@@ -198,7 +198,7 @@ import(
 func main() {
     s := sdk.New(
         sdk.WithSecurity(shared.Security{
-            APIKeyAuth: "YOUR_BEARER_TOKEN_HERE",
+            APIKeyAuth: "",
         }),
     )
 
