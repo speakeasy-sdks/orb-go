@@ -7,6 +7,10 @@ import (
 	"time"
 )
 
+// AmendEventRequestBodyProperties - A dictionary of custom properties. Values in this dictionary must be numeric, boolean, or strings. Nested dictionaries are disallowed.
+type AmendEventRequestBodyProperties struct {
+}
+
 type AmendEventRequestBody struct {
 	// The Orb Customer identifier
 	CustomerID *string `json:"customer_id,omitempty"`
@@ -15,7 +19,7 @@ type AmendEventRequestBody struct {
 	// An alias for the Orb customer, whose mapping is specified when creating the customer
 	ExternalCustomerID *string `json:"external_customer_id,omitempty"`
 	// A dictionary of custom properties. Values in this dictionary must be numeric, boolean, or strings. Nested dictionaries are disallowed.
-	Properties map[string]interface{} `json:"properties"`
+	Properties AmendEventRequestBodyProperties `json:"properties"`
 	// An ISO 8601 format date with no timezone offset (i.e. UTC). This should represent the time that usage was recorded, and is particularly important to attribute usage to a given billing period.
 	Timestamp time.Time `json:"timestamp"`
 }

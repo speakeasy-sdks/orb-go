@@ -43,6 +43,10 @@ func (e *CreateSubscriptionApplicationJSONExternalMarketplace) UnmarshalJSON(dat
 	}
 }
 
+// CreateSubscriptionApplicationJSONMetadata - User-specified key value pairs, often useful for referencing internal resources or IDs. Returned as-is in the subscription resource.
+type CreateSubscriptionApplicationJSONMetadata struct {
+}
+
 type CreateSubscriptionApplicationJSONPhaseOverrides struct {
 	Discount *shared.Discount `json:"discount,omitempty"`
 	// The new minimum amount for the phase. Providing `null` will clear the existing minimum, if it exists.
@@ -560,7 +564,7 @@ type CreateSubscriptionApplicationJSON struct {
 	// The external ID of the plan, which can be used in place of the `plan_id`.
 	ExternalPlanID *string `json:"external_plan_id,omitempty"`
 	// User-specified key value pairs, often useful for referencing internal resources or IDs. Returned as-is in the subscription resource.
-	Metadata map[string]interface{} `json:"metadata,omitempty"`
+	Metadata *CreateSubscriptionApplicationJSONMetadata `json:"metadata,omitempty"`
 	// The subscription's override minimum amount for the plan.
 	MinimumAmount *string `json:"minimum_amount,omitempty"`
 	// The net terms of a subscription determine when a subscription's invoice is due relative to its issue date. Whereas a net terms of 0 signifies "due on issue", a net terms of 30 can be used to provide the customer one month to pay the invoice. By default, the subscription defaults to the plan's net terms configuration.

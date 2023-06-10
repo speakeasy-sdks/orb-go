@@ -9,6 +9,10 @@ import (
 	"net/http"
 )
 
+// CreateCustomerRequestBodyMetadata - User-specified key value pairs, often useful for referencing internal resources or IDs. Returned as-is in the customer resource.
+type CreateCustomerRequestBodyMetadata struct {
+}
+
 // CreateCustomerRequestBodyPaymentProvider - This is used for creating charges or invoices in an external system via Orb. When not in test mode:
 // - the connection must first be configured in the Orb webapp.
 // - if the provider is an invoicing provider (`stripe_invoice`, `quickbooks`, `bill.com`), any product mappings must first be configured with the Orb team.
@@ -60,7 +64,7 @@ type CreateCustomerRequestBody struct {
 	// An optional user-defined ID for this customer resource, used throughout the system as an alias for this Customer. Use this field to identify a customer by an existing identifier in your system.
 	ExternalCustomerID *string `json:"external_customer_id,omitempty"`
 	// User-specified key value pairs, often useful for referencing internal resources or IDs. Returned as-is in the customer resource.
-	Metadata map[string]interface{} `json:"metadata,omitempty"`
+	Metadata *CreateCustomerRequestBodyMetadata `json:"metadata,omitempty"`
 	// The full name of the customer
 	Name string `json:"name"`
 	// This is used for creating charges or invoices in an external system via Orb. When not in test mode:

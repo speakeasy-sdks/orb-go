@@ -15,6 +15,10 @@ type SubscriptionFixedFeeQuantitySchedule struct {
 	StartDate *time.Time `json:"start_date,omitempty"`
 }
 
+// SubscriptionMetadata - User specified key-value pairs. If no metadata was specified at subscription creation time, this defaults to an empty dictionary.
+type SubscriptionMetadata struct {
+}
+
 type SubscriptionRedeemedCoupon struct {
 	CouponID *string `json:"coupon_id,omitempty"`
 	// The effective end time for the coupon, after which point  it'll no longer apply to invoices for this subscription.
@@ -88,7 +92,7 @@ type Subscription struct {
 	FixedFeeQuantitySchedule []SubscriptionFixedFeeQuantitySchedule `json:"fixed_fee_quantity_schedule"`
 	ID                       string                                 `json:"id"`
 	// User specified key-value pairs. If no metadata was specified at subscription creation time, this defaults to an empty dictionary.
-	Metadata map[string]interface{} `json:"metadata"`
+	Metadata SubscriptionMetadata `json:"metadata"`
 	// Determines the difference between the invoice issue date for subscription invoices as the date that they are due. A value of "0" here represents that the invoice is due on issue, whereas a value of 30 represents that the customer has a month to pay the invoice.
 	NetTerms       *int64                      `json:"net_terms,omitempty"`
 	Plan           Plan                        `json:"plan"`

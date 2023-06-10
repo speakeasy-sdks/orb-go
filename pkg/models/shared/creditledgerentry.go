@@ -83,6 +83,10 @@ func (e *CreditLedgerEntryEntryType) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// CreditLedgerEntryMetadata - User-specified metadata dictionary that's specified when adding a ledger entry. This contains key/value pairs if metadata is specified, but otherwise is an empty dictionary.
+type CreditLedgerEntryMetadata struct {
+}
+
 // CreditLedgerEntry - A credit ledger entry is a single entry in the customer balance ledger. More details about working with real-time balances are [here](../guides/product-catalog/prepurchase).
 //
 // To support late and out-of-order event reporting, ledger entries are marked as either __committed_ or _pending_. Committed entries are finalized and will not change. Pending entries can be updated up until the event reporting grace period.
@@ -104,7 +108,7 @@ type CreditLedgerEntry struct {
 	// The position in which this entry appears in the ledger, starting at 0
 	LedgerSequenceNumber float64 `json:"ledger_sequence_number"`
 	// User-specified metadata dictionary that's specified when adding a ledger entry. This contains key/value pairs if metadata is specified, but otherwise is an empty dictionary.
-	Metadata map[string]interface{} `json:"metadata"`
+	Metadata CreditLedgerEntryMetadata `json:"metadata"`
 	// In the case of an expiration change ledger entry, this represents the expiration time of the new block.
 	NewBlockExpiryDate *string `json:"new_block_expiry_date,omitempty"`
 	PriceID            *string `json:"price_id,omitempty"`

@@ -7,6 +7,9 @@ import (
 	"net/http"
 )
 
+type CreateSubscriptionApplicationXML struct {
+}
+
 type CreateSubscriptionRawResponse struct {
 	ContentType string
 	StatusCode  int

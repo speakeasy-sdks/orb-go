@@ -1,0 +1,9 @@
+# UpdateFixedFeeQuantityRequest
+
+
+## Fields
+
+| Field                                                                                              | Type                                                                                               | Required                                                                                           | Description                                                                                        |
+| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `RequestBody`                                                                                      | [*UpdateFixedFeeQuantityRequestBody](../../models/operations/updatefixedfeequantityrequestbody.md) | :heavy_minus_sign:                                                                                 | N/A                                                                                                |
+| `SubscriptionID`                                                                                   | *string*                                                                                           | :heavy_check_mark:                                                                                 | N/A                                                                                                |

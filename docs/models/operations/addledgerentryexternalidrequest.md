@@ -1,0 +1,9 @@
+# AddLedgerEntryExternalIDRequest
+
+
+## Fields
+
+| Field                                                                                                  | Type                                                                                                   | Required                                                                                               | Description                                                                                            |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `RequestBody`                                                                                          | [*AddLedgerEntryExternalIDRequestBody](../../models/operations/addledgerentryexternalidrequestbody.md) | :heavy_minus_sign:                                                                                     | N/A                                                                                                    |
+| `ExternalCustomerID`                                                                                   | *string*                                                                                               | :heavy_check_mark:                                                                                     | N/A                                                                                                    |

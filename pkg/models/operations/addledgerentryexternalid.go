@@ -50,6 +50,10 @@ type AddLedgerEntryExternalIDRequestBodyInvoiceSettings struct {
 	NetTerms float64 `json:"net_terms"`
 }
 
+// AddLedgerEntryExternalIDRequestBodyMetadata - User-specified key/value pairs for the ledger entry resource.
+type AddLedgerEntryExternalIDRequestBodyMetadata struct {
+}
+
 type AddLedgerEntryExternalIDRequestBody struct {
 	// The number of credits to effect. Note that this is required for increment or decrement operations.
 	Amount *float64 `json:"amount,omitempty"`
@@ -65,7 +69,7 @@ type AddLedgerEntryExternalIDRequestBody struct {
 	// Passing `invoice_settings` automatically generates an invoice for the newly added credits. If `invoice_settings` is passed, you must specify `per_unit_cost_basis`, as the calculation of the invoice total is done on that basis.
 	InvoiceSettings *AddLedgerEntryExternalIDRequestBodyInvoiceSettings `json:"invoice_settings,omitempty"`
 	// User-specified key/value pairs for the ledger entry resource.
-	Metadata map[string]interface{} `json:"metadata,omitempty"`
+	Metadata *AddLedgerEntryExternalIDRequestBodyMetadata `json:"metadata,omitempty"`
 	// Can only be specified when `entry_type=increment`. How much, in USD, a customer paid for a single credit in this block
 	PerUnitCostBasis *string `json:"per_unit_cost_basis,omitempty"`
 	// A future date (specified in YYYY-MM-DD) used for `expiration_change`

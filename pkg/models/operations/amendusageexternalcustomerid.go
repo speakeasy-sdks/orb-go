@@ -7,11 +7,15 @@ import (
 	"time"
 )
 
+// AmendUsageExternalCustomerIDRequestBodyEventsProperties - A dictionary of custom properties. Values in this dictionary must be numeric, boolean, or strings. Nested dictionaries are disallowed.
+type AmendUsageExternalCustomerIDRequestBodyEventsProperties struct {
+}
+
 type AmendUsageExternalCustomerIDRequestBodyEvents struct {
 	// A name to meaningfully identify the action or event type.
 	EventName string `json:"event_name"`
 	// A dictionary of custom properties. Values in this dictionary must be numeric, boolean, or strings. Nested dictionaries are disallowed.
-	Properties map[string]interface{} `json:"properties"`
+	Properties AmendUsageExternalCustomerIDRequestBodyEventsProperties `json:"properties"`
 	// An ISO 8601 format date with no timezone offset (i.e. UTC). This should represent the time that usage was recorded, and is particularly important to attribute usage to a given billing period.
 	Timestamp string `json:"timestamp"`
 }
@@ -46,10 +50,13 @@ type AmendUsageExternalCustomerID400ApplicationJSON struct {
 	ValidationErrors []AmendUsageExternalCustomerID400ApplicationJSONValidationErrors `json:"validation_errors"`
 }
 
+type AmendUsageExternalCustomerID200ApplicationJSONDuplicate struct {
+}
+
 // AmendUsageExternalCustomerID200ApplicationJSON - OK
 type AmendUsageExternalCustomerID200ApplicationJSON struct {
 	// An array of strings, corresponding to idempotency_key's marked as duplicates (previously ingested)
-	Duplicate []map[string]interface{} `json:"duplicate,omitempty"`
+	Duplicate []AmendUsageExternalCustomerID200ApplicationJSONDuplicate `json:"duplicate,omitempty"`
 	// An array of strings, corresponding to idempotency_key's which were successfully ingested.
 	Ingested []string `json:"ingested,omitempty"`
 }

@@ -9,6 +9,10 @@ import (
 	"net/http"
 )
 
+// UpdateCustomerRequestBodyMetadata - User-specified key value pairs, often useful for referencing internal resources or IDs. Returned as-is in the customer resource.
+type UpdateCustomerRequestBodyMetadata struct {
+}
+
 // UpdateCustomerRequestBodyPaymentProvider - This is used for creating charges or invoices in an external system via Orb. When not in test mode:
 // - the connection must first be configured in the Orb webapp.
 // - if the provider is an invoicing provider (`stripe_invoice`, `quickbooks`, `bill.com`), any product mappings must first be configured with the Orb team.
@@ -59,8 +63,8 @@ type UpdateCustomerRequestBody struct {
 	// Determines whether Orb will send automated emails to this customer. This setting is superseded by the account-wide email setting for email delivery.
 	EmailDelivery *bool `json:"email_delivery,omitempty"`
 	// User-specified key value pairs, often useful for referencing internal resources or IDs. Returned as-is in the customer resource.
-	Metadata map[string]interface{} `json:"metadata,omitempty"`
-	Name     *string                `json:"name,omitempty"`
+	Metadata *UpdateCustomerRequestBodyMetadata `json:"metadata,omitempty"`
+	Name     *string                            `json:"name,omitempty"`
 	// This is used for creating charges or invoices in an external system via Orb. When not in test mode:
 	// - the connection must first be configured in the Orb webapp.
 	// - if the provider is an invoicing provider (`stripe_invoice`, `quickbooks`, `bill.com`), any product mappings must first be configured with the Orb team.

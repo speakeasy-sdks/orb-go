@@ -8,6 +8,10 @@ import (
 	"time"
 )
 
+// CustomerMetadata - User specified key-value pairs. If there is no metadata for the customer, this defaults to an empty dictionary.
+type CustomerMetadata struct {
+}
+
 // CustomerPaymentProvider - The external payments or invoicing solution connected to this customer.
 type CustomerPaymentProvider string
 
@@ -74,8 +78,8 @@ type Customer struct {
 	// The full name of the customer
 	ID string `json:"id"`
 	// User specified key-value pairs. If there is no metadata for the customer, this defaults to an empty dictionary.
-	Metadata map[string]interface{} `json:"metadata"`
-	Name     string                 `json:"name"`
+	Metadata CustomerMetadata `json:"metadata"`
+	Name     string           `json:"name"`
 	// The external payments or invoicing solution connected to this customer.
 	PaymentProvider CustomerPaymentProvider `json:"payment_provider"`
 	// The ID of this customer in an external payments solution, such as Stripe. This is used for creating charges or invoices in the external system via Orb.
